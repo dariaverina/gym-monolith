@@ -24,6 +24,12 @@ Route::get('/register', function () {
 Route::get('/clubs', function () {
     return view('clubs');
 });
+
+// Регистрация
+Route::post('/register', 'Auth\RegisterController@register');
+// Аутентификация
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/logout', 'Auth\LoginController@logout');
 // Route::get('/clubs', [ClubController::class, 'index']);
 
 // Route::get('/clubs', [ClubController::class, 'index']);
