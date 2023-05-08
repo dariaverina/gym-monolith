@@ -4,8 +4,7 @@ import ReactDOM  from 'react-dom';
 import App from './components/App';
 import { createRoot } from 'react-dom/client'
 
-
-if (document.getElementById('app')){
+if (document.getElementById('register')){
     // createRoot(<App/>, document.getElementById('app')) 
-    createRoot(document.getElementById('app')).render(<App/>)
+    createRoot(document.getElementById('register')).render(<div>register</div>)
 }
