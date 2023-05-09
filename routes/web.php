@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClubController;
+use App\Models\Club;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,9 @@ Route::get('/clubs', function () {
     return view('clubs');
 });
 
+Route::get('/clubs/{clubName}', function () {
+    return view('club');
+});
 // Регистрация
 Route::post('/register', 'Auth\RegisterController@register');
 // Аутентификация

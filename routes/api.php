@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ClubController;
 
 use App\Models\Club;
 
@@ -23,7 +24,11 @@ Route::get('/clubs', function () {
     return response()->json($clubs);
 });
 
+Route::get('clubs/{idOrSeoName}', [ClubController::class, 'show']);
 
+// Route::get('clubs/{idOrSeoName}', function($idOrSeoName) {
+//     return Article::find($idOrSeoName);
+// });
 
 Route::post('signup', [AuthController::class, 'signup']);
 Route::post('login', [AuthController::class, 'login']);

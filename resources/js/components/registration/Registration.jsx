@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosClient from "@/public/axios";
 import { userStateContext } from "@/context/context-provider";
+// import { Redirect  } from "react-router-dom";
+import { useUI } from '@/context/use-ui';
+import { useNavigate } from "react-router-dom";
+
 export default function Registration() {
   const [error, setError] = useState({ __html: "" });
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     password: "",
-    user_type: "C",
+    user_type: "c",
     phone: "+7927876566"
   });
-  console.log(userData)
-  const { currentUser, setCurrentUser, setUserToken } = userStateContext();
 
+  const { currentUser, setCurrentUser, setUserToken } = userStateContext();
+  const { openModal, showLoader, hideLoader, setModalContent, displayModal } =useUI();
+  const [ isTrainerAlertOpen, setIsTrainerAlertOpen] = useState(false);
+
+  useEffect(() => {
+    if(isTrainerAlertOpen && !displayModal) window.location.href = "/";
+  }, [displayModal])
   const onSubmit = (e) => {
     e.preventDefault();
     setError({ __html: "" });
@@ -21,7 +30,12 @@ export default function Registration() {
       .then(({ data }) => {
         setCurrentUser(data.user);
         setUserToken(data.token);
-        router.push("/account");
+        if (userData.user_type == 'c')  window.location.href = "/account";
+        if (userData.user_type == 't')  {
+          setModalContent(<div>Регистрация прошла успешно. Ожидайте проверки администратора</div>);
+          openModal();
+          setIsTrainerAlertOpen(true)
+        }
       })
       .catch((error) => {
         if (error.response) {
@@ -78,11 +92,6 @@ export default function Registration() {
             }
           ></input>
         </div>
-
-        {/* <div>
-      <label>Avater</label>
-      <input className="square border border-black" type="file" name ="avatar" id="avatar"></input>
-    </div> */}
         <br />
         <p>Выберите тип аккаунта</p>
         <div>

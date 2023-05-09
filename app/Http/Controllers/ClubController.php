@@ -21,10 +21,15 @@ class ClubController extends Controller
         return response()->json($club, 201);
     }
 
-    public function show($id)
+    public function show($identifier)
     {
-        $club = Club::findOrFail($id);
-
+        $club = Club::find($identifier);
+    
+        if (!$club) {
+            $club = Club::where('seo_name', $identifier)->first();
+        }
+        if(!$club) return response()->json(null, 404);
+        
         return response()->json($club);
     }
 
