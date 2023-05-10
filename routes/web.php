@@ -42,6 +42,7 @@ Route::post('/logout', 'Auth\LoginController@logout');
 
 //clubs
 Route::post('/clubs', [ClubController::class, 'store']);
+Route::put('/clubs/{id}', [ClubController::class, 'update']);
 // Route::get('/clubs', [ClubController::class, 'index']);
 
 // Route::get('/clubs', [ClubController::class, 'index']);

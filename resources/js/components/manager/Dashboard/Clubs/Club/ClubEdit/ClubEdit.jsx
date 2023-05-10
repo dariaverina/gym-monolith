@@ -4,21 +4,35 @@ import { useParams } from "react-router-dom";
 import Navigation from "./Navigation/Navigation";
 import ClubInfo from "./ClubInfo/ClubInfo";
 import Rooms from "./Rooms/Rooms";
+import { useUI } from '@/context/use-ui';
 
 const navigation = [
     { name: "Клуб", id: 1 },
     { name: "Залы", id: 2 },
 ];
 
-export default function ClubEdit() {
+export default function ClubEdit({ isNew, club }) {
+    const { openModal, showLoader, hideLoader, setModalContent, displayModal } =useUI();
     const [selectedSection, setSelectedSection] = useState(navigation[0].name);
-    const [clubInfo, setClubInfo] = useState({name: '', seo_name: '', address: '', latitude:null, longitude: null})
-    console.log(clubInfo)
+    const [clubInfo, setClubInfo] = useState(
+        club
+            ? club
+            : {
+                  name: "",
+                  seo_name: "",
+                  address: "",
+                  latitude: null,
+                  longitude: null,
+              }
+    );
+    // console.log(clubInfo)
 
     let content;
     switch (selectedSection) {
         case "Клуб":
-            content = <ClubInfo clubInfo = {clubInfo} setClubInfo = {setClubInfo}/>;
+            content = (
+                <ClubInfo clubInfo={clubInfo} setClubInfo={setClubInfo} />
+            );
             break;
         case "Залы":
             content = <Rooms />;
@@ -29,11 +43,23 @@ export default function ClubEdit() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("/clubs", clubInfo).then((response) => {
-          console.log(response.data);
-          // Do something with the response
-        });
-      };
+        if (isNew) {
+            axios.post("/clubs", clubInfo).then((response) => {
+                console.log(response.data);
+                window.location.href = "/clubs/" + clubInfo.name;
+                // Do something with the response
+            });
+        }
+        else{
+            axios.put(`/clubs/${clubInfo.id}`, clubInfo).then((response) => {
+                console.log(response.data);
+                // setModalContent(<div>Успешно обновлено!</div>)
+                // openModal();
+                // window.location.href = "/clubs/" + clubInfo.name;
+                // Do something with the response
+            });
+        }
+    };
     return (
         <>
             <Navigation

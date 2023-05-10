@@ -22,11 +22,13 @@ use App\Models\User;
 
 //clubs
 Route::post('/clubs', [ClubController::class, 'store']);
+Route::put('/clubs/{id}', [ClubController::class, 'update']);
 Route::get('/clubs', function () {
     $clubs = Club::all();
     return response()->json($clubs);
 });
 Route::get('clubs/{idOrSeoName}', [ClubController::class, 'show']);
+
 
 //users
 Route::get('/users',  [UserController::class, 'index']);

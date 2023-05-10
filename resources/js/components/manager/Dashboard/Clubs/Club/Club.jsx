@@ -7,7 +7,7 @@ export default function ManagerClub(props) {
     const { clubName } = useParams();
     console.log("clubName", clubName);
     const [club, setClub] = useState(null);
-
+    // console.log('1111', club)
 
     useEffect(() => {
         axios
@@ -18,8 +18,8 @@ export default function ManagerClub(props) {
 
     return (<>
         {clubName == 'new-club'
-        ? <div><ClubEdit/></div>
-        : <>{club ? <div><ClubEdit/></div> : <>404 no such club</>}</>
+        ? <div><ClubEdit isNew/></div>
+        : <>{club ? <div><ClubEdit club = {club}/></div> : <>404 no such club</>}</>
         }
     </>);
 }

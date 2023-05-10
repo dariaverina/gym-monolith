@@ -6,7 +6,7 @@ export default function ClubInfo({ clubInfo, setClubInfo }) {
         center: [54.32096022627581, 48.447679630859355],
         zoom: 10,
     };
-    const [coordinates, setCoordinates] = useState([]);
+    const [coordinates, setCoordinates] = useState(clubInfo? [clubInfo.latitude, clubInfo.longitude] :[]);
     return (
         <>
             <div>
@@ -21,6 +21,7 @@ export default function ClubInfo({ clubInfo, setClubInfo }) {
                         onChange={(e) =>
                             setClubInfo({ ...clubInfo, name: e.target.value })
                         }
+                        value = {clubInfo.name}
                         name="name"
                         id="name"
                         className="block w-64 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -42,6 +43,7 @@ export default function ClubInfo({ clubInfo, setClubInfo }) {
                                 seo_name: e.target.value,
                             })
                         }
+                        value={clubInfo.seo_name}
                         name="seo_name"
                         id="seo_name"
                         className="block w-64 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -64,6 +66,7 @@ export default function ClubInfo({ clubInfo, setClubInfo }) {
                                 address: e.target.value,
                             })
                         }
+                        value={clubInfo.address}
                         name="address"
                         id="address"
                         className="block w-64 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

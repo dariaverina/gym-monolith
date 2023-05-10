@@ -87,7 +87,7 @@ export default function ClubsList() {
                                                     <a
                                                         href={
                                                             "clubs/" +
-                                                            club.seo_name
+                                                            club.id
                                                         }
                                                         className="text-indigo-600 hover:text-indigo-900"
                                                     >
