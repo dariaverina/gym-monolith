@@ -1,39 +1,49 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { YMaps, Map, Placemark, Clusterer } from "react-yandex-maps";
 
-export default function ClubInfo() {
+export default function ClubInfo({ clubInfo, setClubInfo }) {
+    const mapState = {
+        center: [54.32096022627581, 48.447679630859355],
+        zoom: 10,
+    };
+    const [coordinates, setCoordinates] = useState([]);
     return (
         <>
             <div>
                 <label
-                    htmlFor="email"
+                    htmlFor="name"
                     className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                    Club Name
+                    Название клуба
                 </label>
                 <div className="mt-2">
                     <input
-                        type="email"
-                        name="email"
-                        id="email"
+                        onChange={(e) =>
+                            setClubInfo({ ...clubInfo, name: e.target.value })
+                        }
+                        name="name"
+                        id="name"
                         className="block w-64 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        // placeholder="you@example.com"
                     />
                 </div>
             </div>
             <div className="mt-4">
                 <label
-                    htmlFor="email"
+                    htmlFor="seo_name"
                     className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                    Club Seo Name
+                    SEO название
                 </label>
                 <div className="mt-2">
                     <input
-                        type="email"
-                        name="email"
-                        id="email"
+                        onChange={(e) =>
+                            setClubInfo({
+                                ...clubInfo,
+                                seo_name: e.target.value,
+                            })
+                        }
+                        name="seo_name"
+                        id="seo_name"
                         className="block w-64 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         // placeholder=""
                     />
@@ -41,19 +51,41 @@ export default function ClubInfo() {
             </div>
             <div className="mt-4">
                 <label
-                    htmlFor="email"
+                    htmlFor="address"
                     className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                    Address
+                   Адрес
                 </label>
                 <div className="mt-2">
                     <input
-                        type="email"
-                        name="email"
-                        id="email"
+                        onChange={(e) =>
+                            setClubInfo({
+                                ...clubInfo,
+                                address: e.target.value,
+                            })
+                        }
+                        name="address"
+                        id="address"
                         className="block w-64 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                 </div>
+            </div>
+            <div className="mt-6">
+                <YMaps>
+                    <Map
+                        state={mapState}
+                        onClick={(event) =>{
+                            setCoordinates(event.get('coords'));
+                            setClubInfo({
+                                ...clubInfo,
+                                latitude: event.get("coords")[0],
+                                longitude: event.get("coords")[1],
+                            })}
+                        }
+                    >
+                        <Placemark geometry={coordinates} />
+                    </Map>
+                </YMaps>
             </div>
         </>
     );

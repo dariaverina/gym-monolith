@@ -12,11 +12,13 @@ const navigation = [
 
 export default function ClubEdit() {
     const [selectedSection, setSelectedSection] = useState(navigation[0].name);
+    const [clubInfo, setClubInfo] = useState({name: '', seo_name: '', address: '', latitude:null, longitude: null})
+    console.log(clubInfo)
 
     let content;
     switch (selectedSection) {
         case "Клуб":
-            content = <ClubInfo />;
+            content = <ClubInfo clubInfo = {clubInfo} setClubInfo = {setClubInfo}/>;
             break;
         case "Залы":
             content = <Rooms />;
@@ -25,6 +27,13 @@ export default function ClubEdit() {
             content = null;
     }
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axios.post("/clubs", clubInfo).then((response) => {
+          console.log(response.data);
+          // Do something with the response
+        });
+      };
     return (
         <>
             <Navigation
@@ -35,10 +44,10 @@ export default function ClubEdit() {
             <div className="mt-10 ml-32">
                 {content}
                 <button
-                    // onClick={}
+                    onClick={handleSubmit}
                     className="mt-6 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                 >
-                    Button text
+                    Сохранить
                 </button>
             </div>
         </>

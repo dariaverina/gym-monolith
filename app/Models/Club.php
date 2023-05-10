@@ -14,5 +14,6 @@ class Club extends Model
         'address',
         'latitude',
         'longitude',
+        'seo_name'
     ];
 }

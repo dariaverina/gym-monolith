@@ -39,6 +39,9 @@ Route::post('/register', 'Auth\RegisterController@register');
 // Аутентификация
 Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout');
+
+//clubs
+Route::post('/clubs', [ClubController::class, 'store']);
 // Route::get('/clubs', [ClubController::class, 'index']);
 
 // Route::get('/clubs', [ClubController::class, 'index']);

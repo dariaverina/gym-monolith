@@ -21,6 +21,7 @@ use App\Models\User;
 */
 
 //clubs
+Route::post('/clubs', [ClubController::class, 'store']);
 Route::get('/clubs', function () {
     $clubs = Club::all();
     return response()->json($clubs);

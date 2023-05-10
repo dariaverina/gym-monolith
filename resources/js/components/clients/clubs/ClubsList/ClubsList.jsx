@@ -8,7 +8,7 @@ export default function ClubsList({clubs, selectedClub, setSelectedClub, setMapS
             <li
             key={club.name}
             className={clsx('col-span-1', 'divide-y', 'divide-gray-200', 'rounded-lg', 'bg-white', 'shadow', {
-              'bg-indigo-50': (selectedClub && selectedClub.id === club.id)
+              'bg-indigo-100': (selectedClub && selectedClub.id === club.id)
             })}
           >
               <div className="flex w-full items-center justify-between space-x-6 p-6">
