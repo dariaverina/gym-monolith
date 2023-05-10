@@ -17,8 +17,10 @@ class AuthController extends Controller
             'name' => $data['name'],
             'password' => bcrypt($data['password']),
             'email' => $data['email'],
-            'user_type' => $data['user_type']
+            'user_type' => $data['user_type'],
+            'status' => ($data['user_type'] == 't') ? 'n' : 'a'
         ]);
+        if ($user['status'] != 'a') return response(['success' => true]);
 
         $token = $user->createToken('main')->plainTextToken;
         return response([
@@ -28,18 +30,23 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request){
-        // echo ('hehe');
-        // exit;
         $credentials = $request->validated();
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
 
         if(!Auth::attempt($credentials, $remember)){
             return response([
-                'error' => 'The provided credentials are not correct'
+                'error' => 'No such account'
             ], 422);
         }
         $user = Auth::user();
+
+        if($user->status === 'n') {
+            return response([
+                'error' => 'Your account is not confirmed yet'
+            ], 422);
+        }
+
         $token = $user->createToken('main')->plainTextToken;
         return response([
             'user' => $user,

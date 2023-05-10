@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
@@ -41,13 +42,26 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(Request $request, $id)
     {
-        $data = $request->validated();
-        if (isset($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        }
-        $user->update($data);
+        $data = $request;
+        // echo $request;exit;
+        // $data = $request->validated();
+        // if (isset($data['password'])) {
+        //     $data['password'] = bcrypt($data['password']);
+        // }
+
+        // check if the request contains specific fields to update
+        $user = User::find($id);
+        $user->fill($request->only(['status', 'name']));
+        // if (isset($data['status'])) {
+        //    
+        // }
+        // if (isset($data['name'])) {
+        //     $user->name = $data['name'];
+        // }
+
+        $user->save();
 
         return new UserResource($user);
     }

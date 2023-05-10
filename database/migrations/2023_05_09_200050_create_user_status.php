@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('status')->default('a');
+            $table->string('status')->nullable()->change();
         });
+        
+        DB::statement("UPDATE users SET status='a' WHERE status IS NULL");
     }
 
     /**

@@ -30,6 +30,10 @@ Route::get('/clubs', function () {
 Route::get('/clubs/{clubName}', function () {
     return view('club');
 });
+
+Route::get('/users', function () {
+    return view('users');
+});
 // Регистрация
 Route::post('/register', 'Auth\RegisterController@register');
 // Аутентификация

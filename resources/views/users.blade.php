@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <title>Laravel</title>
+        @viteReactRefresh 
+        @vite(['resources/css/app.css', 'resources/js/users.jsx'])
+    </head>
+    <body class="antialiased">
+         <div id="users"></div>
+    </body>
+</html>

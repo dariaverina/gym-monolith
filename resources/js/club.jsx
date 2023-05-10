@@ -1,7 +1,7 @@
 import './bootstrap';
 import { createRoot } from 'react-dom/client'
 import Layout from './components/common/Layout/Layout';
-import Club from './components/clients/clubs/Club/Club';
+import Club from './components/Club';
 import { BrowserRouter, Route, Routes,Router } from 'react-router-dom';
 
 if (document.getElementById('club')){

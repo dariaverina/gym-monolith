@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import ClubEdit from "./ClubEdit/ClubEdit";
 
-export default function ClientClub(props) {
+export default function ManagerClub(props) {
     const { clubName } = useParams();
     console.log("clubName", clubName);
     const [club, setClub] = useState(null);
@@ -15,5 +16,10 @@ export default function ClientClub(props) {
             .catch((err) => console.log(err));
     }, [clubName]);
 
-    return <>{club ? <div>{club.name}</div> : <>404 no such club</>}</>;
+    return (<>
+        {clubName == 'new-club'
+        ? <div><ClubEdit/></div>
+        : <>{club ? <div><ClubEdit/></div> : <>404 no such club</>}</>
+        }
+    </>);
 }
