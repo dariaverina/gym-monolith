@@ -32,6 +32,7 @@ import { userStateContext } from "@/context/context-provider";
 import axiosClient from "@/public/axios";
 import ManagerHeader from "./manager/ManagerHeader";
 import ClientHeader from "./client/ClientHeader";
+import TrainerHeader from "./trainer/TrainerHeader";
 
 export default function Header() {
   const { currentUser, setCurrentUser, setUserToken } = userStateContext();
@@ -55,7 +56,7 @@ export default function Header() {
 
   return (
     <>
-      {(currentUser && currentUser.user_type == 'm') ? <ManagerHeader/> : <ClientHeader/>}
+      {(currentUser && currentUser.user_type == 'm') ? <ManagerHeader/> : (currentUser && currentUser.user_type == 't')?<TrainerHeader/>:<ClientHeader/>}
     </>
   );
 }

@@ -19,7 +19,7 @@ export default function Navigation({selectedSection, setSelectedSection, navigat
                   'font-semibold leading-6',
                   {
                     'text-white text-base': selectedSection === item.name,
-                    'text-gray-400 text-sm': selectedSection !== item.name
+                    'text-gray-600 text-sm': selectedSection !== item.name
                   }
                 )} // выбираем стиль текста в зависимости от состояния выбранного элемента
                 onClick={() => setSelectedSection(item.name === selectedSection ? null : item.name)}

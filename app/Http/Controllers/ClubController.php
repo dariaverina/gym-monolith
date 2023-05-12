@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Club;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class ClubController extends Controller
 {
     public function index()
     {
-        $clubs = Club::all();
+        $clubs = Club::with('rooms')->get();
 
         return response()->json($clubs);
     }
@@ -23,7 +24,7 @@ class ClubController extends Controller
 
     public function show($identifier)
     {
-        $club = Club::find($identifier);
+        $club = Club::with('rooms')->find($identifier);
     
         if (!$club) {
             $club = Club::where('seo_name', $identifier)->first();
@@ -37,6 +38,23 @@ class ClubController extends Controller
     {
         $club = Club::findOrFail($id);
         $club->update($request->all());
+
+        $existingRoomIds = $club->rooms->pluck('id')->toArray();
+        foreach ($request->rooms as $roomData) {
+            $roomId = $roomData['id'] ?? null;
+            $room = Room::find($roomId);
+    
+            if ($room) {
+                $room->update($roomData);
+            } else {
+                $room = new Room($roomData);
+                $room->club_id = $club->id;
+                $room->save();
+            }
+    
+            // Remove the room ID from the existing ID array
+            $existingRoomIds = array_diff($existingRoomIds, [$room->id]);
+        }
 
         return response()->json($club, 200);
     }

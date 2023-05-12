@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\TrainingVariationController;
 
 use App\Models\Club;
 use App\Models\User;
@@ -22,13 +23,16 @@ use App\Models\User;
 
 //clubs
 Route::post('/clubs', [ClubController::class, 'store']);
-Route::put('/clubs/{id}', [ClubController::class, 'update']);
-Route::get('/clubs', function () {
-    $clubs = Club::all();
-    return response()->json($clubs);
-});
+Route::get('/clubs', [ClubController::class, 'index']);
 Route::get('clubs/{idOrSeoName}', [ClubController::class, 'show']);
+Route::put('/clubs/{id}', [ClubController::class, 'update']);
+// Route::get('/clubs', function () {
+//     $clubs = Club::all();
+//     return response()->json($clubs);
+// });
 
+//Training variations
+Route::get('/trainingvariations', [TrainingVariationController::class, 'index']);
 
 //users
 Route::get('/users',  [UserController::class, 'index']);

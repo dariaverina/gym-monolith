@@ -23,9 +23,10 @@ export default function ClubEdit({ isNew, club }) {
                   address: "",
                   latitude: null,
                   longitude: null,
+                  rooms: []
               }
     );
-    // console.log(clubInfo)
+    console.log('oooo',clubInfo)
 
     let content;
     switch (selectedSection) {
@@ -35,7 +36,7 @@ export default function ClubEdit({ isNew, club }) {
             );
             break;
         case "Залы":
-            content = <Rooms />;
+            content = <Rooms clubInfo={clubInfo} setClubInfo={setClubInfo} />;
             break;
         default:
             content = null;
@@ -46,16 +47,17 @@ export default function ClubEdit({ isNew, club }) {
         if (isNew) {
             axios.post("/clubs", clubInfo).then((response) => {
                 console.log(response.data);
-                window.location.href = "/clubs/" + clubInfo.name;
+                window.location.href = "/clubs/" + clubInfo.seo_name;
                 // Do something with the response
             });
         }
         else{
+            console.log('pppp', clubInfo)
             axios.put(`/clubs/${clubInfo.id}`, clubInfo).then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 // setModalContent(<div>Успешно обновлено!</div>)
                 // openModal();
-                // window.location.href = "/clubs/" + clubInfo.name;
+                window.location.href = "/clubs/";
                 // Do something with the response
             });
         }
@@ -67,7 +69,7 @@ export default function ClubEdit({ isNew, club }) {
                 setSelectedSection={setSelectedSection}
                 navigation={navigation}
             />
-            <div className="mt-10 ml-32">
+            <div className="mt-10 ml-32 mr-32">
                 {content}
                 <button
                     onClick={handleSubmit}

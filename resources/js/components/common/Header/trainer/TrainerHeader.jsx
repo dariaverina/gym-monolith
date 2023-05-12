@@ -35,7 +35,7 @@ import Auth from "../../../UI/Modal/ModalContent/Auth";
 import { userStateContext } from "@/context/context-provider";
 import axiosClient from "@/public/axios";
 
-export default function ClientHeader() {
+export default function TrainerHeader() {
     const { openModal, showLoader, hideLoader, setModalContent, displayModal } =
         useUI();
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
@@ -60,9 +60,9 @@ export default function ClientHeader() {
         <Popover
             className={clsx(
                 currentUser && currentUser.user_type == "t"
-                    ? "bg-purple-50"
+                    ? "bg-gradient-to-r from-gray-900  to-indigo-900"
                     : currentUser && currentUser.user_type == "m"
-                    ? "bg-white"
+                    ? "bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100"
                     : "bg-gradient-to-r from-gray-900  to-emerald-900",
                 "relative"
             )}
@@ -93,34 +93,33 @@ export default function ClientHeader() {
                     <div className="hidden md:flex md:flex-1 md:items-center md:justify-between">
                         <Popover.Group as="nav" className="flex space-x-10">
                             <a
-                                href="/clubs"
+                                href="/account"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
-                                Клубы
+                                Аккаунт
                             </a>
                             <a
-                                href="/trainers"
+                                href="/schedule"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
-                                Тренеры
+                                Расписание
                             </a>
                             <a
-                                href="/trainers"
+                                href="/reporting"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
-                                Подбор тренировки
+                                Отчетность
                             </a>
                             <a
-                                href="/trainers"
+                                href="/reporting"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
-                                Акции
+                                Связь с менеджером
                             </a>
                             {/* <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
                 Docs
               </a> */}
                         </Popover.Group>
-                        {currentUser && currentUser.name ? (
                             <Popover className="relative text-gray-300 hover:text-gray-100">
                                 {currentUser.name}
                                 <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100">
@@ -179,25 +178,7 @@ export default function ClientHeader() {
                                     </Popover.Panel>
                                 </Transition>
                             </Popover>
-                        ) : (
-                            <div className="flex items-center md:ml-12">
-                                <a
-                                    href="/register"
-                                    className="text-base font-medium text-gray-300 hover:text-gray-100"
-                                >
-                                    Sign up
-                                </a>
-                                <button
-                                    onClick={() => {
-                                        setModalContent(<Auth />);
-                                        openModal();
-                                    }}
-                                    className="ml-8 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                                >
-                                    Sign in
-                                </button>
-                            </div>
-                        )}
+                        
                     </div>
                 </div>
             </div>

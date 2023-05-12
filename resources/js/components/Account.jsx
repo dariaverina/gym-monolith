@@ -3,14 +3,16 @@ import Layout from "./common/Layout/Layout";
 import { userStateContext } from '@/context/context-provider';
 import MainTrainerContent from "./trainer/main-page/MainContent";
 import MainClientContent from "./clients/main-page/MainContent";
+import TrainerAccount from "./trainer/account/Account";
+import ClientAccount from "./clients/account/Account";
 
-const App = () => {
+const Account = () => {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     return (
-        <div className="bg-indigo-100">
-             {(currentUser && currentUser.user_type == 't') ? <MainTrainerContent/> : (currentUser && currentUser.user_type == 'm') ? <>manager</> : <MainClientContent/>}
+        <div className="">
+             {(currentUser && currentUser.user_type == 't') ? <TrainerAccount/> : (currentUser && currentUser.user_type == 'c' && currentUser.name)? <ClientAccount/> : <>404</>}
         </div>
     );
 };
 
-export default App;
+export default Account;

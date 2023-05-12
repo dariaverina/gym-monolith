@@ -55,7 +55,7 @@ export default function ManagerHeader() {
 
   return (
     <Popover  className={clsx(
-      currentUser && currentUser.user_type == 't' ? "bg-purple-50" : currentUser && currentUser.user_type == 'm' ? "bg-white" : "bg-green-50",
+      currentUser && currentUser.user_type == 't' ? "bg-purple-50" : currentUser && currentUser.user_type == 'm' ? "bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100" : "bg-gradient-to-r from-gray-900  to-emerald-900",
       "relative"
     )}>
      {/* className="relative bg-green-50"> */}

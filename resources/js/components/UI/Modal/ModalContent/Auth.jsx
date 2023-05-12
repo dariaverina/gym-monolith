@@ -2,17 +2,20 @@ import { userStateContext } from "@/context/context-provider";
 import { useState } from "react";
 import axiosClient from "@/public/axios";
 // import { useNavigate } from 'react-router-dom';
+import { useUI } from '@/context/use-ui';
 
 export default function Auth() {
   const [userData, setUserData] = useState({email: '', password: ''});
   const { currentUser, setCurrentUser, setUserToken } = userStateContext();
   const [error, setError] = useState(null);
+  const { displayModal, closeModal, modalContent } = useUI();
   const onSubmit = (e) =>{
     e.preventDefault();
     axiosClient.post('/login', userData)
       .then(({data}) => {
         setCurrentUser(data.user);
         setUserToken(data.token);
+        closeModal();
       })
       .catch((responseError) =>{
         setError(responseError.response.data.error)

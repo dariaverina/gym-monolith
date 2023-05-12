@@ -34,6 +34,14 @@ Route::get('/clubs/{clubName}', function () {
 Route::get('/users', function () {
     return view('users');
 });
+
+Route::get('/schedule', function () {
+    return view('schedule');
+});
+
+Route::get('/account', function () { return view('account'); });
+
+
 // Регистрация
 Route::post('/register', 'Auth\RegisterController@register');
 // Аутентификация

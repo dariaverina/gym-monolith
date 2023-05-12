@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Club extends Model
+class Room extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'address',
-        'latitude',
-        'longitude',
-        'seo_name'
+        'club_id',
+        'capacity'
     ];
-    public function rooms()
+
+    public function club()
     {
-        return $this->hasMany(Room::class);
+        return $this->belongsTo(Club::class);
     }
 }

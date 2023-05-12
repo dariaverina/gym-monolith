@@ -7,7 +7,7 @@ export default function ClubsList({clubs, selectedClub, setSelectedClub, setMapS
           {clubs.map((club) => (
             <li
             key={club.name}
-            className={clsx('col-span-1', 'divide-y', 'divide-gray-200', 'rounded-lg', 'bg-white', 'shadow', {
+            className={clsx('col-span-1 divide-ydivide-gray-200 rounded-lg  shadow', {
               'bg-indigo-100': (selectedClub && selectedClub.id === club.id)
             })}
           >
@@ -30,7 +30,7 @@ export default function ClubsList({clubs, selectedClub, setSelectedClub, setMapS
                       href={'clubs/'+club.seo_name}
                       className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                     >
-                      <EnvelopeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                      {/* <EnvelopeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" /> */}
                       Подробнее
                     </a>
                   </div>
@@ -39,7 +39,7 @@ export default function ClubsList({clubs, selectedClub, setSelectedClub, setMapS
                       onClick={()=>{setSelectedClub(club); setMapState({center:[club.latitude, club.longitude],zoom:15})}}
                       className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                     >
-                      <PhoneIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                      {/* <PhoneIcon className="h-5 w-5 text-gray-400" aria-hidden="true" /> */}
                       На карте
                     </button>
                   </div>
