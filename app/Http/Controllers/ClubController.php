@@ -33,9 +33,10 @@ class ClubController extends Controller
 
     public function show($identifier)
     {
-        $club = Club::with(['rooms' => function ($query) {
-            $query->with(['trainingVariations:id']);
-        }])->find($identifier);
+        $club = Club::with('rooms', 'rooms.trainingVariations')->find($identifier);
+        // $club = Club::with(['rooms' => function ($query) {
+        //     $query->with(['trainingVariations:id']);
+        // }])->find($identifier);
     
         if (!$club) {
             $club = Club::where('seo_name', $identifier)->first();
@@ -74,7 +75,6 @@ class ClubController extends Controller
                     $room->trainingVariations()->sync($roomData['training_variations']);
                 }
             }
-    
             // Remove the room ID from the existing ID array
             $existingRoomIds = array_diff($existingRoomIds, [$room->id]);
         }

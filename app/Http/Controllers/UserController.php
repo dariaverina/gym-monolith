@@ -14,9 +14,19 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
+        $userType = $request->input('user_type', null);
+
+        $query = User::query();
+
+        if ($userType !== null) {
+            $query->where('user_type', $userType);
+        }
+
+        $users = $query->orderBy('id', 'desc')->paginate(10);
+
+        return UserResource::collection($users);
     }
 
     /**

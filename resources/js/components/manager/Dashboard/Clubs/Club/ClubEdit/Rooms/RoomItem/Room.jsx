@@ -2,8 +2,13 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import Variations from "./Variations/Variations";
 
 export default function Room({ room, clubInfo, setClubInfo }) {
- console.log('rrooom',room)
-
+    console.log("rrooom", room);
+    const deleteRoom = () => {
+        const updatedRooms = clubInfo.rooms.filter(
+            (currentRoom) => currentRoom.id !== room.id
+        );
+        setClubInfo({ ...clubInfo, rooms: updatedRooms });
+    };
     return (
         <div class="flex">
             <div
@@ -77,7 +82,12 @@ export default function Room({ room, clubInfo, setClubInfo }) {
                     <legend className="text-base font-semibold leading-6 text-gray-900">
                         Типы тренировок
                     </legend>
-                    <Variations roomVariations = {room.training_variations} clubInfo = {clubInfo} setClubInfo={setClubInfo} room={room}/>
+                    <Variations
+                        roomVariations={room.training_variations}
+                        clubInfo={clubInfo}
+                        setClubInfo={setClubInfo}
+                        room={room}
+                    />
                 </div>
                 <button className="col-span-1">
                     <svg
@@ -87,6 +97,9 @@ export default function Room({ room, clubInfo, setClubInfo }) {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         className="w-12 h-12"
+                        onClick={() => {
+                            deleteRoom();
+                        }}
                     >
                         <path
                             strokeLinecap="round"

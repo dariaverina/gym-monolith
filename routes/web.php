@@ -39,6 +39,10 @@ Route::get('/schedule', function () {
     return view('schedule');
 });
 
+Route::get('/trainers', function () {
+    return view('trainers');
+});
+
 Route::get('/account', function () { return view('account'); });
 
 

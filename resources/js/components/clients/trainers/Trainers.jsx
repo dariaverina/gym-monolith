@@ -1,0 +1,26 @@
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { userStateContext } from '@/context/context-provider';
+import TrainersList from './TrainersList/TrainersList';
+
+export default function ClientsTrainers() {
+    const { currentUser, setCurrentUser, setUserToken } = userStateContext();
+    const [trainers, setTrainers] = useState([]);
+    console.log(trainers)
+
+    useEffect(() => {
+        axios
+          .get('/api/users', {
+            params: {
+              user_type: 't'
+            }
+          })
+          .then((res) => setTrainers(res.data.data))
+          .catch((err) => console.log(err));
+      }, []);
+    return (
+      <div className=" mt-16 ml-10 mr-10">
+        {trainers && <TrainersList trainers = {trainers}/>}
+      </div>
+    );
+  }

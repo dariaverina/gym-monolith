@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { YMaps, Map, Placemark, Clusterer } from 'react-yandex-maps';
+import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
-const ClubsMap = ({clubs, selectedClub, setSelectedClub, mapState, setMapState}) => {
-
+const ClubsMap = ({ clubs, selectedClub, setSelectedClub, mapState, setMapState }) => {
   const [placemarkCoordinates, setPlacemarkCoordinates] = useState(null);
 
-  const placemarks = clubs && clubs.map(club => (
-    <Placemark key={club.id} geometry={[club.latitude, club.longitude]} onClick={()=>{setSelectedClub(club)}}/>
+  const placemarks = clubs && clubs.map((club) => (
+    <Placemark key={club.id} geometry={[club.latitude, club.longitude]} onClick={() => { setSelectedClub(club) }} />
   ));
 
   if (placemarkCoordinates) {
@@ -16,31 +15,14 @@ const ClubsMap = ({clubs, selectedClub, setSelectedClub, mapState, setMapState})
   }
 
   return (
-    <YMaps>
-      <Map
-        state={mapState}
-        className='h-96'
-      >
-        <Clusterer
-          options={{
-            preset: 'islands#violetClusterIcons',
-            groupByCoordinates: false,
-            clusterDisableClickZoom: true,
-            clusterBalloonContentLayout: CustomBalloonLayout,
-          }}
+    <div className='w-2/5'>
+      <YMaps>
+        <Map
+          state={mapState}
         >
           {placemarks}
-        </Clusterer>
-      </Map>
-    </YMaps>
-  );
-};
-
-const CustomBalloonLayout = ({ properties }) => {
-  return (
-    <div>
-      <h3>{properties.clusterCaption}</h3>
-      <p>{properties.balloonContentBody}</p>
+        </Map>
+      </YMaps>
     </div>
   );
 };

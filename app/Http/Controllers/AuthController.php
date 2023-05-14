@@ -20,6 +20,14 @@ class AuthController extends Controller
             'user_type' => $data['user_type'],
             'status' => ($data['user_type'] == 't') ? 'n' : 'a'
         ]);
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $path = $file->store('photos', 'public');
+            $user->photo = $path;
+            $user->save();
+        }
+        
         if ($user['status'] != 'a') return response(['success' => true]);
 
         $token = $user->createToken('main')->plainTextToken;
