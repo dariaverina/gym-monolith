@@ -7,7 +7,7 @@ export default function UsersList() {
     useEffect(() => {
         fetch("/api/users")
             .then((response) => response.json())
-            .then((data) => setUsers(data.data))
+            .then((data) => setUsers(data))
             .catch((error) => console.error(error));
     }, []);
     return (

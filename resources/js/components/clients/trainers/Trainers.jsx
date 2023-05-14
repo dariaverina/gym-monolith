@@ -6,7 +6,7 @@ import TrainersList from './TrainersList/TrainersList';
 export default function ClientsTrainers() {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     const [trainers, setTrainers] = useState([]);
-    console.log(trainers)
+    console.log('trainera',trainers)
 
     useEffect(() => {
         axios
@@ -15,11 +15,11 @@ export default function ClientsTrainers() {
               user_type: 't'
             }
           })
-          .then((res) => setTrainers(res.data.data))
+          .then((res) => setTrainers(res.data))
           .catch((err) => console.log(err));
       }, []);
     return (
-      <div className=" pt-16 pl-10 pr-10 bg-[#292333]">
+      <div className=" pt-16 pl-10 pr-10 bg-gray-900">
         {trainers && <TrainersList trainers = {trainers}/>}
       </div>
     );

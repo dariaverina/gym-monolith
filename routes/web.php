@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\TrainingParticipantController;
 use App\Models\Club;
 
 /*
@@ -46,6 +47,8 @@ Route::get('/trainers', function () {
 
 Route::get('/account', function () { return view('account'); });
 
+Route::get('/training-for-you', function () { return view('training-for-you'); });
+
 
 // Регистрация
 Route::post('/register', 'Auth\RegisterController@register');
@@ -59,6 +62,7 @@ Route::put('/clubs/{id}', [ClubController::class, 'update']);
 
 //training
 Route::post('/training', [TrainingController::class, 'store']);
+Route::post('/trainingparticipant', [TrainingParticipantController::class, 'store']);
 // Route::get('/clubs', [ClubController::class, 'index']);
 
 // Route::get('/clubs', [ClubController::class, 'index']);

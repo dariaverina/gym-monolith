@@ -1,16 +1,20 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { userStateContext } from "@/context/context-provider";
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
+import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/20/solid";
+import Variation from "./../../../manager/Dashboard/Clubs/Club/ClubEdit/Rooms/RoomItem/Variations/Variation/Variation";
 
 export default function TrainersList({ trainers }) {
     return (
-        <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        <ul
+            role="list"
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+        >
             {trainers.map((trainer) => (
-              <li
-              key={trainer.email}
-              className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow"
-            >
+                <li
+                    key={trainer.email}
+                    className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-indigo-300 text-center shadow"
+                >
                     <div className="flex flex-1 flex-col p-8">
                         <img
                             className="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
@@ -27,10 +31,14 @@ export default function TrainersList({ trainers }) {
                             </dd>
                             <dt className="sr-only">Role</dt>
                             <dd className="mt-3">
-                                <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                    {/* {person.role} */}
-                                    пилатес
-                                </span>
+                                {trainer?.training_variations_names.map(
+                                    (variation) => (
+                                        <span className="mr-2 inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                            {/* {person.role} */}
+                                            {variation}
+                                        </span>
+                                    )
+                                )}
                             </dd>
                         </dl>
                     </div>

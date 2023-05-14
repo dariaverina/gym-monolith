@@ -15,7 +15,8 @@ class Training extends Model
         'time_id',
         'day_of_week',
         'capacity',
-        'room_id'
+        'room_id',
+        'free_slots'
     ];
 
     public function trainer()

@@ -9,9 +9,11 @@ use App\Http\Controllers\TrainingVariationController;
 use App\Http\Controllers\TrainingTimeController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\TrainingParticipantController;
 
 use App\Models\Club;
 use App\Models\User;
+use App\Models\TrainingParticipant;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,9 @@ Route::get('/trainingtimes', [TrainingTimeController::class, 'index']);
 //trainings
 Route::get('/trainings', [TrainingController::class, 'index']);
 Route::post('/trainings', [TrainingController::class, 'store']);
+
+Route::get('/trainingparticipant', [TrainingParticipantController::class, 'index']);
+Route::post('/trainingparticipant', [TrainingParticipantController::class, 'store']);
 
 //rooms
 Route::get('/rooms', [RoomController::class, 'index']);

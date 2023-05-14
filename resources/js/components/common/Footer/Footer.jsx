@@ -32,9 +32,7 @@ export default function Footer() {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     return (
         <footer
-            className={clsx(
-                currentUser && currentUser.user_type == "c" ? "bg-[#292333]" :"bg-white"
-            )}
+            className='bg-gray-900'
             aria-labelledby="footer-heading"
         >
             <h2 id="footer-heading" className="sr-only">

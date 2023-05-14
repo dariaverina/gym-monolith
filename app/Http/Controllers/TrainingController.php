@@ -17,10 +17,8 @@ class TrainingController extends Controller
                                 ->get();
             return response()->json($trainings);
         }
-        else{
-            $trainings = Training::with('trainingVariation')->get();
-            return response()->json($trainings);
-        }
+        $trainings = Training::with('trainingVariation', 'trainer')->get();
+        return response()->json($trainings);
     }
 
     public function create()

@@ -19,14 +19,22 @@ class UserController extends Controller
         $userType = $request->input('user_type', null);
 
         $query = User::query();
-
+        
         if ($userType !== null) {
             $query->where('user_type', $userType);
         }
-
+        
         $users = $query->orderBy('id', 'desc')->paginate(10);
-
-        return UserResource::collection($users);
+        
+        $data = $users->map(function ($user) {
+            $training_variation_names = $user->trainings->pluck('trainingVariation.name')->unique()->values();
+            return array_merge((new UserResource($user))->toArray(request()), [
+                'training_variations_names' => $training_variation_names,
+            ]);
+        });
+        
+        return response()->json($data);
+        
     }
 
     /**

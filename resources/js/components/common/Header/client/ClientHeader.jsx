@@ -105,7 +105,7 @@ export default function ClientHeader() {
                                 Тренеры
                             </a>
                             <a
-                                href="/trainers"
+                                href="/training-for-you"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
                                 Подбор тренировки

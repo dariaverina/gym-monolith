@@ -20,7 +20,10 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'user_type' => $this->user_type,
             'status' => $this->status,
-            'photo' => $this->photo
+            'photo' => $this->photo,
+            'training_variations_names' => $this->whenLoaded('trainings', function () {
+                return $this->trainings->pluck('trainingVariation.name')->unique()->values();
+            }),
             // 'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }
