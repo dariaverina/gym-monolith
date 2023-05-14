@@ -3,7 +3,7 @@
     <head>
         <title>Laravel</title>
         @viteReactRefresh 
-        @vite(['resources/css/app.css', 'resources/js/account.jsx'])
+        @vite(['resources/css/app.css', 'resources/js/entrypoints/account.jsx'])
     </head>
     <body class="antialiased">
          <div id="account"></div>

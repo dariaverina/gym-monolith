@@ -47,17 +47,17 @@ export default function ClubEdit({ isNew, club }) {
         if (isNew) {
             axios.post("/clubs", clubInfo).then((response) => {
                 console.log(response.data);
-                window.location.href = "/clubs/" + clubInfo.seo_name;
+                // window.location.href = "/clubs/" + clubInfo.seo_name;
                 // Do something with the response
             });
         }
         else{
             console.log('pppp', clubInfo)
             axios.put(`/clubs/${clubInfo.id}`, clubInfo).then((response) => {
-                // console.log(response.data);
+                console.log(response.data);
                 // setModalContent(<div>Успешно обновлено!</div>)
                 // openModal();
-                window.location.href = "/clubs/";
+                // window.location.href = "/clubs/";
                 // Do something with the response
             });
         }

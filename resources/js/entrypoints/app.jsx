@@ -1,9 +1,9 @@
-import './bootstrap';
+import '../bootstrap';
 import React from 'react';
 import ReactDOM  from 'react-dom';
-import App from './components/App';
+import App from '../components/App';
 import { createRoot } from 'react-dom/client'
-import Layout from './components/common/Layout/Layout';
+import Layout from '../components/common/Layout/Layout';
 
 
 if (document.getElementById('app')){

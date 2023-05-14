@@ -19,4 +19,9 @@ class Room extends Model
     {
         return $this->belongsTo(Club::class);
     }
+
+    public function trainingVariations()
+    {
+        return $this->belongsToMany(TrainingVariation::class, 'room_training_variations');
+    }
 }

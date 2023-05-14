@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function Rooms({ clubInfo, setClubInfo }) {
     const addNewRoom = () => {
         const newRoom = {
-          id: clubInfo.rooms.length + 1,
+          id: null,
           name: '',
           club_id: clubInfo.id,
           created_at: null,
@@ -14,19 +14,11 @@ export default function Rooms({ clubInfo, setClubInfo }) {
         const newRoomsArray = [...clubInfo.rooms, newRoom];
         setClubInfo({ ...clubInfo, rooms: newRoomsArray });
       };
-      const [variations, setVariations] = useState([]);
-      console.log(variations)
-  
-      useEffect(() => {
-          fetch("/api/trainingvariations")
-              .then((response) => response.json())
-              .then((data) => setVariations(data))
-              .catch((error) => console.error(error));
-      }, []);
+     
     return (
         <div>
             {clubInfo.rooms.map((room) => (
-                <Room room={room} setClubInfo={setClubInfo} variations = {variations}/>
+                <Room room={room} clubInfo={clubInfo} setClubInfo={setClubInfo}/>
             ))}
             <button
                 type="button"

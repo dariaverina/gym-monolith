@@ -13,6 +13,7 @@ export const ContextProvider = ({ children }) => {
   const [userToken, _setUserToken] = useState(typeof window !== 'undefined' ? localStorage.getItem('TOKEN') : '');
   console.log('tok',userToken);
   console.log('user',currentUser);
+  // console.log(localStorage)
    
   const setUserToken = (token) => {
     if(token){

@@ -10,7 +10,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         @viteReactRefresh 
-        @vite(['resources/css/app.css', 'resources/js/clubs.jsx'])
+        @vite(['resources/css/app.css', 'resources/js/entrypoints/clubs.jsx'])
     </head>
     <body class="antialiased">
          <div id="clubs"></div>

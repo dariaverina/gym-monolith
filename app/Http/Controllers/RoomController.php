@@ -12,7 +12,9 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        $clubs = Club::with('rooms', 'room.trainingVariations')->get();
+
+        return response()->json($clubs);
     }
 
     /**

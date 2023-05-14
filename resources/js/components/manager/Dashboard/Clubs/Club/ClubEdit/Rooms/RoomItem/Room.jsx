@@ -1,13 +1,8 @@
 import { PlusIcon } from "@heroicons/react/20/solid";
-const people = [
-    { id: 1, name: "Annette Black" },
-    { id: 2, name: "Cody Fisher" },
-    { id: 3, name: "Courtney Henry" },
-    { id: 4, name: "Kathryn Murphy" },
-    { id: 5, name: "Theresa Webb" },
-];
-export default function Room({ room, setClubInfo, variations }) {
- 
+import Variations from "./Variations/Variations";
+
+export default function Room({ room, clubInfo, setClubInfo }) {
+ console.log('rrooom',room)
 
     return (
         <div class="flex">
@@ -82,31 +77,7 @@ export default function Room({ room, setClubInfo, variations }) {
                     <legend className="text-base font-semibold leading-6 text-gray-900">
                         Типы тренировок
                     </legend>
-                    <div className="mt-4 divide-y  divide-gray-200 border-gray-200 h-32 overflow-y-auto">
-                        {variations && variations.map((variation, variationIdx) => (
-                            <div
-                                key={variationIdx}
-                                className="relative flex items-start"
-                            >
-                                <div className="min-w-0 flex-1 text-sm leading-6">
-                                    <label
-                                        htmlFor={`person-${variation.id}`}
-                                        className="select-none font-medium text-gray-900"
-                                    >
-                                        {variation.name}
-                                    </label>
-                                </div>
-                                <div className="ml-3 flex h-6 items-center">
-                                    <input
-                                        id={`person-${variation.id}`}
-                                        name={`person-${variation.id}`}
-                                        type="checkbox"
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <Variations roomVariations = {room.training_variations} clubInfo = {clubInfo} setClubInfo={setClubInfo} room={room}/>
                 </div>
                 <button className="col-span-1">
                     <svg
