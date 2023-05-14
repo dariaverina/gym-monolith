@@ -33,7 +33,7 @@ export default function Footer() {
     return (
         <footer
             className={clsx(
-                currentUser && currentUser.user_type == "t" ? "bg-indigo-100" :"bg-white"
+                currentUser && currentUser.user_type == "c" ? "bg-[#292333]" :"bg-white"
             )}
             aria-labelledby="footer-heading"
         >

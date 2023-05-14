@@ -15,6 +15,11 @@ class Room extends Model
         'capacity'
     ];
 
+    public function trainings()
+    {
+        return $this->hasMany(Training::class);
+    }
+    
     public function club()
     {
         return $this->belongsTo(Club::class);

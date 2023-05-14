@@ -6,6 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\TrainingVariationController;
+use App\Http\Controllers\TrainingTimeController;
+use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\RoomController;
 
 use App\Models\Club;
 use App\Models\User;
@@ -33,6 +36,14 @@ Route::put('/clubs/{id}', [ClubController::class, 'update']);
 
 //Training variations
 Route::get('/trainingvariations', [TrainingVariationController::class, 'index']);
+Route::get('/trainingtimes', [TrainingTimeController::class, 'index']);
+
+//trainings
+Route::get('/trainings', [TrainingController::class, 'index']);
+Route::post('/trainings', [TrainingController::class, 'store']);
+
+//rooms
+Route::get('/rooms', [RoomController::class, 'index']);
 
 //users
 Route::get('/users',  [UserController::class, 'index']);

@@ -10,11 +10,14 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clubs = Club::with('rooms', 'room.trainingVariations')->get();
+        if ($request->input('get_free_rooms')) {
+            return $this->getFreeRooms($request);
+        }
 
-        return response()->json($clubs);
+        $rooms = Room::all();
+        return response()->json($rooms);
     }
 
     /**
@@ -63,5 +66,28 @@ class RoomController extends Controller
     public function destroy(Room $room)
     {
         //
+    }
+
+    public function getFreeRooms(Request $request)
+    {
+        $club_id = $request->input('club_id');
+        $training_variation_id = $request->input('training_variation_id');
+        $time_id = $request->input('time_id');
+        $day_of_week = $request->input('day_of_week');
+        
+        // Получить список комнат, в которых можно проводить тренировки заданного типа
+        $rooms = Room::where('club_id', $club_id)
+        ->whereHas('trainingVariations', function($query) use ($training_variation_id) {
+            $query->where('training_variation_id', $training_variation_id);
+        })
+        ->get();
+        
+        // Отфильтровать список комнат по времени и дню недели
+        $availableRooms = $rooms->reject(function($room) use ($time_id, $day_of_week) {
+            return $room->trainings()->where('time_id', $time_id)->where('day_of_week', $day_of_week)->exists();
+        });
+        
+        // Вернуть свободные комнаты в формате JSON
+        return response()->json($availableRooms);
     }
 }

@@ -19,7 +19,7 @@ export default function ClientsTrainers() {
           .catch((err) => console.log(err));
       }, []);
     return (
-      <div className=" mt-16 ml-10 mr-10">
+      <div className=" pt-16 pl-10 pr-10 bg-[#292333]">
         {trainers && <TrainersList trainers = {trainers}/>}
       </div>
     );

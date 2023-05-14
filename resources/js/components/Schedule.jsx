@@ -6,9 +6,13 @@ import { userStateContext } from "@/context/context-provider";
 import ManagerClubs from "./manager/Dashboard/Clubs/Clubs";
 import axiosClient from "@/public/axios";
 import clsx from "clsx";
-import { useUI } from '@/context/use-ui';
+import { useUI } from "@/context/use-ui";
+import NewTraining from "./UI/Modal/ModalContent/NewTraining/NewTraining";
 
 export default function Schedule() {
+    const { currentUser, setCurrentUser, setUserToken } = userStateContext();
+    const [timeSlots, setTimeSlots] = useState([]);
+    console.log("timeslots", timeSlots);
     const daysOfWeek = [
         "Понедельник",
         "Вторник",
@@ -18,97 +22,46 @@ export default function Schedule() {
         "Суббота",
         "Воскресенье",
     ];
-    const timeSlots = [
-        "09:00",
-        "10:30",
-        "12:00",
-        "13:30",
-        "15:00",
-        "16:30",
-        "17:00",
-        "18:00",
-        "19:30",
-    ];
-    const weeks = ["прошлую", "текущую", "следующую"];
-    const [week, setWeek] = useState(1);
-    const activities = ["Pilates", "Yoga", "Spinning", "Zumba"];
-    const today = new Date().toLocaleDateString("ru-RU", { weekday: "long" });
-    const { openModal, showLoader, hideLoader, setModalContent, displayModal } =useUI();
-
-    let data_init = Array.from({ length: timeSlots.length }, () =>
-        daysOfWeek.reduce((obj, day) => {
-            let shouldHaveData = Math.random() < 0.5;
-            if (day === "Воскресенье" || day === "Понедельник") shouldHaveData = false;
-            if (shouldHaveData) {
-                const activity =
-                    activities[Math.floor(Math.random() * activities.length)];
-                obj[day] = {
-                    activity: `${activity}`,
-                    address: `Address ${Math.floor(Math.random() * 1000)}`,
-                };
-            }
-            return obj;
-        }, {})
-    );
-    let data_2 = Array.from({ length: timeSlots.length }, () =>
-        daysOfWeek.reduce((obj, day) => {
-            return obj;
-        }, {})
-    );
-    const [data, setData] = useState(data_init);
-    // console.log(data)
     useEffect(() => {
-        if(week!=1) setData(data_2);
-        else setData(data_init);
-        // console.log(week)
-    },[week]);
+        axios
+            .get("/api/trainingtimes")
+            .then((res) => setTimeSlots(res.data))
+            .catch((err) => console.log(err));
+    }, []);
+    const [trainings, setTrainings] = useState();
+
+    useEffect(() => {
+        currentUser?.user_type == 't' && axios
+            .get("/api/trainings",
+            {
+                params: {
+                  trainer_id: currentUser.id
+                }
+              })
+            .then((res) => setTrainings(res.data))
+            .catch((err) => console.log(err));
+    }, [currentUser]);
+    console.log("training", trainings);
+    const today = new Date().toLocaleDateString("ru-RU", { weekday: "long" });
+    const { openModal, showLoader, hideLoader, setModalContent, displayModal } =
+        useUI();
+
+    const trainingByDayOfWeek =
+        trainings &&
+        trainings.reduce((acc, curr) => {
+            const dayOfWeek = curr.day_of_week;
+            if (!acc[dayOfWeek]) {
+                acc[dayOfWeek] = [];
+            }
+            acc[dayOfWeek].push(curr);
+            return acc;
+        }, {});
+
     return (
         <div className="bg-indigo-100">
             <div className="flex items-center justify-center pt-10 flex-col">
                 <div className="flex items-center gap-4">
-                    <button
-                        onClick={() => {
-                            setWeek(week - 1);
-                        }}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M11.25 9l-3 3m0 0l3 3m-3-3h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
-                    </button>
-                    <p className="text-2xl">
-                        Расписание на {weeks[week]} неделю
-                    </p>
-                    <button
-                        onClick={() => {
-                            setWeek(week + 1);
-                        }}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
-                    </button>
+                    <p className="text-2xl">Расписание на неделю</p>
                 </div>
             </div>
 
@@ -135,43 +88,59 @@ export default function Schedule() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((item, i) => (
+                        {trainingByDayOfWeek && timeSlots.map((timeSlot, i) => (
                             <tr key={i}>
                                 <td className="border border-gray-500 p-2 text-center">
-                                    {timeSlots[i]}
+                                    {timeSlot.start_time}-{timeSlot.end_time}
                                 </td>
-                                {daysOfWeek.map((day) => (
-                                    <td
-                                        key={day}
-                                        className="border border-gray-500 p-2 text-indigo-200 hover:text-indigo-400 text-center"
-                                    >
-                                        {!item[day] && (
-                                            <button onClick={()=>{setModalContent(<>Отправьте заявку на бронирование зала для тренировки. Заявка будет рассмотрена менеджером спортклуба</>); openModal()}}>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={1.5}
-                                                    stroke="currentColor"
-                                                    className="w-6 h-6"
+                                {daysOfWeek.map((day, j) => {
+                                    const trainingsForDay =
+                                        trainingByDayOfWeek[j + 1] || [];
+                                    const training = trainingsForDay.find(
+                                        (t) => t.time_id === timeSlot.id
+                                    );
+                                    // {console.log('[[[[[[',training)}
+                                    return (
+                                        <td
+                                            key={j}
+                                            className="border border-gray-500 p-2 text-indigo-200 hover:text-indigo-400 text-center"
+                                        >
+                                            {!training && (
+                                                <button
+                                                    onClick={() => {
+                                                        setModalContent(<NewTraining timeId={timeSlot.id} dayOfWeek={j+1}/>);
+                                                        openModal();
+                                                    }}
                                                 >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        )}
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth={1.5}
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            )}
 
-                                        <div className="font-medium text-black">
-                                            {item[day]?.activity}
-                                        </div>
-                                        <div className="font-medium text-gray-500 text-xs">
-                                            {item[day]?.address}
-                                        </div>
-                                    </td>
-                                ))}
+                                            <div className="font-medium text-black text-base">
+                                                {training?.training_variation.name}
+                                            </div>
+                                            <div className="font-medium text-gray-500 text-xs">
+                                                {training?.room?.name}
+                                            </div>
+                                            <div className="font-medium text-gray-400 text-xs">
+                                                {training?.room?.club?.name}
+                                            </div>
+                                        </td>
+                                    );
+                                })}
                             </tr>
                         ))}
                     </tbody>

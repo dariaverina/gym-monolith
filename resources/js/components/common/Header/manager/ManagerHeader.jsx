@@ -27,7 +27,7 @@ import {
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import clsx from "clsx";
 import { useUI } from "@/context/use-ui";
-import Auth from "../../../UI/Modal/ModalContent/Auth";
+import Auth from "../../../UI/Modal/ModalContent/Auth/Auth";
 import { userStateContext } from "@/context/context-provider";
 import axiosClient from "@/public/axios";
 

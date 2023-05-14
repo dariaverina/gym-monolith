@@ -5,7 +5,7 @@ import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
 
 export default function TrainersList({ trainers }) {
     return (
-        <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {trainers.map((trainer) => (
               <li
               key={trainer.email}

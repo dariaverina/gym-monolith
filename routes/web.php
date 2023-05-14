@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\TrainingController;
 use App\Models\Club;
 
 /*
@@ -55,6 +56,9 @@ Route::post('/logout', 'Auth\LoginController@logout');
 //clubs
 Route::post('/clubs', [ClubController::class, 'store']);
 Route::put('/clubs/{id}', [ClubController::class, 'update']);
+
+//training
+Route::post('/training', [TrainingController::class, 'store']);
 // Route::get('/clubs', [ClubController::class, 'index']);
 
 // Route::get('/clubs', [ClubController::class, 'index']);
