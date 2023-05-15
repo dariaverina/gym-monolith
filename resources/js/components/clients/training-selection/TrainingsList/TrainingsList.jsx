@@ -79,27 +79,51 @@ export default function TrainingsList() {
                 console.log(response.data);
             });
     };
+    const [timeSlots, setTimeSlots] = useState([]);
+    console.log("timeslots", timeSlots);
+    const daysOfWeek = [
+        "Понедельник",
+        "Вторник",
+        "Среда",
+        "Четверг",
+        "Пятница",
+        "Суббота",
+        "Воскресенье",
+    ];
+    useEffect(() => {
+        axios
+            .get("/api/trainingtimes")
+            .then((res) => setTimeSlots(res.data))
+            .catch((err) => console.log(err));
+    }, []);
+
     return (
         <>
             {trainings && trainings.length > 1 && (
                 <ul
                     role="list"
-                    className="p-6 w-3/4 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"
+                    className="p-6 w-3/4 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 bg-gray-900"
                 >
                     {trainings.map((training) => (
+
+                         <div class=" w-full rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5">
                         <li
                             key={training.id}
-                            className="overflow-hidden rounded-xl border border-gray-200 h-64"
+                            className="overflow-hidden rounded-xl  h-64 bg-gray-900"
                         >
-                            <div className="flex bg-gradient-to-r from-indigo-400 to-indigo-500 items-center gap-x-4 border-b border-gray-900/5  p-6">
+                            <div className="flex bg-gray-900 items-center gap-x-4 border-b border-gray-900/5  p-5">
                                 <img
                                     src={"/storage/" + training.trainer.photo}
                                     alt={"trainer-photo"}
                                     className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
                                 />
-                                <div className="text-sm font-medium leading-6 text-gray-900">
-                                    <p className="text-base">{training.training_variation.name}</p>
-                                    <p className="text-sm font-light">{training.trainer.name}</p>
+                                <div className="text-sm font-medium leading-6 text-white">
+                                    <p className="text-base">
+                                        {training.training_variation.name}
+                                    </p>
+                                    <p className="text-sm font-light">
+                                        {training.trainer.name}
+                                    </p>
                                 </div>
                                 <Menu as="div" className="relative ml-auto">
                                     <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
@@ -173,10 +197,26 @@ export default function TrainingsList() {
                             <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
                                 <div className="flex justify-between gap-x-4 py-3">
                                     <dt className="text-gray-500">
-                                        Last invoice
+                                        <time dateTime={training.updated_at}>
+                                            {
+                                                daysOfWeek[
+                                                    training.day_of_week - 1
+                                                ]
+                                            }
+                                            ,{" "}
+                                            {timeSlots[
+                                                training.time_id - 1
+                                            ]?.start_time.slice(0, -3)}{" "}
+                                            -{" "}
+                                            {timeSlots[
+                                                training.time_id - 1
+                                            ]?.end_time.slice(0, -3)}
+                                        </time>
                                     </dt>
                                     <dd className="text-gray-700">
-                                        {/* <time dateTime={client.lastInvoice.dateTime}>{client.lastInvoice.date}</time> */}
+                                        {/* <time dateTime={training.updated_at}>
+                                        {daysOfWeek[training.day_of_week - 1]}, {timeSlots[training.time_id - 1]?.start_time.slice(0, -3)} - {timeSlots[training.time_id - 1]?.end_time.slice(0, -3)}
+                                    </time> */}
                                     </dd>
                                 </div>
                                 <div className="flex justify-between gap-x-4 py-3">
@@ -193,14 +233,17 @@ export default function TrainingsList() {
                                 </div>
                             </dl>
                             <div className="flex justify-center">
-                            <button
-                                type="button"
-                                onClick={() => handleJoinTraining(training.id)}
-                                className="rounded-md bg-indigo-900 px-3 py-2 text-sm font-semibold text-indigo-200 shadow-sm  hover:bg-indigo-800"
-                            >
-                                Записаться
-                            </button></div>
-                        </li>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        handleJoinTraining(training.id)
+                                    }
+                                    className="rounded-md bg-indigo-900 px-3 py-2 text-sm font-semibold text-indigo-200 shadow-sm  hover:bg-indigo-800"
+                                >
+                                    Записаться
+                                </button>
+                            </div>
+                        </li></div>
                     ))}
                 </ul>
             )}

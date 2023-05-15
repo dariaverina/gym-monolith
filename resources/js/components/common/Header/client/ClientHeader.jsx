@@ -63,7 +63,7 @@ export default function ClientHeader() {
                     ? "bg-purple-50"
                     : currentUser && currentUser.user_type == "m"
                     ? "bg-white"
-                    : "bg-gradient-to-r from-gray-900  to-emerald-900",
+                    : "bg-gradient-to-r from-[#150f35] from-10% via-[#b55742] via-50% to-[#150f35] to-90%",
                 "relative"
             )}
         >
@@ -94,25 +94,25 @@ export default function ClientHeader() {
                         <Popover.Group as="nav" className="flex space-x-10">
                             <a
                                 href="/clubs"
-                                className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
+                                className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
                             >
                                 Клубы
                             </a>
                             <a
                                 href="/trainers"
-                                className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
+                                className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
                             >
                                 Тренеры
                             </a>
                             <a
                                 href="/training-for-you"
-                                className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
+                                className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
                             >
                                 Подбор тренировки
                             </a>
                             <a
                                 href="/trainers"
-                                className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
+                                className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
                             >
                                 Акции
                             </a>
@@ -183,18 +183,18 @@ export default function ClientHeader() {
                             <div className="flex items-center md:ml-12">
                                 <a
                                     href="/register"
-                                    className="text-base font-medium text-gray-300 hover:text-gray-100"
+                                    className="text-base font-medium text-white hover:text-gray-100"
                                 >
-                                    Sign up
+                                    Зарегистрироваться
                                 </a>
                                 <button
                                     onClick={() => {
                                         setModalContent(<Auth />);
                                         openModal();
                                     }}
-                                    className="ml-8 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                                    className="ml-8 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-900 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                                 >
-                                    Sign in
+                                    Войти
                                 </button>
                             </div>
                         )}

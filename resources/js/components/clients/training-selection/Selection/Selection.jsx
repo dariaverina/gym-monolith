@@ -14,9 +14,19 @@ import {
 import clsx from "clsx";
 
 const navigation = [
-    { name: "Выберите ваши предпочтения", href: "#", current: true },
+    { name: "Фильтры", href: "#", current: true },
     {
-        name: "Teams",
+        name: "Клуб",
+        current: false,
+        children: [
+            { name: "GraphQL API", href: "#" },
+            { name: "iOS App", href: "#" },
+            { name: "Android App", href: "#" },
+            { name: "New Customer Portal", href: "#" },
+        ],
+    },
+    {
+        name: "Вид активности",
         current: false,
         children: [
             { name: "Engineering", href: "#" },
@@ -25,7 +35,27 @@ const navigation = [
         ],
     },
     {
-        name: "Projects",
+        name: "Сложность",
+        current: false,
+        children: [
+            { name: "GraphQL API", href: "#" },
+            { name: "iOS App", href: "#" },
+            { name: "Android App", href: "#" },
+            { name: "New Customer Portal", href: "#" },
+        ],
+    },
+    {
+        name: "Тренер",
+        current: false,
+        children: [
+            { name: "GraphQL API", href: "#" },
+            { name: "iOS App", href: "#" },
+            { name: "Android App", href: "#" },
+            { name: "New Customer Portal", href: "#" },
+        ],
+    },
+    {
+        name: "Время",
         current: false,
         children: [
             { name: "GraphQL API", href: "#" },
@@ -38,6 +68,7 @@ const navigation = [
 
 export default function Selection() {
     return (
+        // <div className="pt-6 pb-32 w-1/4 flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gradient-to-r from-gray-900 to-[#301355]  px-6">
         <div className="pt-6 pb-32 w-1/4 flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gray-900  px-6">
             <nav className="flex flex-1 flex-col">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -50,7 +81,7 @@ export default function Selection() {
                                             href={item.href}
                                             className={clsx(
                                                 item.current
-                                                    ? "bg-gray-800"
+                                                    ? "hover:bg-gray-800"
                                                     : "hover:bg-gray-800",
                                                 "block rounded-md py-2 pr-2 pl-10 text-sm leading-6 font-semibold text-gray-100"
                                             )}
