@@ -60,10 +60,10 @@ export default function TrainerHeader() {
         <Popover
             className={clsx(
                 currentUser && currentUser.user_type == "t"
-                    ? "bg-gradient-to-r from-gray-900  to-indigo-900"
+                    ? "bg-gradient-to-r from-[#150f35] from-10% via-[#b55742] via-50% to-[#150f35] to-90%"
                     : currentUser && currentUser.user_type == "m"
-                    ? "bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100"
-                    : "bg-gradient-to-r from-gray-900  to-emerald-900",
+                    ? "bg-gradient-to-r from-[#150f35] from-10% via-[#b55742] via-50% to-[#150f35] to-90%"
+                    : "bg-gradient-to-r from-[#150f35] from-10% via-[#b55742] via-50% to-[#150f35] to-90%",
                 "relative"
             )}
         >

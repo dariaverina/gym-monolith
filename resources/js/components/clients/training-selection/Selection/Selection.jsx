@@ -69,7 +69,7 @@ const navigation = [
 export default function Selection() {
     return (
         // <div className="pt-6 pb-32 w-1/4 flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gradient-to-r from-gray-900 to-[#301355]  px-6">
-        <div className="pt-6 pb-32 w-1/4 flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gray-900  px-6">
+        <div className="h-screen overflow-y-auto top-0 left-0 pt-6 pb-32 w-1/4 flex grow flex-col gap-y-5  border-r border-gray-200 bg-gray-900  px-6">
             <nav className="flex flex-1 flex-col">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
                     <li>

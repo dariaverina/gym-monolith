@@ -106,7 +106,7 @@ export default function TrainingsList() {
                 >
                     {trainings.map((training) => (
 
-                         <div class=" w-full rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5">
+                        <div class="rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5">
                         <li
                             key={training.id}
                             className="overflow-hidden rounded-xl  h-64 bg-gray-900"
