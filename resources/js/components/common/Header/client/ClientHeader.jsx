@@ -111,10 +111,10 @@ export default function ClientHeader() {
                                 Подбор тренировки
                             </a>
                             <a
-                                href="/trainers"
+                                href="/favorites"
                                 className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
                             >
-                                Акции
+                                Избранное
                             </a>
                             {/* <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
                 Docs

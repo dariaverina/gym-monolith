@@ -59,15 +59,8 @@ const clients = [
         },
     },
 ];
-export default function TrainingsList() {
+export default function TrainingsList({trainings, setTrainings}) {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
-    const [trainings, setTrainings] = useState([]);
-    useEffect(() => {
-        axios
-            .get("/api/trainings")
-            .then((res) => setTrainings(res.data))
-            .catch((err) => console.log(err));
-    }, []);
 
     const handleJoinTraining = (trainingId) => {
         axios
@@ -99,16 +92,16 @@ export default function TrainingsList() {
 
     return (
         <>
-            {trainings && trainings.length > 1 && (
+            {trainings && trainings.length > 0 ? (
                 <ul
                     role="list"
                     className="p-6 w-3/4 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 bg-gray-900"
                 >
                     {trainings.map((training) => (
 
-                        <div class="rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5">
+                        <div class="rounded-xl bg- p-0.5">
                         <li
-                            key={training.id}
+                            key={training.id}gradient-to-b from-purple-400 via-red-400 to-orange-400
                             className="overflow-hidden rounded-xl  h-64 bg-gray-900"
                         >
                             <div className="flex bg-gray-900 items-center gap-x-4 border-b border-gray-900/5  p-5">
@@ -246,7 +239,8 @@ export default function TrainingsList() {
                         </li></div>
                     ))}
                 </ul>
-            )}
+            )
+            :<div className="text-white bg-gray-900 p-6">Тренировок не найдено</div>}
         </>
     );
 }

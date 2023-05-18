@@ -3,6 +3,7 @@ import axiosClient from "@/public/axios";
 import { userStateContext } from "@/context/context-provider";
 // import { Redirect  } from "react-router-dom";
 import { useUI } from "@/context/use-ui";
+import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 
 export default function Registration() {
@@ -55,133 +56,249 @@ export default function Registration() {
             });
     };
     return (
-        <>
+        <div className="bg-gray-900 p-6">
+            <div className="flex justify-center">
+                <h1 class="font-extrabold text-transparent text-5xl bg-clip-text bg-gradient-to-r from-indigo-900 via-indigo-400 to-indigo-900">
+                    Форма регистрации
+                </h1>
+            </div>
             <form
                 onSubmit={onSubmit}
                 method="post"
                 encType="multipart/form-data"
             >
-                <div>
-                    <label>Name</label>
-                    <input
-                        className="square border border-black"
-                        type="text"
-                        name="name"
-                        id="name"
-                        onChange={(e) =>
-                            setUserData({ ...userData, name: e.target.value })
-                        }
-                    ></input>
+                <div className="px-96">
+                    <div className="border-b border-white/10 pb-12 pt-6">
+                        <h2 className="text-base font-semibold leading-7 text-white">
+                            Тип аккаунта
+                        </h2>
+                        <p className="mt-1 text-sm leading-6 text-gray-400">
+                            Укажите, хотите ли вы стать тренером или стать
+                            клиентом клуба
+                        </p>
+
+                        <div className="mt-10 ">
+                            <fieldset>
+                                <div className=" space-y-6">
+                                    <div className="flex items-center gap-x-3">
+                                        <input
+                                            checked={userData.user_type == "c"}
+                                            onChange={(e) =>
+                                                setUserData({
+                                                    ...userData,
+                                                    user_type: "c",
+                                                })
+                                            }
+                                            id="c"
+                                            name="c"
+                                            type="radio"
+                                            className="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900"
+                                        />
+                                        <label
+                                            htmlFor="c"
+                                            className="block text-sm font-medium leading-6 text-white"
+                                        >
+                                            Хочу тренироваться
+                                        </label>
+                                    </div>
+                                    <div className="flex items-center gap-x-3">
+                                        <input
+                                            checked={userData.user_type == "t"}
+                                            onChange={(e) =>
+                                                setUserData({
+                                                    ...userData,
+                                                    user_type: "t",
+                                                })
+                                            }
+                                            id="t"
+                                            name="t"
+                                            type="radio"
+                                            className="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900"
+                                        />
+                                        <label
+                                            htmlFor="t"
+                                            className="block text-sm font-medium leading-6 text-white"
+                                        >
+                                            Хочу тренировать
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    {userData.user_type == "t" && (
+                        <div className="border-b border-white/10 pb-12">
+                            <h2 className="text-base font-semibold leading-7 text-white pt-6">
+                                Профиль
+                            </h2>
+                            <p className="mt-1 text-sm leading-6 text-gray-400">
+                                Эта информация будет отображаться публично,
+                                поэтому будьте осторожны, чем вы делитесь.
+                            </p>
+
+                            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                <div className="col-span-full">
+                                    <label
+                                        htmlFor="about"
+                                        className="block text-sm font-medium leading-6 text-white"
+                                    >
+                                        О вас
+                                    </label>
+                                    <div className="mt-2">
+                                        <textarea
+                                            id="about"
+                                            name="about"
+                                            rows={3}
+                                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                            defaultValue={""}
+                                        />
+                                    </div>
+                                    <p className="mt-3 text-sm leading-6 text-gray-400">
+                                        Напишите пару предложений для клиентов.
+                                    </p>
+                                </div>
+                                <div className="col-span-full">
+                                    <label
+                                        htmlFor="photo"
+                                        className="block text-sm font-medium leading-6 text-white"
+                                    >
+                                        Фото профиля
+                                    </label>
+                                    <div className="mt-2 flex items-center gap-x-3 text-white">
+                                        <input
+                                            type="file"
+                                            name="photo"
+                                            id="photo"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                const file = e.target.files[0];
+
+                                                if (
+                                                    file &&
+                                                    file.type.substr(0, 5) ===
+                                                        "image"
+                                                ) {
+                                                    setUserData({
+                                                        ...userData,
+                                                        photo: file,
+                                                    });
+                                                } else {
+                                                    alert(
+                                                        "Please select an image file."
+                                                    );
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="border-b border-white/10 pb-12">
+                        <h2 className="text-base font-semibold leading-7 text-white">
+                            Личная информация
+                        </h2>
+
+                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="sm:col-span-4">
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium leading-6 text-white"
+                                >
+                                    Ваше имя
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        onChange={(e) =>
+                                            setUserData({
+                                                ...userData,
+                                                name: e.target.value,
+                                            })
+                                        }
+                                        id="name"
+                                        name="name"
+                                        value={userData.name}
+                                        // placeholder="Вася Иванов"
+                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                            <div className="sm:col-span-4">
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium leading-6 text-white"
+                                >
+                                    Email адрес
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        onChange={(e) =>
+                                            setUserData({
+                                                ...userData,
+                                                email: e.target.value,
+                                            })
+                                        }
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        // autoComplete="email"
+                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                            <div className="sm:col-span-4">
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium leading-6 text-white"
+                                >
+                                    Номер телефона
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        id="phone"
+                                        name="phone"
+                                        type="phone"
+                                        // autoComplete="phone"
+                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                            <div className="sm:col-span-4">
+                                <label
+                                    htmlFor="password"
+                                    className="block text-sm font-medium leading-6 text-white"
+                                >
+                                    Пароль
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        id="password"
+                                        onChange={(e) =>
+                                            setUserData({
+                                                ...userData,
+                                                password: e.target.value,
+                                            })
+                                        }
+                                        name="password"
+                                        value={userData.password}
+                                        // placeholder="пароль"
+                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 flex items-center justify-end gap-x-6">
+                        <button
+                            type="submit"
+                            className="rounded-md bg-indigo-900 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        >
+                            Save
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <label>Email address</label>
-                    <input
-                        className="square border border-black"
-                        type="text"
-                        name="email"
-                        id="email"
-                        onChange={(e) =>
-                            setUserData({ ...userData, email: e.target.value })
-                        }
-                    ></input>
-                </div>
-                <div>
-                    <label>Phone</label>
-                    <input
-                        className="square border border-black"
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        onChange={(e) =>
-                            setUserData({ ...userData, phone: e.target.value })
-                        }
-                    ></input>
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input
-                        className="square border border-black"
-                        type="text"
-                        name="password"
-                        id="password"
-                        onChange={(e) =>
-                            setUserData({
-                                ...userData,
-                                password: e.target.value,
-                            })
-                        }
-                    ></input>
-                </div>
-                <br />
-                <p>Выберите тип аккаунта</p>
-                <div>
-                    <input
-                        type="radio"
-                        id="t"
-                        name="user_type"
-                        value="t"
-                        onChange={(e) =>
-                            setUserData({
-                                ...userData,
-                                user_type: e.target.value,
-                            })
-                        }
-                    />
-                    <label htmlFor="t">тренер</label>
-                    <input
-                        type="radio"
-                        id="c"
-                        name="user_type"
-                        value="c"
-                        onChange={(e) =>
-                            setUserData({
-                                ...userData,
-                                user_type: e.target.value,
-                            })
-                        }
-                    />
-                    <label htmlFor="c">клиент</label>
-                    <input
-                        type="radio"
-                        id="m"
-                        name="user_type"
-                        value="m"
-                        onChange={(e) =>
-                            setUserData({
-                                ...userData,
-                                user_type: e.target.value,
-                            })
-                        }
-                    />
-                    <label htmlFor="m">менеджер</label>
-                </div>
-                <br />
-                <div>
-                    <label>Profile Photo</label>
-                    <input
-                        type="file"
-                        name="photo"
-                        id="photo"
-                        accept="image/*"
-                        onChange={(e) => {
-                            const file = e.target.files[0];
-                            // Check if file is an image
-                            if (file && file.type.substr(0, 5) === "image") {
-                                setUserData({
-                                    ...userData,
-                                    photo: file,
-                                });
-                            } else {
-                                alert("Please select an image file.");
-                            }
-                        }}
-                    />
-                </div>
-                <br />
-                <button type="submit" value="Submit">
-                    submit
-                </button>
             </form>
-        </>
+        </div>
     );
 }

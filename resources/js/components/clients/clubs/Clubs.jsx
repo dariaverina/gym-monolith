@@ -18,7 +18,7 @@ export default function ClientsClubs() {
     }, []);
     console.log(clubs)
     return (
-      <div className="flex flex-wrap mt-16 ml-10">
+      <div className="flex flex-wrap pt-16 pl-10 bg-gray-900">
       <ClubsMap clubs = {clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} mapState={mapState} setMapState={setMapState}/>
       <ClubsList clubs = {clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} setMapState={setMapState}/>
       </div>

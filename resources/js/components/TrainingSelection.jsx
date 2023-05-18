@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./common/Layout/Layout";
 // import './app.css';
 import ClientsClubs from "./clients/clubs/Clubs";
@@ -11,12 +11,17 @@ import TrainingsList from "./clients/training-selection/TrainingsList/TrainingsL
 
 
 export default function TrainingSelection() {
+    const [trainings, setTrainings] = useState([]);
+    useEffect(() => {
+        axios
+            .get("/api/trainings")
+            .then((res) => setTrainings(res.data))
+            .catch((err) => console.log(err));
+    }, []);
     return (
         <div className="bg-gray-900 flex flex-wrap">
-          {/* <div className=" w-1/4 bg-red-200"> dokwodk</div>
-          <div className=" w-3/4 bg-green-200"> fdf</div> */}
-            <Selection/>
-            <TrainingsList/>
+            <Selection trainings={trainings} setTrainings={setTrainings}/>
+            <TrainingsList trainings={trainings} setTrainings={setTrainings}/>
         </div>
     );
 }

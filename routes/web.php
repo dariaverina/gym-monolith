@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\TrainingParticipantController;
 use App\Models\Club;
 
@@ -45,6 +46,10 @@ Route::get('/trainers', function () {
     return view('trainers');
 });
 
+Route::get('/trainers/{id}', function () {
+    return view('trainer');
+});
+
 Route::get('/account', function () { return view('account'); });
 
 Route::get('/training-for-you', function () { return view('training-for-you'); });
@@ -67,3 +72,8 @@ Route::post('/trainingparticipant', [TrainingParticipantController::class, 'stor
 
 // Route::get('/clubs', [ClubController::class, 'index']);
 // Route::get('/clubs/{id}', [ClubController::class, 'show']);
+
+
+//email
+Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+Route::post('/feedback', [FeedbackController::class, 'send'])->name('feedback.send');

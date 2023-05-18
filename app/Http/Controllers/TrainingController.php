@@ -17,6 +17,27 @@ class TrainingController extends Controller
                                 ->get();
             return response()->json($trainings);
         }
+        if ($request['filter']){
+            $training_variations = $request->input('training_variations');
+            if( $training_variations ){
+                $training_variations = explode(',', $training_variations);
+            }
+           
+            $training_timings = $request->input('training_timings');
+            if( $training_timings ){
+                $training_timings = explode(',', $training_timings);
+            }
+
+            $trainings = Training::with('trainingVariation', 'room.club', 'trainer')
+            ->when(!empty($training_variations), function ($query) use ($training_variations) {
+                return $query->whereIn('training_variation_id', $training_variations);
+            })
+            ->when(!empty($training_timings), function ($query) use ($training_timings) {
+                return $query->whereIn('time_id', $training_timings);
+            })
+            ->get();
+            return response()->json($trainings);
+        }
         $trainings = Training::with('trainingVariation', 'trainer')->get();
         return response()->json($trainings);
     }

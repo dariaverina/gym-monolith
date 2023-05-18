@@ -52,6 +52,10 @@ return [
     */
 
     'channels' => [
+        'maillog' => [
+            'driver' => 'single',
+            'path' => storage_path('mails/laravel.log'),
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

@@ -52,7 +52,8 @@ Route::get('/rooms', [RoomController::class, 'index']);
 
 //users
 Route::get('/users',  [UserController::class, 'index']);
-Route::patch('/users/{id}', [UserController::class, 'update']);
+Route::get('/users',  [UserController::class, 'index']);
+Route::get('users/{id}', [UserController::class, 'show']);
 
 Route::post('signup', [AuthController::class, 'signup']);
 Route::post('login', [AuthController::class, 'login']);
