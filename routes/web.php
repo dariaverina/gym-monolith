@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TrainingParticipantController;
 use App\Models\Club;
 
@@ -77,3 +78,5 @@ Route::post('/trainingparticipant', [TrainingParticipantController::class, 'stor
 //email
 Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
 Route::post('/feedback', [FeedbackController::class, 'send'])->name('feedback.send');
+
+Route::post('/reviews', [ReviewController::class, 'store']);

@@ -59,7 +59,7 @@ const clients = [
         },
     },
 ];
-export default function TrainingsList({trainings, setTrainings}) {
+export default function TrainingsList({ trainings, setTrainings }) {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
 
     const handleJoinTraining = (trainingId) => {
@@ -98,149 +98,158 @@ export default function TrainingsList({trainings, setTrainings}) {
                     className="p-6 w-3/4 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 bg-gray-900"
                 >
                     {trainings.map((training) => (
-
-                        <div class="rounded-xl bg- p-0.5">
-                        <li
-                            key={training.id}gradient-to-b from-purple-400 via-red-400 to-orange-400
-                            className="overflow-hidden rounded-xl  h-64 bg-gray-900"
-                        >
-                            <div className="flex bg-gray-900 items-center gap-x-4 border-b border-gray-900/5  p-5">
-                                <img
-                                    src={"/storage/" + training.trainer.photo}
-                                    alt={"trainer-photo"}
-                                    className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
-                                />
-                                <div className="text-sm font-medium leading-6 text-white">
-                                    <p className="text-base">
-                                        {training.training_variation.name}
-                                    </p>
-                                    <p className="text-sm font-light">
-                                        {training.trainer.name}
-                                    </p>
+                        <div class="rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5 max-h-72">
+                            <li
+                                key={training.id}
+                                className="overflow-hidden rounded-xl  h-64 bg-gray-900"
+                            >
+                                <div className="flex bg-gray-900 items-center gap-x-4 border-b border-gray-900/5  p-5">
+                                    <img
+                                        src={
+                                            "/storage/" + training.trainer.photo
+                                        }
+                                        alt={"trainer-photo"}
+                                        className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
+                                    />
+                                    <div className="text-sm font-medium leading-6 text-white">
+                                        <p className="text-base">
+                                            {training.training_variation.name}
+                                        </p>
+                                        <p className="text-sm font-light">
+                                            {training.trainer.name}
+                                        </p>
+                                    </div>
+                                    <Menu as="div" className="relative ml-auto">
+                                        <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
+                                            <span className="sr-only">
+                                                Open options
+                                            </span>
+                                            <EllipsisHorizontalIcon
+                                                className="h-5 w-5"
+                                                aria-hidden="true"
+                                            />
+                                        </Menu.Button>
+                                        <Transition
+                                            as={Fragment}
+                                            enter="transition ease-out duration-100"
+                                            enterFrom="transform opacity-0 scale-95"
+                                            enterTo="transform opacity-100 scale-100"
+                                            leave="transition ease-in duration-75"
+                                            leaveFrom="transform opacity-100 scale-100"
+                                            leaveTo="transform opacity-0 scale-95"
+                                        >
+                                            <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-gray-200 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <a
+                                                            href="#"
+                                                            className={clsx(
+                                                                active
+                                                                    ? "bg-gray-50"
+                                                                    : "",
+                                                                "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                                            )}
+                                                        >
+                                                            Подробнее о тренере
+                                                            <span className="sr-only">
+                                                                ,{" "}
+                                                                {
+                                                                    training
+                                                                        .trainer
+                                                                        .name
+                                                                }
+                                                            </span>
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <a
+                                                            href="#"
+                                                            className={clsx(
+                                                                active
+                                                                    ? "bg-gray-50"
+                                                                    : "",
+                                                                "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                                            )}
+                                                        >
+                                                            В избранное
+                                                            <span className="sr-only">
+                                                                ,{" "}
+                                                                {
+                                                                    training
+                                                                        .trainer
+                                                                        .name
+                                                                }
+                                                            </span>
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
+                                            </Menu.Items>
+                                        </Transition>
+                                    </Menu>
                                 </div>
-                                <Menu as="div" className="relative ml-auto">
-                                    <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
-                                        <span className="sr-only">
-                                            Open options
-                                        </span>
-                                        <EllipsisHorizontalIcon
-                                            className="h-5 w-5"
-                                            aria-hidden="true"
-                                        />
-                                    </Menu.Button>
-                                    <Transition
-                                        as={Fragment}
-                                        enter="transition ease-out duration-100"
-                                        enterFrom="transform opacity-0 scale-95"
-                                        enterTo="transform opacity-100 scale-100"
-                                        leave="transition ease-in duration-75"
-                                        leaveFrom="transform opacity-100 scale-100"
-                                        leaveTo="transform opacity-0 scale-95"
-                                    >
-                                        <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-gray-200 py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={clsx(
-                                                            active
-                                                                ? "bg-gray-50"
-                                                                : "",
-                                                            "block px-3 py-1 text-sm leading-6 text-gray-900"
-                                                        )}
-                                                    >
-                                                        Подробнее о тренере
-                                                        <span className="sr-only">
-                                                            ,{" "}
-                                                            {
-                                                                training.trainer
-                                                                    .name
-                                                            }
-                                                        </span>
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={clsx(
-                                                            active
-                                                                ? "bg-gray-50"
-                                                                : "",
-                                                            "block px-3 py-1 text-sm leading-6 text-gray-900"
-                                                        )}
-                                                    >
-                                                        В избранное
-                                                        <span className="sr-only">
-                                                            ,{" "}
-                                                            {
-                                                                training.trainer
-                                                                    .name
-                                                            }
-                                                        </span>
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                        </Menu.Items>
-                                    </Transition>
-                                </Menu>
-                            </div>
 
-                            <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
-                                <div className="flex justify-between gap-x-4 py-3">
-                                    <dt className="text-gray-500">
-                                        <time dateTime={training.updated_at}>
-                                            {
-                                                daysOfWeek[
-                                                    training.day_of_week - 1
-                                                ]
-                                            }
-                                            ,{" "}
-                                            {timeSlots[
-                                                training.time_id - 1
-                                            ]?.start_time.slice(0, -3)}{" "}
-                                            -{" "}
-                                            {timeSlots[
-                                                training.time_id - 1
-                                            ]?.end_time.slice(0, -3)}
-                                        </time>
-                                    </dt>
-                                    <dd className="text-gray-700">
-                                        {/* <time dateTime={training.updated_at}>
+                                <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+                                    <div className="flex justify-between gap-x-4 py-3">
+                                        <dt className="text-gray-500">
+                                            <time
+                                                dateTime={training.updated_at}
+                                            >
+                                                {
+                                                    daysOfWeek[
+                                                        training.day_of_week - 1
+                                                    ]
+                                                }
+                                                ,{" "}
+                                                {timeSlots[
+                                                    training.time_id - 1
+                                                ]?.start_time.slice(0, -3)}{" "}
+                                                -{" "}
+                                                {timeSlots[
+                                                    training.time_id - 1
+                                                ]?.end_time.slice(0, -3)}
+                                            </time>
+                                        </dt>
+                                        <dd className="text-gray-700">
+                                            {/* <time dateTime={training.updated_at}>
                                         {daysOfWeek[training.day_of_week - 1]}, {timeSlots[training.time_id - 1]?.start_time.slice(0, -3)} - {timeSlots[training.time_id - 1]?.end_time.slice(0, -3)}
                                     </time> */}
-                                    </dd>
+                                        </dd>
+                                    </div>
+                                    <div className="flex justify-between gap-x-4 py-3">
+                                        <dt className="text-gray-500">
+                                            Свободных мест
+                                        </dt>
+                                        <dd className="flex items-start gap-x-2">
+                                            <div className="rounded-md py-1 px-2 font-medium ring-1 ring-inset text-indigo-300">
+                                                {training.free_slots +
+                                                    "/" +
+                                                    training.capacity}
+                                            </div>
+                                        </dd>
+                                    </div>
+                                </dl>
+                                <div className="flex justify-center">
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            handleJoinTraining(training.id)
+                                        }
+                                        className="rounded-md bg-indigo-900 px-3 py-2 text-sm font-semibold text-indigo-200 shadow-sm  hover:bg-indigo-800"
+                                    >
+                                        Записаться
+                                    </button>
                                 </div>
-                                <div className="flex justify-between gap-x-4 py-3">
-                                    <dt className="text-gray-500">
-                                        Свободных мест
-                                    </dt>
-                                    <dd className="flex items-start gap-x-2">
-                                        <div className="rounded-md py-1 px-2 font-medium ring-1 ring-inset text-indigo-300">
-                                            {training.free_slots +
-                                                "/" +
-                                                training.capacity}
-                                        </div>
-                                    </dd>
-                                </div>
-                            </dl>
-                            <div className="flex justify-center">
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        handleJoinTraining(training.id)
-                                    }
-                                    className="rounded-md bg-indigo-900 px-3 py-2 text-sm font-semibold text-indigo-200 shadow-sm  hover:bg-indigo-800"
-                                >
-                                    Записаться
-                                </button>
-                            </div>
-                        </li></div>
+                            </li>
+                        </div>
                     ))}
                 </ul>
-            )
-            :<div className="text-white bg-gray-900 p-6">Тренировок не найдено</div>}
+            ) : (
+                <div className="text-white bg-gray-900 p-6">
+                    По вашему запросу ничего не найдено 
+                </div>
+            )}
         </>
     );
 }

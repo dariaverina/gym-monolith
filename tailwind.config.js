@@ -8,6 +8,11 @@ module.exports = {
       'lg': '1024px',
       'xl': '1200px',
     },
+    extend: {
+      height: {
+        '66': '16.5rem',
+      },
+    },
   },
   colors,
   content: ["./resources/js/**/*.{js,jsx}"],

@@ -294,7 +294,7 @@ export default function Registration() {
                             type="submit"
                             className="rounded-md bg-indigo-900 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                         >
-                            Save
+                            Сохранить
                         </button>
                     </div>
                 </div>

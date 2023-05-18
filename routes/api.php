@@ -10,6 +10,7 @@ use App\Http\Controllers\TrainingTimeController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TrainingParticipantController;
+use App\Http\Controllers\ReviewController;
 
 use App\Models\Club;
 use App\Models\User;
@@ -67,4 +68,8 @@ Route::middleware('auth:sanctum')->group(function() {
     });
     
 });
+
+Route::post('/reviews', [ReviewController::class, 'store']);
+Route::get('/reviews', [ReviewController::class, 'index']);
+Route::get('reviews/{id}', [ReviewController::class, 'show']);
 

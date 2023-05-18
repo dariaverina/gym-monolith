@@ -49,4 +49,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Training::class, 'trainer_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'target_user_id');
+    }
+
+    public function writtenReviews()
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
 }

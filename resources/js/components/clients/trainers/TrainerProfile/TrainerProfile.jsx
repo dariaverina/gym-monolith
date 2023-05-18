@@ -124,14 +124,13 @@ export default function TrainerProfile(params) {
                                 
 
                                     <div className="flex justify-left mt-6">
-                                        <button
-                                            type="submit"
+                                        <a
+                                            href='/training-for-you'
                                             className="flex w-3/5 items-center justify-center rounded-md border border-transparent bg-indigo-900 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                                         >
                                             Записаться на тренировку
-                                        </button>
+                                        </a>
                                         <button
-                                            type="submit"
                                             className="ml-8 flex w-2/5 items-center justify-center rounded-md border border-transparent bg-indigo-900 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                                         >
                                             В избранное
@@ -140,7 +139,7 @@ export default function TrainerProfile(params) {
                                 </form>
                             </section>
                         </div>
-                        <Reviews/>
+                        <Reviews trainer_id={trainer.id}/>
                 </div>
             ) : (
                 <>404 no such trainer</>
