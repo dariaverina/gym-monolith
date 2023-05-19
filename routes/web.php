@@ -80,3 +80,8 @@ Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.in
 Route::post('/feedback', [FeedbackController::class, 'send'])->name('feedback.send');
 
 Route::post('/reviews', [ReviewController::class, 'store']);
+
+
+//review
+Route::delete('/reviews/{id}', [ReviewController::class, 'delete']);
+Route::put('/reviews/{id}', [ReviewController::class, 'update']);

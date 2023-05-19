@@ -70,6 +70,9 @@ Route::middleware('auth:sanctum')->group(function() {
 });
 
 Route::post('/reviews', [ReviewController::class, 'store']);
+Route::put('/reviews/{id}', [ReviewController::class, 'update']);
 Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('reviews/{id}', [ReviewController::class, 'show']);
+Route::delete('/reviews/{id}', [ReviewController::class, 'delete']);
+
 

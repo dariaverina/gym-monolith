@@ -5,11 +5,13 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 export default function ClientAccount() {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     return (
-        <div className="pl-36 pr-36 bg-indigo-100">
-            <p className="flex items-center justify-center pt-10 text-2xl">
-                Добро пожаловать в личный кабинет,
-                <span className="font-bold">{` ${currentUser.name}`}!</span>
-            </p>
+        <div className="pl-36 pr-36 bg-gray-900">
+            <div className="flex justify-center pt-6">
+                <h1 class="font-extrabold text-transparent text-3xl bg-clip-text bg-gradient-to-r from-indigo-900 via-indigo-400 to-indigo-900">
+                    Добро пожаловать в личный кабинет,
+                    <span className="font-bold">{` ${currentUser.name}`}!</span>
+                </h1>
+            </div>
             <form>
                 <div className="space-y-12 w-3/5">
                     <div className="border-b border-gray-900/10 pb-12">
@@ -17,8 +19,8 @@ export default function ClientAccount() {
                             Профиль
                         </h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">
-                            Эта информация будет отображаться публично, поэтому будьте
-                             осторожны, чем вы делитесь.
+                            Эта информация будет отображаться публично, поэтому
+                            будьте осторожны, чем вы делитесь.
                         </p>
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -31,7 +33,6 @@ export default function ClientAccount() {
                                 </label>
                                 <div className="mt-2">
                                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                      
                                         <input
                                             type="text"
                                             name="username"

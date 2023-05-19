@@ -1,10 +1,13 @@
 import axios from "axios";
+import { StarIcon } from '@heroicons/react/20/solid';
 import { useState, useEffect } from "react";
 import { userStateContext } from "@/context/context-provider";
 import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/20/solid";
 import Variation from "./../../../manager/Dashboard/Clubs/Club/ClubEdit/Rooms/RoomItem/Variations/Variation/Variation";
+import clsx from "clsx";
 
 export default function TrainersList({ trainers }) {
+    
     return (
         <ul
             role="list"
@@ -43,6 +46,9 @@ export default function TrainersList({ trainers }) {
                             </dd>
                         </dl>
                     </div>
+                    <div className="flex items-center">
+               
+              </div>
                     <div>
                         <div className="-mt-px flex divide-x divide-gray-200">
                             <div className="flex w-0 flex-1">

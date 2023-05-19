@@ -28,8 +28,10 @@ class UserController extends Controller
         
         $data = $users->map(function ($user) {
             $training_variation_names = $user->trainings->pluck('trainingVariation.name')->unique()->values();
+            $reviews = $user->reviews;
             return array_merge((new UserResource($user))->toArray(request()), [
                 'training_variations_names' => $training_variation_names,
+                'reviews'=> $reviews
             ]);
         });
         

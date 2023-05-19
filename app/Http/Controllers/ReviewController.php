@@ -74,4 +74,49 @@ class ReviewController extends Controller
             'average_rating' => $averageRating,
         ]);
     }
+
+    public function delete($reviewId)
+    {
+        // Find the review to be deleted
+        $review = Review::find($reviewId);
+
+        if (!$review) {
+            // If the review doesn't exist, return an error response
+            return response()->json(['message' => 'Отзыв не найден'], 404);
+        }
+
+        // Delete the review
+        $review->delete();
+
+        // Return a success response
+        return response()->json(['message' => 'Отзыв успешно удален'], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Валидация данных
+        $validatedData = $request->validate([
+            'content' => 'required|string',
+            'rating' => 'required|integer',
+        ]);
+
+        // Проверка, существует ли отзыв с указанным идентификатором
+        $review = Review::find($id);
+
+        if (!$review) {
+            // Возвращение ошибки, если отзыв не найден
+            return response()->json(['message' => 'Отзыв не найден'], 404);
+        }
+
+        // Обновление отзыва
+        $review->content = $validatedData['content'];
+        $review->rating = $validatedData['rating'];
+
+        // Сохранение обновленного отзыва
+        $review->save();
+
+        // Возвращение успешного ответа
+        return response()->json(['message' => 'Отзыв успешно обновлен'], 200);
+    }
+
 }
