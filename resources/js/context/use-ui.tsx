@@ -88,6 +88,7 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         displayModal: false,
+        modalContent: <></>,
       }
     }
     case "SET_MODAL_CONTENT": {

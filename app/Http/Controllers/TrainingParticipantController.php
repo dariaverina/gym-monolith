@@ -16,6 +16,9 @@ class TrainingParticipantController extends Controller
 
     public function store(Request $request)
     {
+        if(!$request['user_id']){
+            return response()->json(['message' => 'Войдите в аккаунт прежде чем записываться на тренировку.'], 500);
+        }
         $validatedData = $request->validate([
             'training_id' => 'required|integer',
             'user_id' => 'required|integer',
@@ -26,7 +29,7 @@ class TrainingParticipantController extends Controller
         ->exists();
 
         if ($existingBooking) {
-        return response()->json(['error' => 'This user is already booked for this training.'], 409);
+        return response()->json(['message' => 'Вы уже записаны на эту тренировку.'], 409);
         }
         
         $training = Training::findOrFail($validatedData['training_id']);

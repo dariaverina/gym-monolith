@@ -23,6 +23,7 @@ export default function Auth() {
                     setCurrentUser(data.user);
                     setUserToken(data.token);
                     closeModal();
+                    window.location.href = '/'
                 }
             })
             .catch((responseError) => {

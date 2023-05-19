@@ -74,7 +74,7 @@ export default function Schedule() {
                                 <th
                                     key={day}
                                     className={clsx(
-                                        "border border-gray-500 p-2 text-gray-300",
+                                        "border border-gray-500 p-2 text-gray-400",
                                         {
                                             "bg-[#5aae3b] text-gray-900":
                                                 day === today,
@@ -90,8 +90,8 @@ export default function Schedule() {
                     <tbody>
                         {trainingByDayOfWeek && timeSlots.map((timeSlot, i) => (
                             <tr key={i}>
-                                <td className="border border-gray-500 p-2 text-center text-white">
-                                    {timeSlot.start_time}-{timeSlot.end_time}
+                                <td className="border border-gray-500 p-2 text-center text-gray-400">
+                                    {timeSlot.start_time.slice(0,-3)}-{timeSlot.end_time.slice(0,-3)}
                                 </td>
                                 {daysOfWeek.map((day, j) => {
                                     const trainingsForDay =
@@ -107,7 +107,7 @@ export default function Schedule() {
                                             {!training && (
                                                 <button
                                                     onClick={() => {
-                                                        setModalContent(<NewTraining timeId={timeSlot.id} dayOfWeek={j+1}/>);
+                                                        setModalContent(<NewTraining timeId={timeSlot.id} dayOfWeek={j+1} setTrainings={setTrainings}/>);
                                                         openModal();
                                                     }}
                                                 >

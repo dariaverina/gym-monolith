@@ -5,6 +5,8 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
+import { useUI } from '@/context/use-ui';
+import Auth from "../../../UI/Modal/ModalContent/Auth/Auth";
 
 const statuses = {
     Paid: "text-green-700 bg-green-50 ring-green-600/20",
@@ -61,7 +63,8 @@ const clients = [
 ];
 export default function TrainingsList({ trainings, setTrainings }) {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
-
+    const { displayModal, closeModal, openModal, modalContent, setModalContent } = useUI();
+    const [error, setError] = useState(null);
     const handleJoinTraining = (trainingId) => {
         axios
             .post("/trainingparticipant", {
@@ -70,6 +73,22 @@ export default function TrainingsList({ trainings, setTrainings }) {
             })
             .then((response) => {
                 console.log(response.data);
+                setTrainings(axios
+                    .get("/api/trainings")
+                    .then((res) => setTrainings(res.data))
+                    .catch((err) => console.log(err)))
+            })
+            .catch((responseError) => {
+                setError(responseError.response.data.message);
+                console.log(responseError.response.data.message)
+                if(responseError.response.data.message == 'Войдите в аккаунт прежде чем записываться на тренировку.'){
+                    setModalContent(<Auth/>);
+                    openModal()
+                }
+                if(responseError.response.data.message == 'Вы уже записаны на эту тренировку.'){
+                    setModalContent(<div className="p-6 bg-red-400  sm:rounded-lg">Вы уже записаны на эту тренировку.</div>);
+                    openModal()
+                }
             });
     };
     const [timeSlots, setTimeSlots] = useState([]);
@@ -142,7 +161,7 @@ export default function TrainingsList({ trainings, setTrainings }) {
                                                 <Menu.Item>
                                                     {({ active }) => (
                                                         <a
-                                                            href="#"
+                                                            href={`/trainers/${training.trainer.id}`}
                                                             className={clsx(
                                                                 active
                                                                     ? "bg-gray-50"
@@ -162,7 +181,7 @@ export default function TrainingsList({ trainings, setTrainings }) {
                                                         </a>
                                                     )}
                                                 </Menu.Item>
-                                                <Menu.Item>
+                                                {/* <Menu.Item>
                                                     {({ active }) => (
                                                         <a
                                                             href="#"
@@ -184,7 +203,7 @@ export default function TrainingsList({ trainings, setTrainings }) {
                                                             </span>
                                                         </a>
                                                     )}
-                                                </Menu.Item>
+                                                </Menu.Item> */}
                                             </Menu.Items>
                                         </Transition>
                                     </Menu>
