@@ -53,7 +53,11 @@ Route::get('/trainers/{id}', function () {
 
 Route::get('/account', function () { return view('account'); });
 
+Route::get('/help', function () { return view('help'); });
+
 Route::get('/training-for-you', function () { return view('training-for-you'); });
+
+Route::get('/reporting', function () { return view('reporting'); });
 
 
 // Регистрация
@@ -85,3 +89,4 @@ Route::post('/reviews', [ReviewController::class, 'store']);
 //review
 Route::delete('/reviews/{id}', [ReviewController::class, 'delete']);
 Route::put('/reviews/{id}', [ReviewController::class, 'update']);
+

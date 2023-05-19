@@ -11,10 +11,10 @@ export default function ModalWindow ({})  {
                 className="relative z-40"
             >
                 {/* The backdrop, rendered as a fixed sibling to the panel container */}
-                <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
+                <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-filter backdrop-blur-sm" aria-hidden="true" />
 
                 {/* Full-screen container to center the panel */}
-                <div className="fixed inset-0 flex items-center justify-center p-4">
+                <div className="fixed inset-0 flex items-center justify-center p-4 ">
                     <Dialog.Panel className="w-full max-w-sm rounded-xl bg-white">
                         <div className="min-h-full items-center justify-center">
                             {modalContent}

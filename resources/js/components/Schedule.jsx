@@ -58,10 +58,10 @@ export default function Schedule() {
         }, {});
 
     return (
-        <div className="bg-indigo-100">
+        <div className="bg-gray-900">
             <div className="flex items-center justify-center pt-10 flex-col">
                 <div className="flex items-center gap-4">
-                    <p className="text-2xl">Расписание на неделю</p>
+                    <p className="text-2xl text-white">Расписание на неделю</p>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@ export default function Schedule() {
                     <tbody>
                         {trainingByDayOfWeek && timeSlots.map((timeSlot, i) => (
                             <tr key={i}>
-                                <td className="border border-gray-500 p-2 text-center">
+                                <td className="border border-gray-500 p-2 text-center text-white">
                                     {timeSlot.start_time}-{timeSlot.end_time}
                                 </td>
                                 {daysOfWeek.map((day, j) => {
@@ -99,7 +99,6 @@ export default function Schedule() {
                                     const training = trainingsForDay.find(
                                         (t) => t.time_id === timeSlot.id
                                     );
-                                    // {console.log('[[[[[[',training)}
                                     return (
                                         <td
                                             key={j}
@@ -117,7 +116,7 @@ export default function Schedule() {
                                                         fill="none"
                                                         viewBox="0 0 24 24"
                                                         strokeWidth={1.5}
-                                                        stroke="currentColor"
+                                                        stroke="black"
                                                         className="w-6 h-6"
                                                     >
                                                         <path
@@ -129,8 +128,8 @@ export default function Schedule() {
                                                 </button>
                                             )}
 
-                                            <div className="font-medium text-black text-base">
-                                                {training?.training_variation.name}
+                                            <div className="font-medium text-white text-base">
+                                                <strong>{training?.training_variation.name}</strong>
                                             </div>
                                             <div className="font-medium text-gray-500 text-xs">
                                                 {training?.room?.name}

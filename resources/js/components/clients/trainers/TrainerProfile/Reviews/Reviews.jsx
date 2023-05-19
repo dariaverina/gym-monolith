@@ -160,12 +160,13 @@ export default function Reviews({ trainer_id }) {
                                                 </div>
                                             </dt>
                                             <dd className="ml-3 w-10 text-right text-sm tabular-nums text-white">
-                                                {Math.round(
+                                                <>{reviews?.reviews.length>0?
+                                                Math.round(
                                                     (count.count /
                                                         reviews.reviews
                                                             .length) *
                                                         100
-                                                )}
+                                                ):0}</>
                                                 %
                                             </dd>
                                         </div>

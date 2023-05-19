@@ -32,8 +32,8 @@ export default function Auth() {
 
     return (
         <>
-            <div className="flex flex-col justify-center  bg-gradient-to-b from-indigo-900 to-white py-8 px-8 sm:rounded-lg">
-                <div className="my-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div className="flex flex-col justify-center  bg-[#713431]  sm:rounded-lg">
+                <div className=" sm:mx-auto sm:w-full sm:max-w-md">
                     <div className=" py-8 px-4 shadow sm:rounded-lg sm:px-10">
                         <div className="flex justify-center">
                             <svg
@@ -53,7 +53,7 @@ export default function Auth() {
                         </div>
                         <form className="space-y-6 " action="#" method="POST">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium text-gray-100">
                                     Email address
                                 </label>
                                 <div className="mt-1">
@@ -77,7 +77,7 @@ export default function Auth() {
                             <div>
                                 <label
                                     htmlFor="password"
-                                    className="block text-sm font-medium text-gray-700"
+                                    className="block text-sm font-medium text-gray-100"
                                 >
                                     Password
                                 </label>
@@ -112,21 +112,28 @@ export default function Auth() {
                                 )}
                             </div>
                             {twoFactor && <>
-                                {twoFactorMessage}
-                                <input
-                                    onChange={(e)=>setUserData({
-                                        ...userData,
-                                        verification_code: e.target.value,
-                                    })}
-                                    className="bg-red-200"
-                                ></input></>
+                                <div className="text-gray-400">{twoFactorMessage}</div>
+                                <div className="mt-1">
+                                    <input
+                                        onChange={(e)=>setUserData({
+                                            ...userData,
+                                            verification_code: e.target.value,
+                                        })}
+                                        id="code"
+                                        name="code"
+                                        autoComplete="code"
+                                        required
+                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                    />
+                                </div>
+                                </>
                             }
                             <div className="flex justify-center">
                                 <button
                                     onClick={onSubmit}
-                                    className=" rounded-md px-5 py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 text-lg"
+                                    className=" rounded-md px-5 py-2  font-semibold text-gray-100 shadow-sm hover:bg-[#7d3a36] text-lg"
                                 >
-                                    Войти
+                                    <strong>Войти</strong>
                                 </button>
                             </div>
                         </form>

@@ -42,6 +42,7 @@ export default function ManagerHeader() {
     .then(res =>{
       setCurrentUser(undefined);
       setUserToken(null);
+      window.location.href = "/";
     })
   }
   
@@ -76,7 +77,7 @@ export default function ManagerHeader() {
           </a>
         </div>
         <div className="-my-2 -mr-2 md:hidden">
-          <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+          <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-white hover:bg-gray-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
             <span className="sr-only">Open menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </Popover.Button>
@@ -85,15 +86,21 @@ export default function ManagerHeader() {
           <Popover.Group as="nav" className="flex space-x-10">
             <a
               href="/clubs"
-              className="text-base font-medium text-gray-500 hover:text-gray-900"
+              className="text-base font-medium text-white"
             >
               Клубы
             </a>
             <a
               href="/users"
-              className="text-base font-medium text-gray-500 hover:text-gray-900"
+              className="text-base font-medium text-white hover:text-white"
             >
               Пользователи
+            </a>
+            <a
+              href="/reporting"
+              className="text-base font-medium text-white hover:text-white"
+            >
+              Отчетность
             </a>
             {/* <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
                 Docs
@@ -102,9 +109,9 @@ export default function ManagerHeader() {
           </Popover.Group>
           {currentUser && currentUser.name ? (
             
-            <Popover className="relative">
+            <Popover className="relative text-white">
               {currentUser.name}
-            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 ">
                  <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -164,7 +171,7 @@ export default function ManagerHeader() {
             <div className="flex items-center md:ml-12">
               <a
                 href="/register"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
+                className="text-base font-medium text-white"
               >
                 Sign up
               </a>

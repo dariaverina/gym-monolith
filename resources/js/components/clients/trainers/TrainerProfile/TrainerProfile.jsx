@@ -79,7 +79,7 @@ export default function TrainerProfile(params) {
                                     Product information
                                 </h3>
 
-                                {/* Reviews */}
+                                {/* Reviews
                                 <div className="mt-3">
                                     <h4 className="sr-only">Reviews</h4>
                                     <div className="flex items-center">
@@ -101,7 +101,7 @@ export default function TrainerProfile(params) {
                                             {product.rating} out of 5 stars
                                         </p>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="mt-6">
                                     <h4 className="sr-only">Description</h4>
@@ -130,11 +130,11 @@ export default function TrainerProfile(params) {
                                         >
                                             Записаться на тренировку
                                         </a>
-                                        <button
+                                        {/* <button
                                             className="ml-8 flex w-2/5 items-center justify-center rounded-md border border-transparent bg-indigo-900 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                                         >
                                             В избранное
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </form>
                             </section>

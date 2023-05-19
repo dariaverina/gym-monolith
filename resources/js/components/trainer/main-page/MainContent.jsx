@@ -23,13 +23,13 @@ export default function MainTrainerContent() {
         setCurrentIndex((currentIndex + 1) % images.length);
     };
     return (
-        <>
-            <p className="flex items-center justify-center pt-10 flex-col text-2xl">
+        <div className="bg-gray-900">
+            <p className="flex items-center justify-center pt-10 flex-col text-2xl text-white">
                 Добро пожаловать на обзорную панель тренера клуба Grupovie
                 trenirovki
                 <br />
             </p>
-            <p className="flex items-center justify-center pt-10 flex-col text-2xl">
+            <p className="flex items-center justify-center pt-10 flex-col text-2xl text-white">
                 Какие возможности открывает панель тренера?
             </p>
             <div className="flex items-center justify-center pt-10">
@@ -73,6 +73,6 @@ export default function MainTrainerContent() {
                     </button>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
