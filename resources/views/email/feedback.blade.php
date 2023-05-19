@@ -1,5 +1,3 @@
-<h1>Форма обратной связи</h1>
+<h1>Вход в аккаунт</h1>
 
-<p><strong>Имя:</strong> {{ $data->name }}</p>
-<p><strong>Почта:</strong> {{ $data->email }}</p>
-<p><strong>Сообщение:</strong> {{ $data->message }}</p>
+<p>Код подтверждения: <strong>{{ $data->message }}</strong></p>

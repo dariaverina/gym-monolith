@@ -7,6 +7,9 @@ use App\Models\User;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use Illuminate\Support\Facades\Auth;
+use stdClass;
+use App\Mail\FeedbackMailer;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -55,6 +58,43 @@ class AuthController extends Controller
             ], 422);
         }
 
+        if ($user->user_type === 'm') {
+            if ($request->has('verification_code')) {
+                $code = $request->input('verification_code');
+    
+                // Проверка правильности кода
+                if ($code === $user->two_factor_code) {
+                    $user->two_factor_code = '';
+                    $user->save();
+    
+                    $token = $user->createToken('main')->plainTextToken;
+                    return response([
+                        'user' => $user,
+                        'token' => $token
+                    ]);
+                }
+    
+                return response([
+                    'error' => 'Invalid verification code'
+                ], 422);
+            }
+            else{
+                // Генерируйте и сохраните уникальный код
+                // $code = generateUniqueCode(); // Замените эту функцию на свою реализацию
+                $code = '12345';
+                $user->two_factor_code = $code;
+                $user->save();
+        
+
+                // Отправьте сообщение с кодом
+                $this->sendAuthCode($name = 'олег олег', $email='dashka400g@gmail.com', $code='12345'); // Замените эту функцию на свою реализацию
+        
+                return response([
+                    'requires_2fa' => true,
+                ]);
+            }
+        }
+
         $token = $user->createToken('main')->plainTextToken;
         return response([
             'user' => $user,
@@ -68,5 +108,46 @@ class AuthController extends Controller
         return response([
             'success' => true
         ]);
+    }
+
+    public function verifyTwoFactorCode(Request $request)
+    {
+        $request->validate([
+            'code' => 'required',
+        ]);
+
+        $user = Auth::user();
+        $providedCode = $request->input('code');
+
+        if ($user->two_factor_code === $providedCode) {
+            $user->two_factor_code = null;
+            $user->save();
+
+            $token = $user->createToken('main')->plainTextToken;
+            return response([
+                'user' => $user,
+                'token' => $token,
+            ]);
+        }
+
+        return response([
+            'error' => 'Invalid verification code',
+        ], 422);
+    }
+
+    public function sendAuthCode($name, $email, $code) {
+        // $request->validate([
+        //     'name' => 'required|max:100',
+        //     'email' => 'required|email|max:100',
+        //     'message' => 'required|max:500',
+        // ]);
+
+        $data = new stdClass();
+        $data->name = $name;
+        $data->email = $email;
+        $data->message = $code;
+        Mail::to($data->email)->send(new FeedbackMailer($data));
+        // return redirect()->route('feedback.index')
+        //     ->with('success', 'Ваше сообщение успешно отправлено');
     }
 }

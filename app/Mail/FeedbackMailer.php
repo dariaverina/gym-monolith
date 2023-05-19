@@ -29,6 +29,6 @@ class FeedbackMailer extends Mailable {
      * @return $this
      */
     public function build() {
-        return $this->subject('Форма обратной связи')->view('email.feedback', ['data' => $this->data]);
+        return $this->subject('Вход в аккаунт')->view('email.feedback', ['data' => $this->data]);
     }
 }
