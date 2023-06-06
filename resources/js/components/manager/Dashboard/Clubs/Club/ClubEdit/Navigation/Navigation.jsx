@@ -7,7 +7,7 @@ export default function Navigation({selectedSection, setSelectedSection, navigat
     
 
   return (
-    <div className="bg-gray-800">
+    <div className="bg-gray-950">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex flex-1">
           <div className="hidden lg:flex lg:gap-x-12">

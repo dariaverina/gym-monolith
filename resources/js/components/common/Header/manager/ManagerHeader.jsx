@@ -142,13 +142,13 @@ export default function ManagerHeader() {
                  
                 </div>
                 <div className="grid grid-cols-1 divide-x divide-gray-900/5 bg-gray-50">
-                    <a
+                    {/* <a
                       key='account'
                       href='/account'
                       className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                     >
                       account
-                    </a>
+                    </a> */}
                     {  currentUser.account_type == 'm' && <a
                       key='dashboard'
                       href='/dashboard'

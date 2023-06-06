@@ -10,7 +10,7 @@ const Account = () => {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     return (
         <div className="">
-             {(currentUser && currentUser.user_type == 't') ? <TrainerAccount/> : (currentUser && currentUser.user_type == 'c' && currentUser.name)? <ClientAccount/> : <>404</>}
+             {(currentUser && currentUser.user_type == 't') ? <ClientAccount/> : (currentUser && currentUser.user_type == 'c' && currentUser.name)? <ClientAccount/> : <div className="bg-gray-900 h-96">account not found</div>}
         </div>
     );
 };

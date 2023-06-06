@@ -1,7 +1,6 @@
 import { userStateContext } from "@/context/context-provider";
 import { useState } from "react";
 import axiosClient from "@/public/axios";
-// import { useNavigate } from 'react-router-dom';
 import { useUI } from "@/context/use-ui";
 
 export default function Auth() {

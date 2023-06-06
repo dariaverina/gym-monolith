@@ -10,9 +10,9 @@ export default function Clubs () {
   const { currentUser, setCurrentUser, setUserToken } = userStateContext();
   console.log('us',currentUser);
     return (
-        <>
+        <div className="bg-gray-900 flex flex-wrap">
          {(currentUser && currentUser.user_type == 'm') ? <ManagerClubs/> :<ClientsClubs/>}
-        </>
+        </div>
        
     )
 }

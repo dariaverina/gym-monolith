@@ -30,10 +30,9 @@ const navigation = {
 };
 
 export default function Footer() {
-    const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     return (
         <footer
-            className='bg-gray-900'
+            className='bg-gray-900  pb-64'
             aria-labelledby="footer-heading"
         >
             <h2 id="footer-heading" className="sr-only">

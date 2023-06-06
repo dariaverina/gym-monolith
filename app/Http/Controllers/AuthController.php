@@ -80,14 +80,13 @@ class AuthController extends Controller
             }
             else{
                 // Генерируйте и сохраните уникальный код
-                // $code = generateUniqueCode(); // Замените эту функцию на свою реализацию
-                $code = '12345';
+                $code =  mt_rand(10000, 99999);
                 $user->two_factor_code = $code;
                 $user->save();
         
 
                 // Отправьте сообщение с кодом
-                $this->sendAuthCode($name = 'олег олег', $email='dashka400g@gmail.com', $code='12345'); // Замените эту функцию на свою реализацию
+                $this->sendAuthCode($name = 'олег олег', $email='dashka400g@gmail.com', $code=$code); // Замените эту функцию на свою реализацию
         
                 return response([
                     'requires_2fa' => true,
@@ -150,4 +149,11 @@ class AuthController extends Controller
         // return redirect()->route('feedback.index')
         //     ->with('success', 'Ваше сообщение успешно отправлено');
     }
+
+    function generateUniqueCode() {
+        $code = mt_rand(10000, 99999); // Генерация случайного числа от 10000 до 99999
+
+        return $code;
+    }
+    
 }

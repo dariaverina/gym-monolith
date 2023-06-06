@@ -19,7 +19,7 @@ export default function TrainingSelection() {
             .catch((err) => console.log(err));
     }, []);
     return (
-        <div className="bg-gray-900 flex flex-wrap">
+        <div className="bg-gray-900 flex ">
             <Selection trainings={trainings} setTrainings={setTrainings}/>
             <TrainingsList trainings={trainings} setTrainings={setTrainings}/>
         </div>

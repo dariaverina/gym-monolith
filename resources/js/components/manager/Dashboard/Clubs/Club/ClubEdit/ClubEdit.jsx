@@ -47,7 +47,8 @@ export default function ClubEdit({ isNew, club }) {
         if (isNew) {
             axios.post("/clubs", clubInfo).then((response) => {
                 console.log(response.data);
-                // window.location.href = "/clubs/" + clubInfo.seo_name;
+                setModalContent(<div className="bg-gray-900 p-4 text-white sm:rounded-lg">Успешно добавлено!</div>)
+                // window.location.href = "/clubs";
                 // Do something with the response
             });
         }
@@ -55,8 +56,8 @@ export default function ClubEdit({ isNew, club }) {
             console.log('pppp', clubInfo)
             axios.put(`/clubs/${clubInfo.id}`, clubInfo).then((response) => {
                 console.log(response.data);
-                // setModalContent(<div>Успешно обновлено!</div>)
-                // openModal();
+                setModalContent(<div className="bg-gray-900 p-4 text-white sm:rounded-lg">Успешно обновлено!</div>)
+                openModal();
                 // window.location.href = "/clubs/";
                 // Do something with the response
             });
@@ -69,7 +70,7 @@ export default function ClubEdit({ isNew, club }) {
                 setSelectedSection={setSelectedSection}
                 navigation={navigation}
             />
-            <div className="mt-10 ml-32 mr-32">
+            <div className="pt-10 pl-32 pr-32 bg-gray-900">
                 {content}
                 <button
                     onClick={handleSubmit}

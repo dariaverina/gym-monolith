@@ -84,6 +84,13 @@ class UserController extends Controller
         // if (isset($data['name'])) {
         //     $user->name = $data['name'];
         // }
+        // if (isset($data['email'])) {
+        //     $user->email = $data['email'];
+        // }
+        // if (isset($data['phone'])) {
+        //     $user->phone = $data['phone'];
+        // }
+
 
         $user->save();
 

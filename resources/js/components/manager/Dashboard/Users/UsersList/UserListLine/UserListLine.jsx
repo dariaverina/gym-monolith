@@ -17,7 +17,7 @@ export default function UsersListLine({ user }) {
       
     return (
         <tr key={user.id}>
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
                 {user.name}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -27,20 +27,20 @@ export default function UsersListLine({ user }) {
                 {user.user_type}
             </td>
             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                <a
+                {/* <a
                     href={"clubs/" + user.id}
                     className="text-indigo-600 hover:text-indigo-900"
                 >
                     Edit
                     <span className="sr-only">, {user.id}</span>
-                </a>
+                </a> */}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <Switch
                     checked={status == "a"}
                     onChange={handleSubmit}
                     className={`${
-                        status == "a" ? "bg-green-200" : "bg-red-200"
+                        status == "a" ? "bg-green-400" : "bg-red-400"
                     } relative inline-flex h-6 w-11 items-center rounded-full`}
                 >
                     <span className="sr-only">Enable notifications</span>

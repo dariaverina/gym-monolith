@@ -112,15 +112,15 @@ export default function TrainingsList({ trainings, setTrainings }) {
     return (
         <>
             {trainings && trainings.length > 0 ? (
-                <ul
-                    role="list"
-                    className="p-6 w-3/4 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 bg-gray-900"
+                <div
+                    // role="list"
+                    className="items-start justify-start p-6 w-3/4 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 bg-gray-900"
                 >
                     {trainings.map((training) => (
-                        <div class="rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5 max-h-72">
-                            <li
+                        <div class="rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5 h-64">
+                            <div
                                 key={training.id}
-                                className="overflow-hidden rounded-xl  h-64 bg-gray-900"
+                                className="overflow-hidden rounded-xl   h-full bg-gray-900"
                             >
                                 <div className="flex bg-gray-900 items-center gap-x-4 border-b border-gray-900/5  p-5">
                                     <img
@@ -260,10 +260,10 @@ export default function TrainingsList({ trainings, setTrainings }) {
                                         Записаться
                                     </button>
                                 </div>
-                            </li>
+                            </div>
                         </div>
                     ))}
-                </ul>
+                </div>
             ) : (
                 <div className="text-white bg-gray-900 p-6">
                     По вашему запросу ничего не найдено 

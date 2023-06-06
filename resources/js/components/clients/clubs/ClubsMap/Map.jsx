@@ -15,7 +15,7 @@ const ClubsMap = ({ clubs, selectedClub, setSelectedClub, mapState, setMapState 
   }
 
   return (
-    <div className='w-2/5'>
+    <div className='ml-64 w-1/5'>
       <YMaps>
         <Map
           state={mapState}

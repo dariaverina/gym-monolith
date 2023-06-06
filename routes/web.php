@@ -83,6 +83,8 @@ Route::post('/trainingparticipant', [TrainingParticipantController::class, 'stor
 Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
 Route::post('/feedback', [FeedbackController::class, 'send'])->name('feedback.send');
 
+
+
 Route::post('/reviews', [ReviewController::class, 'store']);
 
 
@@ -90,3 +92,5 @@ Route::post('/reviews', [ReviewController::class, 'store']);
 Route::delete('/reviews/{id}', [ReviewController::class, 'delete']);
 Route::put('/reviews/{id}', [ReviewController::class, 'update']);
 
+Route::post('/account', [UserController::class, 'store']);
+Route::patch('/account', [UserController::class, 'update']);
