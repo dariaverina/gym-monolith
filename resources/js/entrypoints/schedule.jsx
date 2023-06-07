@@ -6,5 +6,5 @@ import Schedule from '../components/Schedule';
 
 
 if (document.getElementById('schedule')){
-    createRoot(document.getElementById('schedule')).render(<Layout><Schedule/></Layout>)
+    createRoot(document.getElementById('schedule')).render(<div className='bg-gray-900'><Layout><Schedule/></Layout></div>)
 }

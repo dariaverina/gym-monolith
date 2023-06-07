@@ -11,10 +11,12 @@ class TrainingController extends Controller
     {
         if ($request['trainer_id']){
             $trainerId = $request->input('trainer_id');
+            $trainingWeek = $request->input('week_number');
 
             $trainings = Training::with('trainingVariation', 'room.club')
-                                ->where('trainer_id', $trainerId)
-                                ->get();
+                ->where('trainer_id', $trainerId)
+                ->whereRaw("WEEK(training_date) = $trainingWeek")
+                ->get();
             return response()->json($trainings);
         }
         if ($request['filter']){
