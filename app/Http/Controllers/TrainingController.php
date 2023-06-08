@@ -13,9 +13,10 @@ class TrainingController extends Controller
             $trainerId = $request->input('trainer_id');
             $trainingWeek = $request->input('week_number');
 
-            $trainings = Training::with('trainingVariation', 'room.club', 'trainingParticipants.user')
+            $trainings = Training::with('training_variation', 'room.club', 'trainingParticipants.user')
                 ->where('trainer_id', $trainerId)
                 ->whereRaw("WEEK(DATE_FORMAT(training_date, '%Y-%m-%d'), 1) = $trainingWeek")
+                ->with('trainingVariation')
                 ->get();
             return response()->json($trainings);
         }
@@ -30,7 +31,7 @@ class TrainingController extends Controller
                 $training_timings = explode(',', $training_timings);
             }
 
-            $trainings = Training::with('trainingVariation', 'room.club', 'trainer')
+            $trainings = Training::with('training_variation', 'room.club', 'trainer')
             ->when(!empty($training_variations), function ($query) use ($training_variations) {
                 return $query->whereIn('training_variation_id', $training_variations);
             })
@@ -40,7 +41,7 @@ class TrainingController extends Controller
             ->get();
             return response()->json($trainings);
         }
-        $trainings = Training::with('trainingVariation', 'trainer')->get();
+        $trainings = Training::with('training_variation', 'trainer')->get();
         return response()->json($trainings);
     }
 

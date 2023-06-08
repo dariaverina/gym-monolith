@@ -25,14 +25,14 @@ class Training extends Model
         return $this->belongsTo(User::class, 'trainer_id');
     }
 
-    public function trainingVariation()
+    public function training_variation()
     {
-        return $this->belongsTo(TrainingVariation::class, 'training_variation_id')->select('id', 'name');
+        return $this->belongsTo(TrainingVariation::class);
     }
 
     public function time()
     {
-        return $this->belongsTo(Time::class);
+        return $this->belongsTo(TrainingTime::class);
     }
 
     public function room()

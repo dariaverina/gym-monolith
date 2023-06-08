@@ -17,4 +17,8 @@ class TrainingVariation extends Model
     {
         return $this->belongsTo(TrainingVariation::class);
     }
+    public function name()
+    {
+        return $this->name;
+    }
 }

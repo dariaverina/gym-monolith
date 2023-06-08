@@ -11,6 +11,7 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TrainingParticipantController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ReportController;
 
 use App\Models\Club;
 use App\Models\User;
@@ -77,3 +78,5 @@ Route::get('reviews/{id}', [ReviewController::class, 'show']);
 Route::delete('/reviews/{id}', [ReviewController::class, 'delete']);
 
 
+
+Route::get('/generate-report', [ReportController::class, 'generateReport']);

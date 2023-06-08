@@ -6,6 +6,7 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TrainingParticipantController;
+use App\Http\Controllers\ReportController;
 use App\Models\Club;
 
 /*
@@ -95,3 +96,9 @@ Route::put('/reviews/{id}', [ReviewController::class, 'update']);
 
 Route::post('/account', [UserController::class, 'store']);
 Route::patch('/account', [UserController::class, 'update']);
+
+
+
+
+//report
+Route::get('/generate-report', [ReportController::class, 'generateReport']);
