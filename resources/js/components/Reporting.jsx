@@ -72,7 +72,7 @@ const Reporting = () => {
           Неделя:
         </label>
         <div className="ml-4">
-        <DatePicker
+        {/* <DatePicker
             id="week"
             selected={selectedWeek}
             onChange={(date) => setSelectedWeek(date)}
@@ -83,7 +83,8 @@ const Reporting = () => {
             startDate={new Date(selectedWeek)} // Set the start date of the selected week
             endDate={new Date(selectedWeek)} // Set the end date of the selected week
             selectsRange
-          />
+          /> */}
+    
         </div>
       </div>
       <div className='flex justify-center mt-4'><button className=" rounded-md bg-indigo-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" onClick={() => { pdfGenerate() }}>Скачать отчет </button></div>
