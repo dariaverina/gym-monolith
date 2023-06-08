@@ -104,7 +104,7 @@ export default function ClientHeader() {
                             >
                                 Подбор тренировки
                             </a>
-                            {currentUser.id &&
+                            {currentUser?.id &&
                                 <a
                                     href="/schedule"
                                     className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"

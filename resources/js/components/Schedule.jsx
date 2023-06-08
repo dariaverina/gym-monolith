@@ -84,6 +84,17 @@ export default function Schedule() {
                 })
             .then((res) => setTrainings(res.data))
             .catch((err) => console.log(err));
+
+        currentUser?.user_type == 'c' && currentUser?.id && axios
+        .get("/api/trainings",
+            {
+                params: {
+                    client_id: currentUser.id,
+                    week_number: week
+                }
+            })
+        .then((res) => setTrainings(res.data))
+        .catch((err) => console.log(err));
     }, [currentUser, week]);
     console.log("training", trainings);
     const today = new Date().toLocaleDateString("ru-RU", { weekday: "long" });

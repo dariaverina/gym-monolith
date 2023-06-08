@@ -13,6 +13,10 @@ import TrainingsList from "./clients/training-selection/TrainingsList/TrainingsL
 export default function TrainingSelection() {
     const [trainings, setTrainings] = useState([]);
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
+    const [currentFilters, setCurrentFilters] = useState([
+        { id: 1, items: [] },
+        { id: 2, items: [] },
+    ]);
     useEffect(() => {
         axios
             .get('/api/trainings?filter=true&user_id=' + currentUser.id)
@@ -21,8 +25,8 @@ export default function TrainingSelection() {
     }, [currentUser]);
     return (
         <div className="bg-gray-900 flex ">
-            <Selection trainings={trainings} setTrainings={setTrainings}/>
-            <TrainingsList trainings={trainings} setTrainings={setTrainings}/>
+            <Selection trainings={trainings} setTrainings={setTrainings} currentFilters={currentFilters} setCurrentFilters={setCurrentFilters}/>
+            <TrainingsList trainings={trainings} setTrainings={setTrainings} currentFilters={currentFilters}/>
         </div>
     );
 }

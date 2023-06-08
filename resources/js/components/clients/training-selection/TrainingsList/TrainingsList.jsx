@@ -14,7 +14,7 @@ const statuses = {
     Overdue: "text-red-700 bg-red-50 ring-red-600/10",
 };
 
-export default function TrainingsList({ trainings, setTrainings }) {
+export default function TrainingsList({ trainings, setTrainings, currentFilters }) {
     console.log('trainings', trainings)
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     const { displayModal, closeModal, openModal, modalContent, setModalContent } = useUI();
@@ -192,6 +192,8 @@ export default function TrainingsList({ trainings, setTrainings }) {
                                                         training.day_of_week - 1
                                                     ]
                                                 }
+                                                ,{" "}
+                                                {new Date(training.training_date).toLocaleDateString("ru-RU", {day: "numeric",month: "long"})}
                                                 ,{" "}
                                                 {timeSlots[
                                                     training.time_id - 1

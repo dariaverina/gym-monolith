@@ -14,16 +14,13 @@ import {
 import clsx from "clsx";
 
 
-export default function Selection({ trainings, setTrainings }) {
+export default function Selection({ trainings, setTrainings, currentFilters, setCurrentFilters}) {
     const [filters, setFilters] = useState([
         { id: 1, name: "Вид тренировки", items: [] },
         { id: 2, name: "Время", items: [] },
     ]);
     console.log(filters);
-    const [currentFilters, setCurrentFilters] = useState([
-        { id: 1, items: [] },
-        { id: 2, items: [] },
-    ]);
+
     console.log("cur", currentFilters);
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     useEffect(() => {

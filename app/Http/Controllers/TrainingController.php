@@ -22,6 +22,19 @@ class TrainingController extends Controller
                 ->get();
             return response()->json($trainings);
         }
+        if ($request['client_id']){
+            $clientId = $request->input('client_id');
+            $trainingWeek = $request->input('week_number');
+
+            $trainings = Training::with('training_variation', 'room.club', 'trainingParticipants.user')
+            ->whereHas('trainingParticipants', function ($query) use ($clientId) {
+                $query->where('user_id', $clientId);
+            })
+            ->whereRaw("WEEK(DATE_FORMAT(training_date, '%Y-%m-%d'), 1) = $trainingWeek")
+            ->get();
+        
+            return response()->json($trainings);
+        }
         if ($request['filter']){
             $training_variations = $request->input('training_variations');
             $user_id = $request->input('user_id');
