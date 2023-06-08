@@ -29,7 +29,7 @@ class TrainingParticipantController extends Controller
         ->exists();
 
         if ($existingBooking) {
-        return response()->json(['message' => 'Вы уже записаны на эту тренировку.'], 409);
+            return response()->json(['message' => 'Вы уже записаны на эту тренировку.'], 409);
         }
         
         $training = Training::findOrFail($validatedData['training_id']);
@@ -49,5 +49,28 @@ class TrainingParticipantController extends Controller
         return response()->json(['message' => 'Booking created successfully.']);
     }
 
-    
+    public function delete(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $trainingId = $request->input('training_id');
+        // Find the review to be deleted
+                
+        $participant = TrainingParticipant::where('training_id', $trainingId)
+        ->where('user_id', $userId)
+        ->first();
+
+        if (!$participant) {
+            // If the review doesn't exist, return an error response
+            return response()->json(['message' => 'Сущность не найдена'], 404);
+        }
+
+        $participant->delete();
+
+        $training = Training::findOrFail($trainingId);
+        $training->free_slots += 1;
+        $training->save();
+
+        // Return a success response
+        return response()->json(['message' => 'Сущность удалена'], 200);
+    }
 }

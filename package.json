@@ -21,11 +21,13 @@
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.5.28",
         "jspdf-react": "^1.0.11",
+        "moment": "^2.29.4",
         "pdf-lib": "^1.17.1",
         "react": "^18.2.0",
         "react-datepicker": "^4.12.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.11.1",
-        "react-yandex-maps": "^4.6.0"
+        "react-yandex-maps": "^4.6.0",
+        "rsuite": "^5.35.0"
     }
 }

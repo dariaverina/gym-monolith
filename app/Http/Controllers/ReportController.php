@@ -14,6 +14,8 @@ class ReportController extends Controller
     {
         $clubId = $request['club_id'];
         $weekNumber = $request['week_number'];
+        $startDate = Carbon::now()->setISODate(date('Y'), $weekNumber)->startOfWeek();
+        $endDate = Carbon::now()->setISODate(date('Y'), $weekNumber)->endOfWeek();
 
         $pdf = new Dompdf();
         $club = Club::with('rooms')
@@ -39,7 +41,7 @@ class ReportController extends Controller
 
             $html .= '<div style="page-break-inside: avoid;">'; // Изменено на page-break-inside
 
-            $html .=  '<h3>Расписание занятий клуба "<strong>' . $club['name'] . '" на период</strong></h3>'.
+            $html .= '<h3>Расписание занятий клуба "<strong>' . $club['name'] . '" на период ' . $startDate->format('d.m.Y') . '-' . $endDate->format('d.m.Y') . '</strong></h3>'.
                 '<h3 class="room-heading">Зал "<strong>' . $room->name . '"</strong></h3>' .
                 '<table>' .
                 '<thead>' .

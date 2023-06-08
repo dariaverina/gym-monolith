@@ -12,12 +12,13 @@ import TrainingsList from "./clients/training-selection/TrainingsList/TrainingsL
 
 export default function TrainingSelection() {
     const [trainings, setTrainings] = useState([]);
+    const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     useEffect(() => {
         axios
-            .get("/api/trainings")
+            .get('/api/trainings?filter=true&user_id=' + currentUser.id)
             .then((res) => setTrainings(res.data))
             .catch((err) => console.log(err));
-    }, []);
+    }, [currentUser]);
     return (
         <div className="bg-gray-900 flex ">
             <Selection trainings={trainings} setTrainings={setTrainings}/>

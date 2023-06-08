@@ -66,18 +66,18 @@ export default function ClientHeader() {
                 className="pointer-events-none absolute inset-0 z-30 shadow"
                 aria-hidden="true"
             />
-                <div className="relative z-20">
-                    <div className="mx-auto flex max-w-7xl items-center justify-between py-5 px-6 sm:py-4 md:justify-start md:space-x-10 lg:px-8">
+            <div className="relative z-20">
+                <div className="mx-auto flex max-w-7xl items-center justify-between py-5 px-6 sm:py-4 md:justify-start md:space-x-10 lg:px-8">
                     <div>
-            <a href="/" className="flex">
-                <span className="sr-only">Your Company</span>
-                <img
-                className="h-8 w-auto sm:h-10"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-                />
-            </a>
-            </div>
+                        <a href="/" className="flex">
+                            <span className="sr-only">Your Company</span>
+                            <img
+                                className="h-8 w-auto sm:h-10"
+                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                                alt=""
+                            />
+                        </a>
+                    </div>
                     <div className="-my-2 -mr-2 md:hidden">
                         <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                             <span className="sr-only">Open menu</span>
@@ -104,6 +104,13 @@ export default function ClientHeader() {
                             >
                                 Подбор тренировки
                             </a>
+                            {currentUser.id &&
+                                <a
+                                    href="/schedule"
+                                    className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
+                                >
+                                    Расписание
+                                </a>}
                             {/* <a
                                 href="/help"
                                 className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
@@ -116,7 +123,7 @@ export default function ClientHeader() {
                         </Popover.Group>
                         {currentUser && currentUser.name ? (
                             <Popover className="relative text-gray-300 hover:text-gray-100">
-                             
+
                                 <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -156,14 +163,14 @@ export default function ClientHeader() {
                                             </a>
                                             {currentUser.account_type ==
                                                 "m" && (
-                                                <a
-                                                    key="dashboard"
-                                                    href="/dashboard"
-                                                    className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
-                                                >
-                                                    dashboard
-                                                </a>
-                                            )}
+                                                    <a
+                                                        key="dashboard"
+                                                        href="/dashboard"
+                                                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
+                                                    >
+                                                        dashboard
+                                                    </a>
+                                                )}
                                             <button
                                                 onClick={logout}
                                                 className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"

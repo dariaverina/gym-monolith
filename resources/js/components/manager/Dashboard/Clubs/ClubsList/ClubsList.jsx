@@ -10,7 +10,7 @@ export default function ClubsList() {
             .catch((error) => console.error(error));
     }, []);
     return (
-        <div className="px-4 sm:px-6 lg:px-8 bg-gray-900">
+        <div className="px-4 pt-10 sm:px-6 lg:px-8 bg-gray-900">
             <div className="sm:flex sm:items-center pt-10">
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold leading-6 text-white ">

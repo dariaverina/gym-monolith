@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Training;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class TrainingController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         if ($request['trainer_id']){
             $trainerId = $request->input('trainer_id');
             $trainingWeek = $request->input('week_number');
@@ -16,12 +18,13 @@ class TrainingController extends Controller
             $trainings = Training::with('training_variation', 'room.club', 'trainingParticipants.user')
                 ->where('trainer_id', $trainerId)
                 ->whereRaw("WEEK(DATE_FORMAT(training_date, '%Y-%m-%d'), 1) = $trainingWeek")
-                ->with('trainingVariation')
+                ->with('training_variation')
                 ->get();
             return response()->json($trainings);
         }
         if ($request['filter']){
             $training_variations = $request->input('training_variations');
+            $user_id = $request->input('user_id');
             if( $training_variations ){
                 $training_variations = explode(',', $training_variations);
             }
@@ -39,6 +42,13 @@ class TrainingController extends Controller
                 return $query->whereIn('time_id', $training_timings);
             })
             ->get();
+
+            if($user_id){
+                $trainings->each(function ($training) use ($user_id) {
+                $training->is_registered = $training->trainingParticipants->contains('user_id', $user_id);
+                });
+            }
+
             return response()->json($trainings);
         }
         $trainings = Training::with('training_variation', 'trainer')->get();
@@ -82,18 +92,22 @@ class TrainingController extends Controller
 
     public function delete($id)
     {
-        // Find the review to be deleted
+        // Find the training to be deleted
         $training = Training::find($id);
 
-        if (!$id) {
-            // If the review doesn't exist, return an error response
+        if (!$training) {
+            // If the training doesn't exist, return an error response
             return response()->json(['message' => 'Тренировка не найдена'], 404);
         }
 
-        // Delete the review
+        // Delete the related participants
+        $training->trainingParticipants()->delete();
+
+        // Delete the training
         $training->delete();
 
         // Return a success response
-        return response()->json(['message' => 'тренировка успешно удалена'], 200);
+        return response()->json(['message' => 'Тренировка успешно удалена'], 200);
     }
+
 }

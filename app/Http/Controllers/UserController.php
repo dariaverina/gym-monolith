@@ -27,7 +27,7 @@ class UserController extends Controller
         $users = $query->orderBy('id', 'desc')->paginate(10);
         
         $data = $users->map(function ($user) {
-            $training_variation_names = $user->trainings->pluck('trainingVariation.name')->unique()->values();
+            $training_variation_names = $user->trainings->pluck('training_variation.name')->unique()->values();
             $reviews = $user->reviews;
             return array_merge((new UserResource($user))->toArray(request()), [
                 'training_variations_names' => $training_variation_names,

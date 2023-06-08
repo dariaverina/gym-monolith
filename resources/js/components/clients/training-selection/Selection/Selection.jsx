@@ -13,57 +13,6 @@ import {
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-const navigation = [
-    {
-        name: "Клуб",
-        current: false,
-        children: [
-            { name: "GraphQL API", href: "#" },
-            { name: "iOS App", href: "#" },
-            { name: "Android App", href: "#" },
-            { name: "New Customer Portal", href: "#" },
-        ],
-    },
-    {
-        name: "Вид активности",
-        current: false,
-        children: [
-            { name: "Engineering", href: "#" },
-            { name: "Human Resources", href: "#" },
-            { name: "Customer Success", href: "#" },
-        ],
-    },
-    {
-        name: "Сложность",
-        current: false,
-        children: [
-            { name: "GraphQL API", href: "#" },
-            { name: "iOS App", href: "#" },
-            { name: "Android App", href: "#" },
-            { name: "New Customer Portal", href: "#" },
-        ],
-    },
-    {
-        name: "Тренер",
-        current: false,
-        children: [
-            { name: "GraphQL API", href: "#" },
-            { name: "iOS App", href: "#" },
-            { name: "Android App", href: "#" },
-            { name: "New Customer Portal", href: "#" },
-        ],
-    },
-    {
-        name: "Время",
-        current: false,
-        children: [
-            { name: "GraphQL API", href: "#" },
-            { name: "iOS App", href: "#" },
-            { name: "Android App", href: "#" },
-            { name: "New Customer Portal", href: "#" },
-        ],
-    },
-];
 
 export default function Selection({ trainings, setTrainings }) {
     const [filters, setFilters] = useState([
@@ -76,7 +25,7 @@ export default function Selection({ trainings, setTrainings }) {
         { id: 2, items: [] },
     ]);
     console.log("cur", currentFilters);
-
+    const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     useEffect(() => {
         fetch("/api/trainingvariations")
             .then((response) => response.json())
@@ -116,7 +65,7 @@ export default function Selection({ trainings, setTrainings }) {
         axios
             .get(
                 `/api/trainings?filter=true&training_variations=${currentFilters.find(({ id }) => id === 1)?.items.join(",")}
-                    &training_timings=${currentFilters.find(({ id }) => id === 2)?.items.join(",")}`
+                    &training_timings=${currentFilters.find(({ id }) => id === 2)?.items.join(",")}&user_id=${currentUser.id}`
             )
             .then((res) => setTrainings(res.data))
             .catch((err) => console.log(err));

@@ -27,10 +27,13 @@ export default function TrainingsList({ trainings, setTrainings }) {
             })
             .then((response) => {
                 console.log(response.data);
-                setTrainings(axios
-                    .get("/api/trainings")
-                    .then((res) => setTrainings(res.data))
-                    .catch((err) => console.log(err)))
+                axios
+                .get(
+                    `/api/trainings?filter=true&training_variations=${currentFilters.find(({ id }) => id === 1)?.items.join(",")}
+                        &training_timings=${currentFilters.find(({ id }) => id === 2)?.items.join(",")}&user_id=${currentUser.id}`
+                )
+                .then((res) => setTrainings(res.data))
+                .catch((err) => console.log(err));
             })
             .catch((responseError) => {
                 setError(responseError.response.data.message);
@@ -44,6 +47,21 @@ export default function TrainingsList({ trainings, setTrainings }) {
                     openModal()
                 }
             });
+    };
+
+    const handleLeaveTraining = (trainingId) => {
+        axios
+            .delete(`/trainingparticipant?training_id=${trainingId}&user_id=${currentUser.id}`)
+            .then((response) => {
+                console.log(response.data);
+                axios
+                .get(
+                    `/api/trainings?filter=true&training_variations=${currentFilters.find(({ id }) => id === 1)?.items.join(",")}
+                        &training_timings=${currentFilters.find(({ id }) => id === 2)?.items.join(",")}&user_id=${currentUser.id}`
+                )
+                .then((res) => setTrainings(res.data))
+                .catch((err) => console.log(err));
+            })
     };
     const [timeSlots, setTimeSlots] = useState([]);
     console.log("timeslots", timeSlots);
@@ -207,11 +225,21 @@ export default function TrainingsList({ trainings, setTrainings }) {
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            handleJoinTraining(training.id)
+                                            {
+                                                training.is_registered
+                                                ? handleLeaveTraining(training.id)
+                                                : handleJoinTraining(training.id)
+                                            }
                                         }
-                                        className="rounded-md bg-indigo-900 px-3 py-2 text-sm font-semibold text-indigo-200 shadow-sm  hover:bg-indigo-800"
+                                        // disabled={training.is_registered}
+                                        className={clsx(
+                                            training.is_registered
+                                                ? "bg-gray-800 hover:bg-gray-700"
+                                                : "bg-indigo-900 hover:bg-indigo-800",
+                                            "rounded-md px-3 py-2 text-sm font-semibold text-indigo-200 shadow-sm  "
+                                        )}
                                     >
-                                        Записаться
+                                        {training.is_registered? 'Отменить запись' :'Записаться'}
                                     </button>
                                 </div>
                             </div>

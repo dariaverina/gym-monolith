@@ -75,6 +75,7 @@ Route::put('/clubs/{id}', [ClubController::class, 'update']);
 Route::post('/training', [TrainingController::class, 'store']);
 Route::post('/trainingparticipant', [TrainingParticipantController::class, 'store']);
 Route::delete('/training/{id}', [TrainingController::class, 'delete']);
+Route::delete('/trainingparticipant', [TrainingParticipantController::class, 'delete']);
 // Route::get('/clubs', [ClubController::class, 'index']);
 
 // Route::get('/clubs', [ClubController::class, 'index']);
