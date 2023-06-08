@@ -16,7 +16,8 @@ class Training extends Model
         'day_of_week',
         'capacity',
         'room_id',
-        'free_slots'
+        'free_slots',
+        'training_date'
     ];
 
     public function trainer()
@@ -38,4 +39,9 @@ class Training extends Model
     {
         return $this->belongsTo(Room::class);
     }
+
+    public function trainingParticipants()
+{
+    return $this->hasMany(TrainingParticipant::class);
+}
 }

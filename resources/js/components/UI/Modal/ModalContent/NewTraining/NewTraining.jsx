@@ -4,7 +4,16 @@ import axiosClient from "@/public/axios";
 import { useUI } from "@/context/use-ui";
 import axios from "axios";
 
-export default function NewTraining({ timeId, dayOfWeek, setTrainings }) {
+function getDateFromWeekAndDay(weekNumber, dayOfWeek) {
+    const year = new Date().getFullYear();
+    const firstDayOfYear = new Date(year, 0, 1);
+    const daysToAdd = (weekNumber - 1) * 7 + (dayOfWeek - firstDayOfYear.getDay()+1);
+    const targetDate = new Date(firstDayOfYear.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
+    const formattedDate = targetDate.toISOString().slice(0, 10);
+    return formattedDate;
+  }
+
+export default function NewTraining({ timeId, dayOfWeek, setTrainings, weekNumber }) {
     const [clubs, setClubs] = useState([]);
     const [selectedClub, setSelectedClub] = useState(null);
     const [rooms, setRooms] = useState(null);
@@ -14,6 +23,15 @@ export default function NewTraining({ timeId, dayOfWeek, setTrainings }) {
     const [capacity, setCapacity] = useState(null);
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     const { openModal, closeModal, showLoader, hideLoader, setModalContent, displayModal } =useUI();
+    
+    // console.log('data', getDateFromWeekAndDay(weekNumber, dayOfWeek))
+    // function formatDateToISO(dateString) {
+    //     const [day, month, year] = dateString.split('.');
+    //     const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    //     return formattedDate;
+    //   }
+      
+      const trainingDate = getDateFromWeekAndDay(weekNumber, dayOfWeek);
 
     useEffect(() => {
         fetch("/api/clubs")
@@ -54,10 +72,11 @@ export default function NewTraining({ timeId, dayOfWeek, setTrainings }) {
                     day_of_week: dayOfWeek,
                     capacity: capacity,
                     room_id: selectedRoom,
+                    training_date: trainingDate
             })
             .then((response) => {
                 axios
-                    .get(`/api/trainings?trainer_id=${currentUser.id}`)
+                    .get(`/api/trainings?trainer_id=${currentUser.id}&week_number=${weekNumber}`)
                     .then((res) => {setTrainings(res.data); console.log('res',res.data)})
                 closeModal();
             });

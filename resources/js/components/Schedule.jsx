@@ -20,6 +20,26 @@ function getWeekNumber(date) {
     return weekNumber;
 }
 
+function getStartDateFromWeekNumber(weekNumber) {
+    const year = new Date().getFullYear();
+    const firstDayOfYear = new Date(year, 0, 1);
+    const daysToAdd = (weekNumber - 1) * 7;
+    const startDayOfWeek = 1; // 1 corresponds to Monday
+    const offset = startDayOfWeek - firstDayOfYear.getDay();
+    const startDate = new Date(firstDayOfYear.getTime() + (offset * 24 * 60 * 60 * 1000) + (daysToAdd * 24 * 60 * 60 * 1000));
+    return startDate;
+  }
+  function getEndDateFromWeekNumber(weekNumber) {
+    const year = new Date().getFullYear();
+    const firstDayOfYear = new Date(year, 0, 1);
+    const daysToAdd = (weekNumber - 1) * 7;
+    const startDayOfWeek = 1; // 1 corresponds to Monday
+    const offset = startDayOfWeek - firstDayOfYear.getDay();
+    const startDate = new Date(firstDayOfYear.getTime() + (offset * 24 * 60 * 60 * 1000) + (daysToAdd * 24 * 60 * 60 * 1000));
+    const endDate = new Date(startDate.getTime() + (6 * 24 * 60 * 60 * 1000));
+    return endDate;
+  }
+  
 
 export default function Schedule() {
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
@@ -111,10 +131,11 @@ export default function Schedule() {
                         </svg>
                     </button>
                     <p className="text-2xl">
-                        Расписание на 
-                        {week == weekNumber ? ' текущую ': week-1 == weekNumber? ' следующую ': week+1 == weekNumber? ' предыдущую ': '  '}
-                       
-                        неделю
+                        Расписание на {' '}
+                        {week == weekNumber ? 'текущую неделю' : week - 1 == weekNumber ? 'следующую неделю' : week + 1 == weekNumber ? 'предыдущую неделю' :
+                            getStartDateFromWeekNumber(week).toLocaleDateString().toString() + '-' +
+                            getEndDateFromWeekNumber(week).toLocaleDateString().toString()
+                        }
                     </p>
                     <button
                         onClick={() => {
@@ -182,10 +203,10 @@ export default function Schedule() {
                                             )}
                                         // className="border border-gray-500 p-2 text-indigo-200 hover:text-indigo-400 text-center hover:bg-gray-800"
                                         >
-                                            {!training && (
+                                            {!training && week > weekNumber && (
                                                 <button
                                                     onClick={() => {
-                                                        setModalContent(<NewTraining timeId={timeSlot.id} dayOfWeek={j + 1} setTrainings={setTrainings} />);
+                                                        setModalContent(<NewTraining  timeId={timeSlot.id} dayOfWeek={j + 1} setTrainings={setTrainings} weekNumber = {week}/>);
                                                         openModal();
                                                     }}
                                                 >
@@ -207,7 +228,7 @@ export default function Schedule() {
                                             )}
                                             <button
                                                 onClick={() => {
-                                                    setModalContent(<TrainingDetails timeId={timeSlot.id} dayOfWeek={j + 1} setTrainings={setTrainings} />);
+                                                    setModalContent(<TrainingDetails training = {training} setTrainings={setTrainings} weekNumber = {week}/>);
                                                     openModal();
                                                 }}
                                             >

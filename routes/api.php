@@ -44,6 +44,7 @@ Route::get('/trainingtimes', [TrainingTimeController::class, 'index']);
 //trainings
 Route::get('/trainings', [TrainingController::class, 'index']);
 Route::post('/trainings', [TrainingController::class, 'store']);
+Route::delete('/training/{id}', [TrainingController::class, 'delete']);
 
 Route::get('/trainingparticipant', [TrainingParticipantController::class, 'index']);
 Route::post('/trainingparticipant', [TrainingParticipantController::class, 'store']);

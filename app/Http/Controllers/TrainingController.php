@@ -13,9 +13,9 @@ class TrainingController extends Controller
             $trainerId = $request->input('trainer_id');
             $trainingWeek = $request->input('week_number');
 
-            $trainings = Training::with('trainingVariation', 'room.club')
+            $trainings = Training::with('trainingVariation', 'room.club', 'trainingParticipants.user')
                 ->where('trainer_id', $trainerId)
-                ->whereRaw("WEEK(training_date) = $trainingWeek")
+                ->whereRaw("WEEK(DATE_FORMAT(training_date, '%Y-%m-%d'), 1) = $trainingWeek")
                 ->get();
             return response()->json($trainings);
         }
@@ -51,6 +51,8 @@ class TrainingController extends Controller
 
     public function store(Request $request)
     {
+        // echo($request);exit;
+        $request['free_slots'] = $request['capacity'];
         $training = Training::create($request->all());
         return response()->json($training, 201);
     }
@@ -75,5 +77,22 @@ class TrainingController extends Controller
     {
         $training->delete();
         return redirect()->route('trainings.index');
+    }
+
+    public function delete($id)
+    {
+        // Find the review to be deleted
+        $training = Training::find($id);
+
+        if (!$id) {
+            // If the review doesn't exist, return an error response
+            return response()->json(['message' => 'Тренировка не найдена'], 404);
+        }
+
+        // Delete the review
+        $training->delete();
+
+        // Return a success response
+        return response()->json(['message' => 'тренировка успешно удалена'], 200);
     }
 }
