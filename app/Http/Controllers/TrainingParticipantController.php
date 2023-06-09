@@ -24,17 +24,21 @@ class TrainingParticipantController extends Controller
             'user_id' => 'required|integer',
         ]);
 
-        $existingBooking = TrainingParticipant::where('training_id', $validatedData['training_id'])
-        ->where('user_id', $validatedData['user_id'])
-        ->exists();
-
-        if ($existingBooking) {
-            return response()->json(['message' => 'Вы уже записаны на эту тренировку.'], 409);
-        }
+        
         
         $training = Training::findOrFail($validatedData['training_id']);
         if ($training->free_slots <= 0) {
             return response()->json(['message' => 'No available free slots.']);
+        }
+        $existingBooking = TrainingParticipant::whereHas('training', function ($query) use ($training) {
+            $query->where('training_date', $training['training_date'])
+                ->where('time_id', $training['time_id']);
+        })
+            ->where('user_id', $request['user_id'])
+            ->exists();
+    
+        if ($existingBooking) {
+            return response()->json(['message' => 'Вы уже записаны на тренировку в это время.'], 409);
         }
     
     

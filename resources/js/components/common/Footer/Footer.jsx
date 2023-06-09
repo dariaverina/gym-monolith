@@ -22,10 +22,9 @@ const navigation = {
         { name: "Partners", href: "#" },
     ],
     legal: [
-        { name: "инстаграм", href: "#" },
-        { name: "вконтакте", href: "#" },
-        { name: "одноклассники", href: "#" },
-        { name: "тик ток", href: "#" },
+        { name: "вконтакте", href: "https://vk.com/iddashaahsad" },
+        { name: "одноклассники", href: "https://ok.ru/profile/591866055946" },
+        { name: "ютюб", href: "https://www.youtube.com/watch?v=Wj0w-uwsPZ0" },
     ],
 };
 

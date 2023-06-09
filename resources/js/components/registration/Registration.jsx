@@ -15,7 +15,12 @@ export default function Registration() {
         user_type: "c",
         phone: "+7927876566",
     });
-    console.log(userData);
+    console.log(userData)
+    const [phoneError, setPhoneError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+
     const { currentUser, setCurrentUser, setUserToken } = userStateContext();
     const { openModal, showLoader, hideLoader, setModalContent, displayModal } =
         useUI();
@@ -27,6 +32,28 @@ export default function Registration() {
     const onSubmit = (e) => {
         e.preventDefault();
         setError({ __html: "" });
+        setPhoneError(""); // Clear phone number error
+        setEmailError(""); // Clear email error
+        setPasswordError(""); // Clear password error
+
+        // Password validation
+        if (userData.password.length < 6) {
+            setPasswordError("Длина паспорта должна быть не менее 6 символов"); // Set the password error message
+            return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(userData.email)) {
+            setEmailError("Недопустимый email-адрес"); // Set the email error message
+            return;
+        }
+        // Phone number validation
+        const phoneRegex = /^\+?\d{10,}$/; // Modify the regex pattern based on your phone number format requirements
+        if (!phoneRegex.test(userData.phone)) {
+            setPhoneError("Недопустимый номер телефона"); // Set the phone number error message
+            return;
+        }
         axiosClient
             .post("/signup", userData, {
                 headers: {
@@ -40,11 +67,27 @@ export default function Registration() {
                     window.location.href = "/account";
                 if (userData.user_type == "t") {
                     setModalContent(
-                        <div>
-                            Регистрация прошла успешно. Ожидайте проверки
-                            администратора
+                        <div className="p-6 bg-indigo-400 sm:rounded-lg flex flex-col items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6 mb-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"
+                            />
+                          </svg>
+                          <p className="text-black text-center">
+                            Регистрация прошла успешно. Ожидайте проверки администратора.
+                          </p>
                         </div>
-                    );
+                      );
+                      
                     openModal();
                     setIsTrainerAlertOpen(true);
                 }
@@ -132,8 +175,7 @@ export default function Registration() {
                                 Профиль
                             </h2>
                             <p className="mt-1 text-sm leading-6 text-gray-400">
-                                Эта информация будет отображаться публично,
-                                поэтому будьте осторожны, чем вы делитесь.
+                                Эта информация будет отображаться публично.
                             </p>
 
                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -176,7 +218,7 @@ export default function Registration() {
                                                 if (
                                                     file &&
                                                     file.type.substr(0, 5) ===
-                                                        "image"
+                                                    "image"
                                                 ) {
                                                     setUserData({
                                                         ...userData,
@@ -241,10 +283,13 @@ export default function Registration() {
                                         }
                                         id="email"
                                         name="email"
-                                        type="email"
-                                        // autoComplete="email"
-                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                        // type="email"
+                                        className={`block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 ${emailError && "border-red-500" // Add a red border for an invalid email address
+                                            }`}
                                     />
+                                    {emailError && (
+                                        <p className="mt-1 text-sm text-red-500">{emailError}</p>
+                                    )}
                                 </div>
                             </div>
                             <div className="sm:col-span-4">
@@ -256,12 +301,21 @@ export default function Registration() {
                                 </label>
                                 <div className="mt-2">
                                     <input
+                                        onChange={(e) =>
+                                            setUserData({
+                                                ...userData,
+                                                phone: e.target.value,
+                                            })
+                                        }
                                         id="phone"
                                         name="phone"
                                         type="phone"
-                                        // autoComplete="phone"
-                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                        className={`block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 ${phoneError && "border-red-500" // Add a red border for an invalid phone number
+                                            }`}
                                     />
+                                    {phoneError && (
+                                        <p className="mt-1 text-sm text-red-500">{phoneError}</p>
+                                    )}
                                 </div>
                             </div>
                             <div className="sm:col-span-4">
@@ -282,9 +336,27 @@ export default function Registration() {
                                         }
                                         name="password"
                                         value={userData.password}
-                                        // placeholder="пароль"
-                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                        type={showPassword ? "text" : "password"} // Show password as text or dots based on showPassword state
+                                        className={`block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 ${passwordError && "border-red-500" // Add a red border for an invalid password
+                                            }`}
                                     />
+                                    {passwordError && (
+                                        <p className="mt-1 text-sm text-red-500">{passwordError}</p>
+                                    )}
+                                </div>
+                                <div className="flex items-center mt-1">
+                                    <input
+                                        type="checkbox"
+                                        checked={showPassword}
+                                        onChange={() => setShowPassword(!showPassword)}
+                                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                    />
+                                    <label
+                                        htmlFor="show-password"
+                                        className="ml-2 block text-sm text-white"
+                                    >
+                                        Show Password
+                                    </label>
                                 </div>
                             </div>
                         </div>

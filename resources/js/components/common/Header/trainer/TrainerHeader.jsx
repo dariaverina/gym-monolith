@@ -70,7 +70,7 @@ export default function TrainerHeader() {
         >
             {/* className="relative bg-green-50"> */}
             <div
-                className="pointer-events-none absolute inset-0 z-30 shadow"
+                className="pointer-events-none absolute inset-0 z-30"
                 aria-hidden="true"
             />
             <div className="relative z-20">
@@ -135,30 +135,21 @@ export default function TrainerHeader() {
                                     leaveTo="opacity-0 translate-y-1"
                                 >
                                     <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-40 overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                                        <div className="p-4"></div>
+                                        <div className=""></div>
                                         <div className="grid grid-cols-1 divide-x divide-gray-900/5 bg-gray-50">
                                             <a
                                                 key="account"
                                                 href="/account"
                                                 className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                                             >
-                                                account
+                                                Аккаунт
                                             </a>
-                                            {currentUser.account_type ==
-                                                "m" && (
-                                                <a
-                                                    key="dashboard"
-                                                    href="/dashboard"
-                                                    className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
-                                                >
-                                                    dashboard
-                                                </a>
-                                            )}
+                                           
                                             <button
                                                 onClick={logout}
                                                 className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                                             >
-                                                logout
+                                                Выйти
                                             </button>
                                         </div>
                                     </Popover.Panel>

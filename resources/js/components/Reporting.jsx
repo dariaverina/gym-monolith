@@ -15,6 +15,7 @@ function getWeekNumber(date) {
 
 const Reporting = () => {
   const [clubs, setClubs] = useState([]);
+  // console.log('clubs',clubs)
   const [selectedClub, setSelectedClub] = useState(clubs[0]);
   const [selectedWeek, setSelectedWeek] = useState(getWeekNumber(new Date()));
   console.log('week', selectedWeek)
@@ -67,9 +68,9 @@ const Reporting = () => {
               onChange={(e) => setSelectedClub(e.target.value)}
             >
               {clubs && clubs.map((club) => (
-                <option className="text-black" key={club.id} value={club.id}>
+                <>{club?.rooms.length>0 && <option className="text-black" key={club.id} value={club.id}>
                   {club.name}
-                </option>
+                </option>}</>
               ))}
             </select>
           </div>

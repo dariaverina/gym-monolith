@@ -24,7 +24,7 @@ class UserController extends Controller
             $query->where('user_type', $userType);
         }
         
-        $users = $query->orderBy('id', 'desc')->paginate(10);
+        $users = $query->orderBy('id', 'desc')->paginate(20);
         
         $data = $users->map(function ($user) {
             $training_variation_names = $user->trainings->pluck('training_variation.name')->unique()->values();
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         // check if the request contains specific fields to update
         $user = User::find($id);
-        $user->fill($request->only(['status', 'name']));
+        $user->fill($request->only(['status', 'name', 'email', 'phone']));
         // if (isset($data['status'])) {
         //    
         // }

@@ -43,7 +43,11 @@ export default function TrainingsList({ trainings, setTrainings, currentFilters 
                     openModal()
                 }
                 if(responseError.response.data.message == 'Вы уже записаны на эту тренировку.'){
-                    setModalContent(<div className="p-6 bg-red-400  sm:rounded-lg">Вы уже записаны на эту тренировку.</div>);
+                    setModalContent(<div className="p-6 bg-indigo-400  sm:rounded-lg">Вы уже записаны на эту тренировку.</div>);
+                    openModal()
+                }
+                if(responseError.response.data.message == 'Вы уже записаны на тренировку в это время.'){
+                    setModalContent(<div className="p-6 bg-indigo-400  sm:rounded-lg">Вы уже записаны на тренировку в это время. Отмените запись на существующую тренировку чтобы записаться на эту. </div>);
                     openModal()
                 }
             });

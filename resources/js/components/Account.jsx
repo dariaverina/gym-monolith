@@ -3,7 +3,7 @@ import Layout from "./common/Layout/Layout";
 import { userStateContext } from '@/context/context-provider';
 import MainTrainerContent from "./trainer/main-page/MainContent";
 import MainClientContent from "./clients/main-page/MainContent";
-import TrainerAccount from "./trainer/account/Account";
+// import TrainerAccount from "./trainer/account/Account";
 import ClientAccount from "./clients/account/Account";
 
 const Account = () => {

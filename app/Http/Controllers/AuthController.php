@@ -21,6 +21,7 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
             'email' => $data['email'],
             'user_type' => $data['user_type'],
+            'phone' => $data['phone'],
             'status' => ($data['user_type'] == 't') ? 'n' : 'a'
         ]);
 

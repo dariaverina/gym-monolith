@@ -54,6 +54,7 @@ class TrainingController extends Controller
             ->when(!empty($training_timings), function ($query) use ($training_timings) {
                 return $query->whereIn('time_id', $training_timings);
             })
+            ->where('training_date', '>', date('Y-m-d'))
             ->get();
 
             if($user_id){

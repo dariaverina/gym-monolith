@@ -3,7 +3,7 @@ import Variation from "./Variation/Variation";
 
 export default function Variations({ roomVariations, clubInfo, setClubInfo, room }) {
     const [variations, setVariations] = useState([]);
-
+    console.log(clubInfo)
     useEffect(() => {
         fetch("/api/trainingvariations")
             .then((response) => response.json())

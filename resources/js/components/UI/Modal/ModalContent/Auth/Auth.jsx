@@ -10,6 +10,8 @@ export default function Auth() {
     const [twoFactor, setTwoFactor] = useState(false);
     const [twoFactorMessage, setTwoFactorMessage] = useState(null)
     const { displayModal, closeModal, modalContent } = useUI();
+    let needReload = false;
+
     const onSubmit = (e) => {
         e.preventDefault();
         axiosClient
@@ -19,10 +21,11 @@ export default function Auth() {
                     setTwoFactor(true)
                     setTwoFactorMessage("Введите код отправленный на почту @gmail");
                 } else {
+                    if (currentUser.id) needReload = true;
                     setCurrentUser(data.user);
                     setUserToken(data.token);
                     closeModal();
-                    window.location.href = '/'
+                    if (needReload) window.location.href = '/'
                 }
             })
             .catch((responseError) => {
@@ -75,10 +78,7 @@ export default function Auth() {
                             </div>
 
                             <div>
-                                <label
-                                    htmlFor="password"
-                                    className="block text-sm font-medium text-gray-100"
-                                >
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-100">
                                     Password
                                 </label>
                                 <div className="mt-1">
@@ -91,13 +91,14 @@ export default function Auth() {
                                         }
                                         id="password"
                                         name="password"
-                                        type="text"
+                                        type="password" // Set the type attribute to "password"
                                         autoComplete="current-password"
                                         required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
                             </div>
+
 
                             <div className="flex items-center justify-between">
                                 {error && (
@@ -115,7 +116,7 @@ export default function Auth() {
                                 <div className="text-gray-400">{twoFactorMessage}</div>
                                 <div className="mt-1">
                                     <input
-                                        onChange={(e)=>setUserData({
+                                        onChange={(e) => setUserData({
                                             ...userData,
                                             verification_code: e.target.value,
                                         })}
@@ -126,7 +127,7 @@ export default function Auth() {
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
-                                </>
+                            </>
                             }
                             <div className="flex justify-center">
                                 <button

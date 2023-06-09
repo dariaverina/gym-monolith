@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { useUI } from "@/context/use-ui";
 import NewTraining from "./UI/Modal/ModalContent/NewTraining/NewTraining";
 import TrainingDetails from "./UI/Modal/ModalContent/TrainingDetails/TrainingDetails";
+import TrainingDetailsCustomer from "./UI/Modal/ModalContent/TrainingDetails/TrainingDetailsCustomer";
 
 
 function getWeekNumber(date) {
@@ -214,7 +215,7 @@ export default function Schedule() {
                                             )}
                                         // className="border border-gray-500 p-2 text-indigo-200 hover:text-indigo-400 text-center hover:bg-gray-800"
                                         >
-                                            {!training && week > weekNumber && (
+                                            {!training && week > weekNumber && currentUser.user_type == 't' && (
                                                 <button
                                                     onClick={() => {
                                                         setModalContent(<NewTraining  timeId={timeSlot.id} dayOfWeek={j + 1} setTrainings={setTrainings} weekNumber = {week}/>);
@@ -239,7 +240,7 @@ export default function Schedule() {
                                             )}
                                             <button
                                                 onClick={() => {
-                                                    setModalContent(<TrainingDetails training = {training} setTrainings={setTrainings} weekNumber = {week}/>);
+                                                    {currentUser.user_type == 't' ? setModalContent(<TrainingDetails training = {training} setTrainings={setTrainings} weekNumber = {week}/>):setModalContent(<TrainingDetailsCustomer training = {training} setTrainings={setTrainings} weekNumber = {week}/>);}
                                                     openModal();
                                                 }}
                                             >
