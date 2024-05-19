@@ -4,12 +4,12 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 const images = [
     {
-        src: "https://www.fitness-briz.ru/bitrix/templates/briz/images/5foto.jpg",
-        text: "Планирование своего расписания и возможность проведения тренировок в удобное время",
+        src: "https://www.profguide.io/images/article/a/51/RRfM53TmVX.webp",
+        text: "Планирование своего расписания и возможность связи со студентами",
     },
     {
-        src: "https://cdn.shazoo.ru/c576x256/660078_LRGPHwe_shfiayi11azoo-title.jpg",
-        text: "Ведение учета финансов и клиентов",
+        src: "https://www.profguide.io/images/article/a/51/RRfM53TmVX.webp",
+        text: "Получение напоминаний через телеграмм-бот",
     },
 ];
 export default function MainTrainerContent() {
@@ -25,12 +25,11 @@ export default function MainTrainerContent() {
     return (
         <div className="bg-gray-900">
             <p className="flex items-center justify-center pt-10 flex-col text-2xl text-white">
-                Добро пожаловать на обзорную панель тренера клуба Grupovie
-                trenirovki
+                Добро пожаловать на панель преподавателя ВУЗа УлГТУ!
                 <br />
             </p>
             <p className="flex items-center justify-center pt-10 flex-col text-2xl text-white">
-                Какие возможности открывает панель тренера?
+                Какие возможности открывает панель преподавателя?
             </p>
             <div className="flex items-center justify-center pt-10">
                 <div className="relative w-3/5 h-56 md:h-96 overflow-hidden rounded-lg bg-gray-900 ">

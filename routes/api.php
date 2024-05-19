@@ -17,26 +17,11 @@ use App\Models\Club;
 use App\Models\User;
 use App\Models\TrainingParticipant;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
 //clubs
 Route::post('/clubs', [ClubController::class, 'store']);
 Route::get('/clubs', [ClubController::class, 'index']);
 Route::get('clubs/{idOrSeoName}', [ClubController::class, 'show']);
 Route::put('/clubs/{id}', [ClubController::class, 'update']);
-// Route::get('/clubs', function () {
-//     $clubs = Club::all();
-//     return response()->json($clubs);
-// });
 
 //Training variations
 Route::get('/trainingvariations', [TrainingVariationController::class, 'index']);
@@ -77,7 +62,13 @@ Route::put('/reviews/{id}', [ReviewController::class, 'update']);
 Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('reviews/{id}', [ReviewController::class, 'show']);
 Route::delete('/reviews/{id}', [ReviewController::class, 'delete']);
+Route::get('/token', function (Request $request) {
+    $token = $request->session()->token();
+ 
+    $token = csrf_token();
+    return ($token);
 
+});
 
 
 Route::get('/generate-report', [ReportController::class, 'generateReport']);

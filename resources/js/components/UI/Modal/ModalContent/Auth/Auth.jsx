@@ -57,7 +57,7 @@ export default function Auth() {
                         <form className="space-y-6 " action="#" method="POST">
                             <div>
                                 <label className="block text-sm font-medium text-gray-100">
-                                    Email address
+                                    Логин
                                 </label>
                                 <div className="mt-1">
                                     <input
@@ -79,7 +79,7 @@ export default function Auth() {
 
                             <div>
                                 <label htmlFor="password" className="block text-sm font-medium text-gray-100">
-                                    Password
+                                    Пароль
                                 </label>
                                 <div className="mt-1">
                                     <input

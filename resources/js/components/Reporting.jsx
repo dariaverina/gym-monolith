@@ -29,20 +29,20 @@ const Reporting = () => {
 
   const pdfGenerate = () => {
     fetch("/generate-report?club_id=" + selectedClub + `&week_number=${selectedWeek}`)
-      .then((response) => response.blob())
-      .then((blob) => {
-        // Создайте URL-объект для скачивания PDF-файла
-        const url = window.URL.createObjectURL(new Blob([blob]));
+    //   .then((response) => response.blob())
+    //   .then((blob) => {
+    //     // Создайте URL-объект для скачивания PDF-файла
+    //     const url = window.URL.createObjectURL(new Blob([blob]));
 
-        // Создайте ссылку для скачивания и нажмите на нее для скачивания файла
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'report.pdf');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      })
-      .catch((error) => console.error(error));
+    //     // Создайте ссылку для скачивания и нажмите на нее для скачивания файла
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.setAttribute('download', 'report.pdf');
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    //   })
+    //   .catch((error) => console.error(error));
   }
 
 

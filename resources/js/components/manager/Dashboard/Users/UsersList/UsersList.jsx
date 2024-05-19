@@ -7,7 +7,7 @@ export default function UsersList() {
     useEffect(() => {
         fetch("/api/users")
             .then((response) => response.json())
-            .then((data) => setUsers(data))
+            .then((data) => setUsers([{id: 1, name: "Мартышева Тамара Сергеевна", user_type: "ПиБД-42", email: "mart@gmail.com"}, {id: 1, name: "Симонов Никита Константинович", user_type: "ПиБД-42", email: "nikita@gmail.com", status: "a"}]))
             .catch((error) => console.error(error));
     }, []);
     return (
@@ -15,10 +15,10 @@ export default function UsersList() {
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold leading-6 text-white">
-                        Пользователи
+                        Студенты
                     </h1>
                     <p className="mt-2 text-sm text-gray-700">
-                        Список всех пользователей.
+                        Список всех студентов.
                     </p>
                 </div>
                 {/* <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -53,7 +53,7 @@ export default function UsersList() {
                                             scope="col"
                                             className="px-3 py-3.5 text-left text-sm font-semibold text-white"
                                         >
-                                            Роль
+                                            Группа
                                         </th>
                                         
                                         <th

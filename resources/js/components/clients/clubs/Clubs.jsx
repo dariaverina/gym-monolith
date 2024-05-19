@@ -18,9 +18,10 @@ export default function ClientsClubs() {
   }, []);
   console.log(clubs)
   return (
-    <div className="flex flex-wrap pt-16 pl-10 bg-gray-900">
-      <ClubsMap clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} mapState={mapState} setMapState={setMapState} />
-      <ClubsList clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} setMapState={setMapState} />
-    </div>
+    <div className="bg-gray-900 relative flex items-center justify-center h-screen">
+    <button className="text-white  font-extrabold opacity-100 text-2xl rounded-lg">
+        <h1>Настройка телеграмм-бота</h1>
+    </button>
+</div>
   );
 }

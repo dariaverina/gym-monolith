@@ -53,7 +53,6 @@ export default function Header() {
         data != undefined && setCurrentUser(data)
       })
   }, [])
-
   return (
     <>
       {(currentUser && currentUser.user_type == 'm') ? <ManagerHeader/> : (currentUser && currentUser.user_type == 't')?<TrainerHeader/>:<ClientHeader/>}

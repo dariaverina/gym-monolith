@@ -19,7 +19,7 @@ class ClubController extends Controller
     {
         $club = Club::create($request->all());
 
-        foreach ($request->rooms as $roomData) {
+        if ($request->rooms) foreach ($request->rooms as $roomData) {
             $room = new Room($roomData);
             $club->rooms()->save($room);
 
@@ -58,7 +58,7 @@ class ClubController extends Controller
         $club->update($request->all());
         // echo($club);exit;
         $existingRoomIds = $club->rooms->pluck('id')->toArray();
-        foreach ($request->rooms as $roomData) {
+        if ($request->rooms) foreach ($request->rooms as $roomData) {
             $roomId = $roomData['id'] ?? null;
             $room = Room::find($roomId);
     

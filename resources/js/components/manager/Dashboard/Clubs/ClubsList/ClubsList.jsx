@@ -2,22 +2,23 @@ import { useEffect, useState } from "react";
 
 export default function ClubsList() {
     const [clubs, setClubs] = useState([]);
-
+    
     useEffect(() => {
         fetch("/api/clubs")
             .then((response) => response.json())
-            .then((data) => setClubs(data))
+            .then((data) =>  setClubs([{"id": 1, name: "Подкорытова Ю. В.", address:"Высшая математика, Основы программирования"}, {id:2, name: "Клепинин Иван Андреевич", address: "Русский Язык"}]))
             .catch((error) => console.error(error));
     }, []);
+   
     return (
         <div className="px-4 pt-10 sm:px-6 lg:px-8 bg-gray-900">
             <div className="sm:flex sm:items-center pt-10">
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold leading-6 text-white ">
-                        Клубы
+                        Преподаватели
                     </h1>
                     <p className="mt-2 text-sm text-gray-700">
-                        Список всех клубов
+                        Список всех преподавателей
                     </p>
                 </div>
                 <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -25,7 +26,7 @@ export default function ClubsList() {
                         href={"clubs/new-club"}
                         className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                        Добавить клуб
+                        Добавить преподавателя
                     </a>
                 </div>
             </div>
@@ -40,13 +41,13 @@ export default function ClubsList() {
                                             scope="col"
                                             className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
                                         >
-                                            Название
+                                            ФИО
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-3 py-3.5 text-left text-sm font-semibold text-white"
                                         >
-                                            Адрес
+                                            Предметы
                                         </th>
                                         <th
                                             scope="col"

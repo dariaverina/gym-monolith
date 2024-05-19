@@ -14,6 +14,8 @@ export default function Registration() {
         password: "",
         user_type: "c",
         phone: "+7927876566",
+        // group: "",
+        // vuz: ""
     });
     console.log(userData)
     const [phoneError, setPhoneError] = useState("");
@@ -116,8 +118,7 @@ export default function Registration() {
                             Тип аккаунта
                         </h2>
                         <p className="mt-1 text-sm leading-6 text-gray-400">
-                            Укажите, хотите ли вы стать тренером или стать
-                            клиентом клуба
+                            Укажите тип аккаунта
                         </p>
 
                         <div className="mt-10 ">
@@ -141,7 +142,7 @@ export default function Registration() {
                                             htmlFor="c"
                                             className="block text-sm font-medium leading-6 text-white"
                                         >
-                                            Хочу тренироваться
+                                            Студент
                                         </label>
                                     </div>
                                     <div className="flex items-center gap-x-3">
@@ -162,7 +163,7 @@ export default function Registration() {
                                             htmlFor="t"
                                             className="block text-sm font-medium leading-6 text-white"
                                         >
-                                            Хочу тренировать
+                                            Преподаватель
                                         </label>
                                     </div>
                                 </div>
@@ -320,6 +321,52 @@ export default function Registration() {
                             </div>
                             <div className="sm:col-span-4">
                                 <label
+                                    htmlFor="vuz"
+                                    className="block text-sm font-medium leading-6 text-white"
+                                >
+                                    ВУЗ
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        onChange={(e) =>
+                                            setUserData({
+                                                ...userData,
+                                                vuz: e.target.value,
+                                            })
+                                        }
+                                        id="vuz"
+                                        name="vuz"
+                                        value={userData.vuz}
+                                        // placeholder="Вася Иванов"
+                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                            <div className="sm:col-span-4">
+                                <label
+                                    htmlFor="group"
+                                    className="block text-sm font-medium leading-6 text-white"
+                                >
+                                    Группа (для студентов)
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        onChange={(e) =>
+                                            setUserData({
+                                                ...userData,
+                                                group: e.target.value,
+                                            })
+                                        }
+                                        id="group"
+                                        name="group"
+                                        value={userData.group}
+                                        // placeholder="Вася Иванов"
+                                        className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                            <div className="sm:col-span-4">
+                                <label
                                     htmlFor="password"
                                     className="block text-sm font-medium leading-6 text-white"
                                 >
@@ -344,6 +391,7 @@ export default function Registration() {
                                         <p className="mt-1 text-sm text-red-500">{passwordError}</p>
                                     )}
                                 </div>
+                                
                                 <div className="flex items-center mt-1">
                                     <input
                                         type="checkbox"

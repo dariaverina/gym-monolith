@@ -46,7 +46,7 @@ export default function TrainerHeader() {
         axiosClient.post("/logout").then((res) => {
             setCurrentUser(undefined);
             setUserToken(null);
-            window.location.href = "/";
+            // window.location.href = "/";
         });
     };
 
@@ -100,10 +100,22 @@ export default function TrainerHeader() {
                                 Аккаунт
                             </a>
                             <a
+                                href="/clubs"
+                                className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
+                            >
+                                Бот
+                            </a>
+                            <a
                                 href="/schedule"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
                                 Расписание
+                            </a>
+                            <a
+                                href="/communication"
+                                className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
+                            >
+                                Связь с учениками
                             </a>
                         </Popover.Group>
                             <Popover className="relative text-gray-300 hover:text-gray-100">

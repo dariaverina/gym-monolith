@@ -3,6 +3,7 @@ import Room from "./RoomItem/Room";
 import { useEffect, useState } from "react";
 
 export default function Rooms({ clubInfo, setClubInfo }) {
+    console.log('lol', clubInfo)
     const addNewRoom = () => {
         const newRoom = {
           id: null,

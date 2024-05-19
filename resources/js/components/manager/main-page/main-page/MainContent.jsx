@@ -18,12 +18,12 @@ export default function MainManagerContent() {
         <div className="bg-gray-900 relative">
             <img
                 className="w-full  opacity-10"
-                src="https://alexfitness.ru/assets/images/fitguide/gruppovie-trenirovki.jpg"
+                src="https://sfedu.ru/files/imagecache/newsBig/presscenter/ac6/e7a/news_pic_id73114.jpg"
                 alt="Background Image"
             />
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center ">
                 <h1 className="font-extrabold text-transparent h-72 text-4xl bg-clip-text bg-gradient-to-r from-indigo-900 via-indigo-400 to-indigo-900">
-                    Добро пожаловать в личный кабинет менеджера сети спортклубов
+                    Добро пожаловать в личный кабинет сотрудника ВУЗа
                 </h1>
             </div>
         </div>

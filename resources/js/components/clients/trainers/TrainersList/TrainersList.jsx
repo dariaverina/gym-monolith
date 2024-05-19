@@ -1,7 +1,6 @@
 import axios from "axios";
 import { StarIcon } from '@heroicons/react/20/solid';
 import { useState, useEffect } from "react";
-import { userStateContext } from "@/context/context-provider";
 import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/20/solid";
 import Variation from "./../../../manager/Dashboard/Clubs/Club/ClubEdit/Rooms/RoomItem/Variations/Variation/Variation";
 import clsx from "clsx";
@@ -63,19 +62,6 @@ export default function TrainersList({ trainers }) {
                                     Подробнее
                                 </a>
                             </div>
-                            {/* <div className="-ml-px flex w-0 flex-1"> */}
-                                {/* <button
-                                    href={`tel:${trainer.phone}`}
-                                    className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
-                                >
-                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                                    </svg>
-
-
-                                    В избранное
-                                </button> */}
-                            {/* </div> */}
                         </div>
                     </div>
                 </li>

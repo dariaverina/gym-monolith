@@ -69,6 +69,7 @@ export default function TrainingsList({ trainings, setTrainings, currentFilters 
     };
     const [timeSlots, setTimeSlots] = useState([]);
     console.log("timeslots", timeSlots);
+    // console.log( Date(trainings[0].training_date))
     const daysOfWeek = [
         "Понедельник",
         "Вторник",
@@ -93,7 +94,7 @@ export default function TrainingsList({ trainings, setTrainings, currentFilters 
                     className="items-start justify-start p-6 w-3/4 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 bg-gray-900"
                 >
                     {trainings.map((training) => (
-                        <div class="rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5 h-64">
+                        <div class="rounded-xl bg-gradient-to-b from-purple-400 via-red-400 to-orange-400 p-0.5 h-72">
                             <div
                                 key={training.id}
                                 className="overflow-hidden rounded-xl   h-full bg-gray-900"
@@ -185,7 +186,7 @@ export default function TrainingsList({ trainings, setTrainings, currentFilters 
                                     </Menu>
                                 </div>
 
-                                <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+                                <dl className="-my-3 divide-y divide-gray-400 px-6 py-4 text-sm leading-6">
                                     <div className="flex justify-between gap-x-4 py-3">
                                         <dt className="text-gray-500">
                                             <time
@@ -213,6 +214,12 @@ export default function TrainingsList({ trainings, setTrainings, currentFilters 
                                         {daysOfWeek[training.day_of_week - 1]}, {timeSlots[training.time_id - 1]?.start_time.slice(0, -3)} - {timeSlots[training.time_id - 1]?.end_time.slice(0, -3)}
                                     </time> */}
                                         </dd>
+                                    </div>
+                                    <div className="flex justify-between gap-x-4 py-1">
+                                        <dt className="text-gray-500">
+                                            адрес: {' '}{training.room.club.name}
+                                        </dt>
+                                        
                                     </div>
                                     <div className="flex justify-between gap-x-4 py-3">
                                         <dt className="text-gray-500">

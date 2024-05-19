@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getClubs = () => {
+export const getTrainings = () => {
   return axios.get('/api/trainings')
     .then((response) => response.data)
     .catch((error) => {
