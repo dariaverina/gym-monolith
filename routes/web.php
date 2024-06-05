@@ -36,6 +36,30 @@ Route::get('/communication', function () {
     return view('communication');
 });
 
+Route::get('/users/students', function () {
+    return view('students');
+});
+
+Route::get('/users/teachers', function () {
+    return view('teachers');
+});
+
+Route::get('/users/workers', function () {
+    return view('workers');
+});
+
+Route::get('/groups', function () {
+    return view('groups');
+});
+
+Route::get('/messages', function () {
+    return view('messages');
+});
+
+Route::get('/upload-schedule', function () {
+    return view('upload-schedule');
+});
+
 Route::get('/bot', function () {
 //     return
 //     (\Illuminate\Support\Facades\Http::post('https://api.telegram.org/bot7078635996:AAFnCY1PV3chqoqpDodNR-qeeuPkao2HX34/sendMessage', 

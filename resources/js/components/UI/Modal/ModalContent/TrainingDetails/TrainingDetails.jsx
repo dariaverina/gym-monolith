@@ -29,9 +29,9 @@ export default function TrainingDetails({ training, setTrainings, weekNumber }) 
     return (
         <div className="p-6 bg-gray-900">
             <p className="block mb-2 font-medium text-white dark:text-white text-center border-b border-gray-600 pb-4">
-                Детали тренировки
+                Детали занятия
             </p>
-            {training.training_participants.length > 0 ? <>
+            {/* {training.training_participants.length > 0 ? <>
                 <p className="block mb-2 font-medium text-sm text-gray-400">
                     Участники тренировки:
                 </p>
@@ -44,14 +44,14 @@ export default function TrainingDetails({ training, setTrainings, weekNumber }) 
                 : <p className="block mb-2 font-medium text-sm text-gray-400 text-center">
                     Пока никто не записан
                 </p>
-            }
+            } */}
             <div className="flex justify-center">
                 <button
                     onClick={(e) => { handleCancel(e) }}
                     type="button"
                     className="mt-4 rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
                 >
-                    Отменить тренировку
+                    Отменить
                 </button>
             </div>
         </div>

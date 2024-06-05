@@ -133,7 +133,7 @@ export default function ClientHeader() {
                                         href="/bot"
                                         className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
                                     >
-                                        Настройка бота
+                                        Аккаунт
                                     </a></>}
                             {/* <a
                                 href="/help"

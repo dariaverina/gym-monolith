@@ -99,12 +99,12 @@ export default function TrainerHeader() {
                             >
                                 Аккаунт
                             </a>
-                            <a
+                            {/* <a
                                 href="/clubs"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
                                 Бот
-                            </a>
+                            </a> */}
                             <a
                                 href="/schedule"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"

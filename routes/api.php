@@ -12,6 +12,9 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TrainingParticipantController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ScheduleController;
 
 use App\Models\Club;
 use App\Models\User;
@@ -72,3 +75,17 @@ Route::get('/token', function (Request $request) {
 
 
 Route::get('/generate-report', [ReportController::class, 'generateReport']);
+
+
+Route::post('/messages/send', [MessageController::class, 'sendMessage']);
+Route::get('/messages', [MessageController::class, 'getMessages']);
+
+Route::get('/update-groups', [GroupController::class, 'fetchGroups']);
+// Route::post('/groups', [GroupController::class, 'fetchGroups']);
+Route::get('/groups', [GroupController::class, 'getGroups']);
+// Route::post('/groups', [GroupController::class, 'createGroup']);
+Route::put('/groups/{id}', [GroupController::class, 'updateGroup']);
+Route::delete('/groups/{id}', [GroupController::class, 'deleteGroup']);
+
+Route::post('/schedule/upload', [ScheduleController::class, 'store']);
+Route::get('/schedule', [ScheduleController::class, 'index']);

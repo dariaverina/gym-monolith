@@ -1,86 +1,34 @@
 import { useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import UsersListLine from "./UserListLine/UserListLine";
-import { useUI } from "@/context/use-ui";
-import CreateUserModal from "../CreateUserModal";
 
-export default function UsersList() {
+export default function TeachersList() {
     const [users, setUsers] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedGroup, setSelectedGroup] = useState("");
-    const { openModal, closeModal, showLoader, hideLoader, setModalContent, displayModal } = useUI();
     useEffect(() => {
         fetch("/api/users")
             .then((response) => response.json())
-            .then((data) => setUsers([{ id: 1, name: "Мартышева Тамара Сергеевна", user_type: "ПиБД-42", email: "mart@gmail.com" },
-            { id: 1, name: "Симонов Никита Константинович", user_type: "ПиБД-42", email: "nikita@gmail.com", status: "a" },
-            { id: 1, name: "Подкорытова Юлия Владимировна", user_type: "ПиБД-42", email: "yuliapod@gmail.com", status: "a" },
-            { id: 1, name: "Сергеев Евгений Дмитриевич", user_type: "ПиБД-42", email: "sergeevevgen@gmail.com", status: "a" },
-            { id: 1, name: "Верина Дарья Евгеньевна", user_type: "ПиБД-42", email: "dashka400g@gmail.com", status: "a" },
-            { id: 1, name: "Романова Аделина Михайловна", user_type: "ПиБД-42", email: "adelianadfds@gmail.com", status: "a" },
-            { id: 1, name: "Кутыгин Андрей Владимирович", user_type: "ПиБД-42", email: "kutsadbi@gmail.com", status: "a" },
-            { id: 1, name: "Беляева Екатерина Евгеньевна", user_type: "ПиБД-41", email: "taurielke@gmail.com", status: "a" },
-            { id: 1, name: "Машкова Маргарита Юрьевна", user_type: "ПиБД-42", email: "ritydhsk@gmail.com", status: "a" },
-            ]))
+            .then((data) => setUsers([{id: 1, name: "Мартышева Тамара Сергеевна", user_type: "ПиБД-42", email: "mart@gmail.com"}, {id: 1, name: "Симонов Никита Константинович", user_type: "ПиБД-42", email: "nikita@gmail.com", status: "a"}]))
             .catch((error) => console.error(error));
     }, []);
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
-    };
-
-    const handleGroupChange = (event) => {
-        setSelectedGroup(event.target.value);
-    };
-
-    const filteredUsers = users.filter((user) => {
-        return (
-            user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-            (selectedGroup === "" || user.user_type === selectedGroup)
-        );
-    });
-
     return (
         <div className="px-4 pt-10 sm:px-6 lg:px-8 bg-gray-900">
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold leading-6 text-white">
-                        Студенты
+                        Преподаватели
                     </h1>
                     <p className="mt-2 text-sm text-gray-700">
-                        Список всех студентов.
+                        Список всех преподавателей.
                     </p>
                 </div>
-                <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                <div className="mt-4 sm:ml-1a6 sm:mt-0 sm:flex-none">
                     <button
-                        onClick={() => {
-                            setModalContent(<CreateUserModal />);
-                            openModal();
-                        }}
                         type="button"
                         className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Создать
                     </button>
                 </div>
-            </div>
-            <div className="mt-4">
-                <input
-                    type="text"
-                    placeholder="Поиск по имени"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className="block w-1/4 h-6 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-                <select
-                    value={selectedGroup}
-                    onChange={handleGroupChange}
-                    className="block w-1/4 mt-2 h-6 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-                    <option value="">Все группы</option>
-                    {Array.from(new Set(users.map((user) => user.user_type))).map((group) => (
-                        <option key={group} value={group}>{group}</option>
-                    ))}
-                </select>
             </div>
             <div className="mt-8 flow-root">
                 <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -107,7 +55,7 @@ export default function UsersList() {
                                         >
                                             Группа
                                         </th>
-
+                                        
                                         <th
                                             scope="col"
                                             className="px-3 py-3.5 text-left text-sm font-semibold text-white"
@@ -128,9 +76,10 @@ export default function UsersList() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-700 bg-gray-900">
-                                    {filteredUsers.map((user) => (
-                                        <UsersListLine key={user.id} user={user} />
-                                    ))}
+                                    {users &&
+                                        users.map((user) => (
+                                            <UsersListLine user={user} />
+                                        ))}
                                 </tbody>
                             </table>
                         </div>
