@@ -105,8 +105,7 @@ class GroupController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        // Dynamically determine university_id
-        $university_id = $this->getUniversityId();
+        $university_id = 1;
 
         $group = Group::create([
             'name' => $request->name,

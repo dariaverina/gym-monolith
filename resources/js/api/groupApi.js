@@ -62,3 +62,12 @@ export const deleteGroup = async (id) => {
     }
     return response.json();
 };
+
+export const getStudentsByGroup = async (id) => {
+    return axios.get(`/api/users?group_id=${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(error);
+      return response.data;
+    });
+};

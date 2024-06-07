@@ -169,12 +169,12 @@ export default function Schedule() {
                                 {week === getWeekNumber(new Date())
                                     ? "текущую неделю"
                                     : week - 1 === getWeekNumber(new Date())
-                                    ? "следующую неделю"
-                                    : week + 1 === getWeekNumber(new Date())
-                                    ? "предыдущую неделю"
-                                    : getStartDateFromWeekNumber(week).toLocaleDateString() +
-                                      " - " +
-                                      getEndDateFromWeekNumber(week).toLocaleDateString()}
+                                        ? "следующую неделю"
+                                        : week + 1 === getWeekNumber(new Date())
+                                            ? "предыдущую неделю"
+                                            : getStartDateFromWeekNumber(week).toLocaleDateString() +
+                                            " - " +
+                                            getEndDateFromWeekNumber(week).toLocaleDateString()}
                             </p>
                             <button onClick={() => setWeek((prev) => prev + 1)}>
                                 <svg
@@ -215,29 +215,31 @@ export default function Schedule() {
                             {timeSlots.map((timeSlot, i) => (
                                 <tr key={timeSlot}>
                                     <td className="border border-slate-700 px-4 py-2 text-white">{timeSlot}</td>
-                                    {daysOfWeek.map((day, j) => (
-                                        <td
-                                            key={day}
-                                            className={clsx(
-                                                "border border-slate-700 px-4 py-2 text-white",
-                                                day === today && "bg-red-600"
-                                            )}
-                                        >
-                                            {trainingByDayAndLesson[j + 1] && trainingByDayAndLesson[j + 1][i + 1]
-                                                ? trainingByDayAndLesson[j + 1][i + 1].map((training, index) => (
-                                                      <div
-                                                          key={index}
-                                                          onClick={() => {
-                                                              setModalContent(
-                                                                  <TrainingDetails
-                                                                      data={training}
-                                                                  />
-                                                              );
-                                                              openModal();
-                                                          }}
-                                                          className="cursor-pointer"
-                                                      >
-                                                          <div className="font-medium text-white text-s">
+                                    {daysOfWeek.map((day, j) => {
+                                        const trainings = trainingByDayAndLesson[j + 1]?.[i + 1];
+                                        return (
+                                            <td
+                                                key={day}
+                                                className={clsx(
+                                                    "border border-slate-700 px-4 py-2 text-white",
+                                                    day === today && "bg-red-600"
+                                                )}
+                                            >
+                                                {trainings && trainings.length > 0 ? (
+                                                    trainings.map((training, index) => (
+                                                        <div
+                                                            key={index}
+                                                            onClick={() => {
+                                                                setModalContent(
+                                                                    <TrainingDetails
+                                                                        data={training}
+                                                                    />
+                                                                );
+                                                                openModal();
+                                                            }}
+                                                            className="cursor-pointer"
+                                                        >
+                                                            <div className="font-medium text-white text-s">
                                                                 <strong>{training.lesson_name}</strong>
                                                             </div>
                                                             <div className="font-medium text-gray-500 text-xs">
@@ -246,14 +248,43 @@ export default function Schedule() {
                                                             <div className="font-medium text-gray-400 text-xs">
                                                                 {training.teacher}
                                                             </div>
-                                                      </div>
-                                                  ))
-                                                : null}
-                                        </td>
-                                    ))}
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="text-center">
+                                                        <button onClick={() => {
+                                                            setModalContent(
+                                                                <>
+                                                                    Отправьте заявку на бронирование зала для тренировки.
+                                                                    Заявка будет рассмотрена менеджером спортклуба
+                                                                </>
+                                                            );
+                                                            openModal()
+                                                        }}>
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="gray"
+                                                                viewBox="0 0 24 24"
+                                                                strokeWidth={1.5}
+                                                                className="w-3 h-3 inline-block align-middle text-gray-800"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                                />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+
+                                                )}
+                                            </td>
+                                        );
+                                    })}
                                 </tr>
                             ))}
                         </tbody>
+
                         {/* <tbody>
 
                                 {daysOfWeek.map((day, i) => (

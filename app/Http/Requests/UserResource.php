@@ -18,13 +18,9 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'phone' => $this->phone,
             'user_type' => $this->user_type,
             'status' => $this->status,
-            'photo' => $this->photo,
-            'training_variations_names' => $this->whenLoaded('trainings', function () {
-                return $this->trainings->pluck('trainingVariation.name')->unique()->values();
-            }),
+            'group_id' => $this->group_id,
             // 'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }

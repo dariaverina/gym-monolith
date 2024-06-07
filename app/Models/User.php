@@ -23,8 +23,7 @@ class User extends Authenticatable
         'password',
         'user_type',
         'status',
-        'photo',
-        'phone'
+        'group_id'
     ];
 
     /**
@@ -37,6 +36,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public $timestamps = false;
     /**
      * The attributes that should be cast.
      *
@@ -59,5 +59,9 @@ class User extends Authenticatable
     public function writtenReviews()
     {
         return $this->hasMany(Review::class, 'user_id');
+    }
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 }

@@ -15,7 +15,7 @@ export default function ModalWindow ({})  {
 
                 {/* Full-screen container to center the panel */}
                 <div className="fixed inset-0 flex items-center justify-center p-4 ">
-                    <Dialog.Panel className="w-full max-w-sm rounded-xl bg-white">
+                    <Dialog.Panel className="w-full max-w-sm rounded-xl bg-transparent">
                         <div className="min-h-full items-center justify-center">
                             {modalContent}
                         </div>

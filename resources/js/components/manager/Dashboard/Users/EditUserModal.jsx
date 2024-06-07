@@ -2,14 +2,13 @@ import { Listbox } from "@headlessui/react";
 import { useState } from "react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { useUI } from "@/context/use-ui";
-import { adminCreateUser } from "../../../../api/create-user";
+import { updateUser } from "../../../../api/update-user"; 
 
-export default function CreateUserModal({ groups, fetchUsers }) {
-    const { openModal, closeModal, showLoader, hideLoader, setModalContent, displayModal } = useUI();
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [selectedGroup, setSelectedGroup] = useState(groups[0]);
-
+export default function EditUserModal({ user, groups, fetchUsers }) {
+    const { closeModal, showLoader, hideLoader } = useUI();
+    const [name, setName] = useState(user.name);
+    const [email, setEmail] = useState(user.email);
+    const [selectedGroup, setSelectedGroup] = useState(groups.find(group => group.id === user.group_id));
     const handleSubmit = async (e) => {
         e.preventDefault();
         showLoader();
@@ -18,22 +17,21 @@ export default function CreateUserModal({ groups, fetchUsers }) {
             const userData = {
                 name,
                 email,
-                user_type: 'c',
+                user_type: user.user_type,
                 group_id: selectedGroup.id,
-                password: 'dariaverina',
-                status: "a"
+                status: user.status
             };
 
-            const user = await adminCreateUser(userData);
+            const updatedUser = await updateUser(user.id, userData);
 
-            if (user) {
-                console.log('User created successfully:', user);
+            if (updatedUser) {
+                console.log('User updated successfully:', updatedUser);
                 fetchUsers();
             }
 
             closeModal();
         } catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Error updating user:', error);
         } finally {
             hideLoader();
         }
@@ -114,11 +112,10 @@ export default function CreateUserModal({ groups, fetchUsers }) {
                             Отмена
                         </button>
                         <button
-                            // onClick={closeModal}
                             type="submit"
                             className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                         >
-                            Создать
+                            Сохранить
                         </button>
                     </div>
                 </form>

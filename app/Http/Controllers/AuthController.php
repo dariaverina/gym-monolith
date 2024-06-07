@@ -15,22 +15,14 @@ class AuthController extends Controller
 {
     public function signup(SignupRequest $request){
         $data = $request->validated();
-
         $user = User::create([
             'name' => $data['name'],
             'password' => bcrypt($data['password']),
             'email' => $data['email'],
             'user_type' => $data['user_type'],
-            'phone' => $data['phone'],
-            'status' => ($data['user_type'] == 't') ? 'n' : 'a'
+            'status' => ($data['user_type'] == 't') ? 'n' : 'a',
+            'group_id' => $data['group_id'] ?? null
         ]);
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $path = $file->store('photos', 'public');
-            $user->photo = $path;
-            $user->save();
-        }
         
         if ($user['status'] != 'a') return response(['success' => true]);
 

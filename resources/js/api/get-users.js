@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getUsers = () => {
-  return axios.get('/api/users')
+export const getStudents = () => {
+  return axios.get('/api/users?user_type=c')
     .then((response) => response.data)
     .catch((error) => {
       console.error(error);

@@ -83,7 +83,7 @@ Route::get('/messages', [MessageController::class, 'getMessages']);
 Route::get('/update-groups', [GroupController::class, 'fetchGroups']);
 // Route::post('/groups', [GroupController::class, 'fetchGroups']);
 Route::get('/groups', [GroupController::class, 'getGroups']);
-// Route::post('/groups', [GroupController::class, 'createGroup']);
+Route::post('/groups', [GroupController::class, 'createGroup']);
 Route::put('/groups/{id}', [GroupController::class, 'updateGroup']);
 Route::delete('/groups/{id}', [GroupController::class, 'deleteGroup']);
 

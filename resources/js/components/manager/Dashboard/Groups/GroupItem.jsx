@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { editGroup, deleteGroup } from '../../../../api/groupApi';
+import { useUI } from "@/context/use-ui";
+import StudenstInGroupModal from '../../../UI/Modal/ModalContent/Groups/StudentsInGroupModal';
 
 const GroupItem = ({ group, onEdit, onShowMembers, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(group.name);
+    const { openModal, setModalContent } = useUI();
 
     const handleEdit = () => {
         onEdit(group.id, newName);
@@ -16,6 +19,11 @@ const GroupItem = ({ group, onEdit, onShowMembers, onDelete }) => {
         } catch (error) {
             console.error('Error deleting group:', error);
         }
+    };
+
+    const onShowStudents = () => {
+        setModalContent(<StudenstInGroupModal group = {group}/>);
+        openModal();
     };
 
     return (
@@ -81,7 +89,7 @@ const GroupItem = ({ group, onEdit, onShowMembers, onDelete }) => {
                         </button>
                         <button
                             className="bg-blue-500 text-white py-1 px-3 ml-2 rounded"
-                            onClick={onShowMembers}
+                            onClick={onShowStudents}
                         >
                             Список студентов
                         </button>

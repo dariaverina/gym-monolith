@@ -17,27 +17,36 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $userType = $request->input('user_type', null);
-
+        $groupId = $request->input('group_id', null);
+    
         $query = User::query();
-        
+    
         if ($userType !== null) {
             $query->where('user_type', $userType);
         }
-        
+    
+        if ($groupId !== null) {
+            $query->where('group_id', $groupId);
+        }
+    
         $users = $query->orderBy('id', 'desc')->paginate(20);
-        
+    
         $data = $users->map(function ($user) {
-            $training_variation_names = $user->trainings->pluck('training_variation.name')->unique()->values();
-            $reviews = $user->reviews;
+            // Получение group_id из пользователя
+            $groupId = $user->group_id;
+            // Получение названия группы по group_id
+            $groupName = $user->group ? $user->group->name : null;
             return array_merge((new UserResource($user))->toArray(request()), [
-                'training_variations_names' => $training_variation_names,
-                'reviews'=> $reviews
+                'group_id' => $groupId,
+                'group_name' => $groupName,
             ]);
         });
-        
+    
         return response()->json($data);
-        
     }
+    
+    
+
 
     /**
      * Store a newly created resource in storage.
@@ -46,6 +55,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
+        $data['group_id'] = $request->input('group_id');
+        echo($data);
+        return;
         $user = User::create($data);
 
         return response(new UserResource($user) , 201);
@@ -69,27 +81,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request;
-        // echo $request;exit;
-        // $data = $request->validated();
-        // if (isset($data['password'])) {
-        //     $data['password'] = bcrypt($data['password']);
-        // }
-
-        // check if the request contains specific fields to update
         $user = User::find($id);
-        $user->fill($request->only(['status', 'name', 'email', 'phone']));
-        // if (isset($data['status'])) {
-        //    
-        // }
-        // if (isset($data['name'])) {
-        //     $user->name = $data['name'];
-        // }
-        // if (isset($data['email'])) {
-        //     $user->email = $data['email'];
-        // }
-        // if (isset($data['phone'])) {
-        //     $user->phone = $data['phone'];
-        // }
+        $user->fill($request->only( ['name', 'group_id', 'email']));
 
 
         $user->save();
