@@ -87,9 +87,12 @@ class ScheduleController extends Controller
     {
         // Получаем номер недели из запроса
         $weekNumber = $request->input('week_number');
+        $groupName = $request->input('group_name');
 
-        // Получаем расписание из базы данных по номеру недели
-        $schedule = Schedule::where('week_number', 18)->get();
+         // Получаем расписание из базы данных по номеру недели и названию группы
+        $schedule = Schedule::where('week_number', $weekNumber-6)
+        ->where('group_name', $groupName)
+        ->get();
 
         // Возвращаем расписание в формате JSON
         return response()->json($schedule);
