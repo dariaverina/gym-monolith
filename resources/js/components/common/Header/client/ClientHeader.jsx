@@ -52,17 +52,17 @@ export default function ClientHeader() {
     const fakeMessages = [
         {
             "author": "Иванов Иван Иванович",
-            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSq3mP1mD5I81Fzx6s_2QTvRVnBKPmR9vMThBo8-LdRQ&s",
+            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
             "message": "Здравствуйте! Напоминаю, что завтра у нас лекция по математике в 10:00."
         },
         {
             "author": "Воронин Константин Николаевич",
-            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToBr4T5LEeqx7i0ZVu6VrLUJc8-4IN9IiRuecSf5MEwQ&s",
+            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
             "message": "Добрый день! Пожалуйста, не забудьте сдать домашнее задание до конца недели."
         },
         {
             "author": "Александрова Марина Юрьевна",
-            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQIqyZ9mINq3Zkq_kbN0S3laRNHmitYTZdtT1622CADml7Q0VAcB3PiqXULzY7kGpOFr4&usqp=CAU",
+            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
             "message": "Приветствую всех! Напоминаю о предстоящем тестировании на следующей неделе."
         }]
 

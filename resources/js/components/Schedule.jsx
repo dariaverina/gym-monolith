@@ -8,6 +8,8 @@ import { useUI } from "@/context/use-ui";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import EditLessonModal from "./UI/Modal/ModalContent/LessonDetails/EditLessonModal";
+import Header from "./schedule/Header";
+import GroupSelector from "./schedule/GroupSelector";
 
 const timeSlots = ["1 пара", "2 пара", "3 пара", "4 пара", "5 пара", "6 пара", "7 пара", "8 пара"];
 const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
@@ -51,7 +53,7 @@ export default function Schedule() {
     const [groups, setGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [dragMode, setDragMode] = useState(false);
-    console.log('dragMode', dragMode);
+
     const toggleDragMode = () => {
         setDragMode(!dragMode);
     };
@@ -73,9 +75,7 @@ export default function Schedule() {
         });
 
         return (
-            <div
-                className="cursor-pointer"
-            >
+            <div className="cursor-pointer">
                 <div ref={ref} className="cursor-pointer">
                     <div className="font-medium text-white text-s">
                         <strong>{training.lesson_name}</strong>
@@ -85,6 +85,9 @@ export default function Schedule() {
                     </div>
                     <div className="font-medium text-gray-400 text-xs">
                         {training.teacher}
+                    </div>
+                    <div className="font-medium text-white text-xs">
+                        {training.group_name}
                     </div>
                 </div>
             </div>
@@ -109,7 +112,6 @@ export default function Schedule() {
                 .catch((err) => console.error(err));
         }
     };
-
     useEffect(() => {
         fetchScheduleData();
     }, [currentUser, selectedGroup, week]);
@@ -132,7 +134,30 @@ export default function Schedule() {
         setTrainings(updatedTrainings);
     };
 
+    console.log('t', trainings);
+    const handleUpdateTraining = (updatedTraining) => {
+        setTrainings((prevTrainings) => {
+            const existingTrainingIndex = prevTrainings.findIndex((t) => t.id === updatedTraining.id);
+
+            if (existingTrainingIndex !== -1) {
+                // Обновить существующую тренировку
+                const updatedTrainings = prevTrainings.map((t) =>
+                    t.id === updatedTraining.id ? updatedTraining : t
+                );
+                return updatedTrainings;
+            } else {
+                // Добавить новую тренировку
+                return [...prevTrainings, updatedTraining];
+            }
+        });
+    };
+    const handleDeleteTraining = (id) => {
+        setTrainings((prevTrainings) => prevTrainings.filter((t) => t.id !== id));
+    };
+
+
     function Cell({ day, timeSlot, training, onMove, dragMode }) {
+        const [showTooltip, setShowTooltip] = useState(false);
         const [, ref] = useDrop({
             accept: ItemTypes.TRAINING,
             drop: (item) => {
@@ -147,136 +172,162 @@ export default function Schedule() {
             <td
                 ref={ref}
                 onClick={() => {
-                    setModalContent(<EditLessonModal lesson={training} fetchScheduleData={fetchScheduleData} />);
+                    setModalContent(
+                        <EditLessonModal
+                            lesson={training}
+                            day={day}
+                            week_number={week}
+                            time={timeSlot}
+                            fetchScheduleData={fetchScheduleData}
+                            onUpdateTraining={handleUpdateTraining}
+                            onDeleteTraining={handleDeleteTraining}
+                        />
+                    );
                     openModal();
                 }}
-                className={`border border-slate-700 w-32 h-24 text-xs text-center ${dragMode ? "bg-gray-600" : "bg-gray-900"
+                className={`relative border border-slate-700 w-32 h-24 text-xs text-center ${dragMode ? "bg-gray-600" : "bg-gray-900"
                     }`}
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
             >
                 <button>
-                  
-                    <div className="overflow-auto h-full">
+                    <div className="overflow-auto h-full relative">
                         {training && training.length > 0 ? (
                             training.map((training, index) => (
                                 <Training key={index} training={training} />
                             ))
                         ) : (
-                            <div className="text-center">
-            
-                            </div>
+                            <div className="text-center"></div>
                         )}
                     </div>
                 </button>
-            </td >
 
+                {training && training[0].note && training[0].note !== null && (
+                    <>
+                        <div className="absolute top-0 right-0 mt-1 mr-1">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-4 h-4 text-yellow-500"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </div>
+                        {showTooltip && (
+                            <div className="absolute right-0 bottom-6 bg-white text-gray-900 p-2 rounded-lg shadow-lg">
+                                {training[0].note}
+                            </div>
+                        )}
+                    </>
+                )}
+            </td>
         );
     }
 
+    const saveSchedule = async () => {
+        try {
+            const response = await axios.put("http://localhost:8000/api/schedule/update", {
+                schedule: trainings,
+            });
+            console.log(response.data.message);
+            fetchScheduleData(); // Reload the schedule to reflect the latest changes
+        } catch (error) {
+            console.error("Error saving schedule:", error);
+        }
+    };
+
     const today = new Date().toLocaleDateString("ru-RU", { weekday: "long" });
+
+    let notificationMethods = [
+        { id: 'groupsSearch', title: 'Поиск по группам' },
+        { id: 'teachersSearch', title: 'Поиск по учителям' },
+        { id: 'logicSearch', title: 'Логический поиск' },
+        { id: 'mySearch', title: 'Свое расписание', type: 't' },
+    ]
+    const filteredNotificationMethods = notificationMethods.filter(method => !method.type || method.type === currentUser.user_type);
+   
+    const [searchType, setSearchType] = useState('groupsSearch');
+    const [query, setQuery] = useState('(ПИбд-11 || ПИбд-12)&& Анкилов');
+    const handleChangeLogicQueue = (event) => {
+        setQuery(event.target.value);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.get(`/api/schedule/search?query=${query}`);
+            setTrainings(response.data)
+            onSearch(response.data); // Передаем результаты поиска родительскому компоненту
+        } catch (error) {
+            console.error('Ошибка при выполнении поиска:', error);
+        }
+    };
+    useEffect(() => {
+        if (currentUser && currentUser.user_type === 't') {
+            setSearchType('mySearch');
+        }
+    }, [currentUser]);
 
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="bg-gray-900">
                 <div className="flex justify-center">
                     <div className="overflow-x-auto mx-4 mt-6">
-                        <div className="flex justify-between items-center mb-2">
-                            {!dragMode ? (
-                                <div className="flex justify-center w-full">
-                                    <button
-                                        onClick={toggleDragMode}
-                                        className="bg-green-400 text-gray-900 font-semibold py-2 px-4 rounded-lg"
-                                    >
-                                        Перейти в режим редактирования занятий
-                                    </button>
-                                </div>
-                            ) : (
-                                <>
-                                    <div className="flex items-center">
-                                        <span className="text-red-500 font-semibold">
-                                            Вы находитесь в режиме редактирования занятий!
-                                        </span>
-                                    </div>
-                                    <div className="flex space-x-2">
-                                        <button
-                                            onClick={() => { toggleDragMode(); fetchScheduleData() }}
-                                            className="bg-red-400 text-gray-900 font-semibold py-2 px-4 rounded-lg"
-                                        >
-                                            Отменить
-                                        </button>
-                                        <button
-                                            onClick={toggleDragMode}
-                                            className="bg-green-400 text-gray-900 font-semibold py-2 px-4 rounded-lg"
-                                        >
-                                            Сохранить
-                                        </button>
-                                    </div>
-                                </>
-                            )}
-                        </div>
+                        <Header
+                            dragMode={dragMode}
+                            toggleDragMode={toggleDragMode}
+                            saveSchedule={saveSchedule}
+                            fetchScheduleData={fetchScheduleData}
+                        />
 
-                        <div className="mb-4">
-                            <Listbox value={selectedGroup} onChange={setSelectedGroup}>
-                                {({ open }) => (
-                                    <>
-                                        <div className="relative">
-                                            <Listbox.Button className="mt-4 relative w-full cursor-default rounded-md bg-gray-800 py-1.5 pl-3 pr-10 text-left text-white shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                                <span className="block truncate">
-                                                    {selectedGroup ? selectedGroup.name : "Выберите группу"}
-                                                </span>
-                                                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                                    <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                </span>
-                                            </Listbox.Button>
-                                            <Transition
-                                                show={open}
-                                                as={Fragment}
-                                                leave="transition ease-in duration-100"
-                                                leaveFrom="opacity-100"
-                                                leaveTo="opacity-0"
-                                            >
-                                                <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                                    {groups.map((group) => (
-                                                        <Listbox.Option
-                                                            key={group.id}
-                                                            className={({ active }) =>
-                                                                clsx(
-                                                                    active ? "bg-indigo-600 text-white" : "text-gray-900",
-                                                                    "relative cursor-default select-none py-2 pl-3 pr-9"
-                                                                )
-                                                            }
-                                                            value={group}
-                                                        >
-                                                            {({ selected, active }) => (
-                                                                <>
-                                                                    <span
-                                                                        className={clsx(
-                                                                            selected ? "font-semibold" : "font-normal",
-                                                                            "block truncate"
-                                                                        )}
-                                                                    >
-                                                                        {group.name}
-                                                                    </span>
-                                                                    {selected ? (
-                                                                        <span
-                                                                            className={clsx(
-                                                                                active ? "text-white" : "text-indigo-600",
-                                                                                "absolute inset-y-0 right-0 flex items-center pr-4"
-                                                                            )}
-                                                                        >
-                                                                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                                                        </span>
-                                                                    ) : null}
-                                                                </>
-                                                            )}
-                                                        </Listbox.Option>
-                                                    ))}
-                                                </Listbox.Options>
-                                            </Transition>
-                                        </div>
-                                    </>
-                                )}
-                            </Listbox>
-                        </div>
+                        <fieldset>
+                            <div className="mt-6 space-y-6 sm:flex sm:items-center sm:justify-evenly sm:space-y-0">
+                                {filteredNotificationMethods.map((notificationMethod) => (
+                                    <div key={notificationMethod.id} className="flex items-center">
+                                        <input
+                                            id={notificationMethod.id}
+                                            name="notification-method"
+                                            type="radio"
+                                            checked={searchType === notificationMethod.id} // Проверяем, соответствует ли выбранному типу поиска
+                                            className="h-4 w-4 border-gray-300 text-white focus:ring-indigo-600"
+                                            onChange={() => setSearchType(notificationMethod.id)}
+                                        />
+
+                                        <label htmlFor={notificationMethod.id} className="ml-3 block text-sm font-medium leading-6 text-white">
+                                            {notificationMethod.title}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        </fieldset>
+
+
+                        {searchType === 'groupsSearch' && (
+                            <GroupSelector
+                                groups={groups}
+                                selectedGroup={selectedGroup}
+                                setSelectedGroup={setSelectedGroup}
+                            />
+                        )}
+                        {searchType === 'logicSearch' && (
+                            <form onSubmit={handleSubmit} className="flex items-center space-x-4">
+                            <input
+                                type="text"
+                                value={query}
+                                onChange={handleChangeLogicQueue}
+                                placeholder="Введите запрос..."
+                                className="border border-gray-300 px-2 py-1 rounded-md w-full"
+                            />
+                            <button type="submit" className="pt-2 pb-2 pr-4 pl-4 text-white bg-gray-700 rounded">
+                                Искать
+                            </button>
+                        </form>
+                        
+
+                        )}
 
                         <div className="flex items-center space-x-4">
                             <div className="flex-1 flex items-center justify-center text-white">
@@ -327,26 +378,26 @@ export default function Schedule() {
                             </div>
                         </div>
                         <table className="table-fixed border-collapse border border-slate-500 mt-4 mx-auto">
-                            <thead>
+                            <thead className="bg-gray-800">
                                 <tr>
-                                    <th className="w-32 h-12 border border-slate-700 px-4 py-2 text-white"></th>
+                                    <th className="border border-slate-700 w-32 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
+
+                                    </th>
                                     {daysOfWeek.map((day) => (
                                         <th
                                             key={day}
-                                            className={clsx(
-                                                "w-32 h-12 border border-slate-700 px-4 py-2 text-white",
-                                                day === today && "bg-red-600"
-                                            )}
+                                            className={`border border-slate-700 w-32 text-center text-xs font-medium uppercase tracking-wider ${day === today ? "text-indigo-500" : "text-gray-300"
+                                                }`}
                                         >
                                             {day}
                                         </th>
                                     ))}
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="bg-gray-800">
                                 {timeSlots.map((timeSlot, i) => (
                                     <tr key={timeSlot}>
-                                        <td className="w-32 h-12 border border-slate-700 px-4 py-2 text-white">{timeSlot}</td>
+                                        <td className="border border-slate-700 w-32 text-center text-xs text-gray-300">{timeSlot}</td>
                                         {daysOfWeek.map((day, j) => {
                                             const trainings = trainingByDayAndLesson[j + 1]?.[i + 1];
                                             return (

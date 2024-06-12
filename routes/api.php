@@ -89,3 +89,5 @@ Route::delete('/groups/{id}', [GroupController::class, 'deleteGroup']);
 
 Route::post('/schedule/upload', [ScheduleController::class, 'store']);
 Route::get('/schedule', [ScheduleController::class, 'index']);
+Route::put('/schedule/update', [ScheduleController::class, 'updateSchedule']);
+Route::get('/schedule/search', [ScheduleController::class, 'search']);

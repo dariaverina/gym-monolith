@@ -115,7 +115,7 @@ export default function TrainerHeader() {
                                 href="/communication"
                                 className="text-base font-medium text-gray-300 hover:text-gray-100 hover:border-b-2"
                             >
-                                Связь с учениками
+                                Сообщения
                             </a>
                         </Popover.Group>
                             <Popover className="relative text-gray-300 hover:text-gray-100">

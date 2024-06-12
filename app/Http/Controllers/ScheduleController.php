@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\Schedule;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use App\Models\Group;
+use EvalMath\EvalMath;
 
 class ScheduleController extends Controller
 {
@@ -97,4 +99,105 @@ class ScheduleController extends Controller
         // Возвращаем расписание в формате JSON
         return response()->json($schedule);
     }
+    
+    public function updateSchedule(Request $request)
+    {
+        $validatedData = $request->validate([
+            'schedule' => 'required|array',
+            'schedule.*.id' => 'nullable|integer', // Позволяем id быть nullable
+            'schedule.*.day_of_week' => 'required|integer|between:1,7',
+            'schedule.*.lesson_number' => 'required|integer|between:1,8',
+            'schedule.*.lesson_name' => 'required|string|max:255',
+            'schedule.*.teacher' => 'nullable|string|max:255',
+            'schedule.*.note' => 'nullable|string',
+            'schedule.*.group_name' => 'required|string|max:255',
+            'schedule.*.room' => 'required|string|max:255',
+            'schedule.*.week_number' => 'required|integer', // Добавляем week_number
+        ]);
+    
+        // Получаем массив id всех занятий на этой неделе для этой группы
+        $existingIds = Schedule::whereIn('week_number', array_column($validatedData['schedule'], 'week_number'))
+            ->where('group_name', $validatedData['schedule'][0]['group_name']) // Предполагаем, что группа в массиве всегда одна
+            ->pluck('id')
+            ->toArray();
+    
+        foreach ($validatedData['schedule'] as $lesson) {
+            if (isset($lesson['id']) && in_array($lesson['id'], $existingIds)) {
+                // Обновление существующей записи
+                $schedule = Schedule::findOrFail($lesson['id']);
+                $schedule->update($lesson);
+                // Удаляем id из списка существующих, так как он был обработан
+                $key = array_search($lesson['id'], $existingIds);
+                unset($existingIds[$key]);
+            } else {
+                // Создание новой записи
+                Schedule::create($lesson);
+            }
+        }
+    
+        // Удаление занятий, которые не были включены в массиве
+        Schedule::whereIn('id', $existingIds)->delete();
+    
+        return response()->json(['message' => 'Schedule updated successfully'], 200);
+    }
+    
+    
+    public function search(Request $request)
+    {
+            // Получаем параметры из запроса
+        $expression = $request->input('query');
+        $weekNumber = 18;
+
+        // Разбиваем выражение на компоненты
+        $parts = preg_split('/(\(|\)|\|\||&&)/', $expression, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        // Инициализируем переменные для результата и оператора между условиями
+        $result = [];
+        $operator = null;
+        $inParentheses = false;
+
+        // Перебираем компоненты выражения
+        foreach ($parts as $part) {
+            $part = trim($part);
+
+            // Определяем оператор между условиями
+            if ($part === '||' || $part === '&&') {
+                $operator = $part;
+            } elseif ($part === '(') {
+                // Если встретили открывающую скобку, переходим к обработке выражения в скобках
+                $inParentheses = true;
+            } elseif ($part === ')') {
+                // Если встретили закрывающую скобку, завершаем обработку выражения в скобках
+                $inParentheses = false;
+            } else {
+                // Выполняем поиск в расписании по каждому компоненту выражения
+                $schedule = Schedule::where('group_name', 'like', "%$part%")
+                                    ->orWhere('teacher', 'like', "%$part%")
+                                    ->where('week_number', $weekNumber)
+                                    ->get();
+
+                // Объединяем результаты в соответствии с оператором
+                if ($operator === '||') {
+                    $result = array_merge($result, $schedule->toArray());
+                } elseif ($operator === '&&') {
+                    // Если это первый компонент или оператор "&&" еще не был определен, сохраняем результат
+                    if ($result === []) {
+                        $result = $schedule->toArray();
+                    } else {
+                        // Иначе сохраняем только пересечение результатов
+                        $result = array_intersect_key($result, array_flip(array_column($schedule->toArray(), 'id')));
+                    }
+                } else {
+                    // Если оператор не определен, просто сохраняем результат
+                    $result = $schedule->toArray();
+                }
+            }
+        }
+
+        // Возвращаем результаты в формате JSON
+        return response()->json($result);
+    }
+
+    
+    
 }

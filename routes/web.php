@@ -13,7 +13,13 @@ use Dompdf\Dompdf;
 use App\Models\Training;
 use Carbon\Carbon;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\RequestException;
+use App\Models\Schedule;
+use GuzzleHttp\Client;
+use App\Models\Group;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Storage;
 
 
 /*
@@ -73,63 +79,79 @@ Route::get('/bot', function () {
 
 
 Route::post('/telegram/webhook', function (Request $request) {
-    $dompdf = new Dompdf();
+    $weekNumber = 18;
+    $groupName = 'ПИбд-12';
+    
+    $data = Schedule::where('week_number', $weekNumber)
+        ->where('group_name', $groupName)
+        ->get()
+        ->toArray();
+    
+    $daysOfWeek = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"];
+    
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isRemoteEnabled', true);
+    
+    $dompdf = new Dompdf($options);
+    $dompdf->setPaper('A3', 'landscape');
+    
+    
     $html = '<html><head><style>' .
     'body { font-family: DejaVu Sans; }' .
-    'table { border-collapse: collapse; }' .
-    'table, th, td { border: 1px solid black; padding: 8px; word-break: break-all; word-wrap: break-word; white-space: nowrap; }' . // Добавлено свойство white-space
-    'td.free { background-color: #99FF99; }' .
-    'td.notfree { background-color: #eb8771; }' .
-    '.room-heading { text-align: center; }' . // Добавленный стиль для заголовка "Зал"
-    '@page { margin: 1cm; }' . // Добавленный стиль для настройки полей страницы
+    'table { border-collapse: collapse; width: 100%; table-layout: fixed; background-color: white; }' . // Цвет фона таблицы - белый
+    'table, th, td { border: 1px solid black; padding: 8px; word-break: break-all; word-wrap: break-word; white-space: pre-wrap; text-align: center; }' .
+    'thead th { background-color: #d3d3d3; }' . // Цвет заголовков столбцов - серый
+    'tbody th { background-color: #d3d3d3; }' . // Цвет заголовков строк - серый
+    'td { background-color: #f0f0f0; }' . // Цвет ячеек таблицы - светло-серый
+    '@page { margin: 1cm; }' .
     '</style></head>' .
     '<body>';
 
     $html .= 
-    '<table>' .
-    '<thead>' .
-    '<tr>' .
-    '<th></th>' .
-    '<th>пн</th>' .
-    '<th>вт</th>' .
-    '<th>ср</th>' .
-    '<th>чт</th>' .
-    '<th>пт</th>' .
-    '<th>сб</th>' .
-    '<th>вс</th>' .
-    '</tr>' .
-    '</thead>' .
-    '<tbody>';
+        '<table>' .
+        '<thead>' .
+        '<tr>' .
+        '<th></th>';
 
-for ($i = 1; $i <= 8; $i++) {
-    $html .= '<tr>' .
-        '<th>' . $i . ' пара</th>' .
-        '<td></td>' . // Пн
-        '<td></td>' . // Вт
-        '<td></td>' . // Ср
-        '<td></td>' . // Чт
-        '<td></td>' . // Пт
-        '<td></td>' . // Сб
-        '<td></td>' . // Вс
-        '</tr>';
-}
+    foreach ($daysOfWeek as $day) {
+        $html .= '<th>' . $day . '</th>';
+    }
 
-$html .= '</tbody>' .
-    '</table>';
+    $html .= '</tr>' .
+        '</thead>' .
+        '<tbody>';
 
+    for ($i = 1; $i <= 8; $i++) {
+        $html .= '<tr>' .
+            '<th>' . $i . ' пара</th>';
+
+        for ($j = 1; $j <= 7; $j++) {
+            $lesson = array_filter($data, function($entry) use ($i, $j) {
+                return $entry['lesson_number'] == $i && $entry['day_of_week'] == $j;
+            });
+
+            if (!empty($lesson)) {
+                $lesson = array_values($lesson)[0];
+                $html .= '<td>' . $lesson['lesson_name'] . '<br>' . $lesson['room'] . '<br>' . $lesson['teacher'] . '<br>'  . '</td>';
+            } else {
+                $html .= '<td></td>';
+            }
+        }
+
+        $html .= '</tr>';
+    }
 
     $html .= '</tbody>' .
-    '</table>' .
-    '</body></html>';
+        '</table>' .
+        '</body></html>';
 
     $dompdf->loadHtml($html);
-
+    $dompdf->set_option('dpi', 200);
     $dompdf->render();
-
-    // Получаем изображение в формате PNG
     $image = $dompdf->output();
     $filename = 'schedule_' . time() . '.png';
-
+    
     // Сохраняем изображение
     $imagePath = public_path('images/' . $filename);
     file_put_contents($imagePath, $image);
@@ -141,25 +163,6 @@ $html .= '</tbody>' .
         'chat_id' => 1114156429,
         'caption' => 'Расписание на текущую неделю'
     ]);
-    // Получаем данные из входящего запроса от Telegram
-    // $update = $request->all();
-
-    // // Проверяем, была ли нажата кнопка "schedule"
-    // // if (isset($update['callback_query']['data']) && $update['callback_query']['data'] === 'schedule') {
-    //     // Отправляем ответ в Telegram
-    //     return
-    //     (\Illuminate\Support\Facades\Http::post('https://api.telegram.org/bot7078635996:AAFnCY1PV3chqoqpDodNR-qeeuPkao2HX34/sendMessage', 
-    //     // (\Illuminate\Support\Facades\Http::post('https://api.telegram.org/bot7078635996:AAFnCY1PV3chqoqpDodNR-qeeuPkao2HX34/sendPhoto', 
-    //         [
-    //             'chat_id' => 1114156429,
-    //             'text' => 'нажата кнопка'
-    //             // 'photo' => 'https://img.freepik.com/free-photo/the-adorable-illustration-of-kittens-playing-in-the-forest-generative-ai_260559-483.jpg?size=338&ext=jpg&ga=GA1.1.1413502914.1715040000&semt=ais'
-    //         ])->json()
-    // );
-    // }
-
-    // Возвращаем ответ Telegram
-    // return response()->json(['status' => 'ok']);
 });
 
 Route::post('/send-notification', function (Request $request) {
