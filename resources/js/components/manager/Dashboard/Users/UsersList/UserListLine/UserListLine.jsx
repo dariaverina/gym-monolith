@@ -2,23 +2,30 @@ import { useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useUI } from "@/context/use-ui";
 import EditUserModal from "./../../EditUserModal";
+import { userStateContext } from "@/context/context-provider";
+import EditTeacherModal from "../../EditTeacherModal";
 
 export default function UsersListLine({ user, groups, fetchUsers }) {
 
-    const [status, setStatus] = useState(user.status);
+    const [privilege, setPrivilege] = useState(user.privilege);
+    const { currentUser } = userStateContext();
     const { openModal, setModalContent } = useUI();
     const handleSubmit = async () => {
-        setStatus(status === 'a' ? 'n' : 'a');
+        setPrivilege(privilege === 'a' ? 'n' : 'a');
         try {
-            const response = await axios.patch(`/api/users/${user.id}`, { status: status === 'a' ? 'n' : 'a' });
+            const response = await axios.patch(`/api/users/${user.id}`, { privilege: privilege === 'a' ? 'n' : 'a' });
             console.log(response.data);
         } catch (error) {
             console.error(error);
         }
     };
-
+    console.log('us', user)
     const handleEdit = () => {
-        setModalContent(<EditUserModal user={user} groups={groups} fetchUsers={fetchUsers} />);
+        setModalContent(
+            user.user_type === 't'
+                ? <EditTeacherModal user={user} groups={groups} fetchUsers={fetchUsers} />
+                : <EditUserModal user={user} groups={groups} fetchUsers={fetchUsers} />
+        );
         openModal();
     };
 
@@ -30,21 +37,24 @@ export default function UsersListLine({ user, groups, fetchUsers }) {
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {user.email}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {user.group_name}
-            </td>
+            {user.user_type === 'c' &&
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {user.group_name}
+                </td>
+            }
             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                <Switch
-                    checked={status === "a"}
-                    onChange={handleSubmit}
-                    className={`${status === "a" ? "bg-green-400" : "bg-red-400"} relative inline-flex h-6 w-11 items-center rounded-full`}
-                >
-                    <span className="sr-only">Enable notifications</span>
-                    <span className={`${status === "a" ? "translate-x-6" : "translate-x-1"} inline-block h-4 w-4 transform rounded-full bg-white transition`} />
-                </Switch>
-            </td>
+            {user.user_type === 't' &&
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <Switch
+                        checked={privilege === "a"}
+                        onChange={handleSubmit}
+                        className={`${privilege === "a" ? "bg-green-400" : "bg-red-400"} relative inline-flex h-6 w-11 items-center rounded-full`}
+                    >
+                        <span className="sr-only">Enable notifications</span>
+                        <span className={`${privilege === "a" ? "translate-x-6" : "translate-x-1"} inline-block h-4 w-4 transform rounded-full bg-white transition`} />
+                    </Switch>
+                </td>}
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <button onClick={handleEdit}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">

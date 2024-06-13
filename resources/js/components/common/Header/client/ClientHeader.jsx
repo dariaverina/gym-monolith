@@ -1,34 +1,9 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import {
     Bars3Icon,
-    BookmarkSquareIcon,
-    BriefcaseIcon,
-    BuildingOfficeIcon,
-    ChartBarIcon,
-    CheckCircleIcon,
-    ComputerDesktopIcon,
-    CursorArrowRaysIcon,
-    GlobeAltIcon,
-    InformationCircleIcon,
-    NewspaperIcon,
-    PlayIcon,
-    ShieldCheckIcon,
-    Squares2X2Icon,
-    UserGroupIcon,
-    XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-    ArrowPathIcon,
-    ChartPieIcon,
-    FingerPrintIcon,
-    SquaresPlusIcon,
-} from "@heroicons/react/24/outline";
-import {
-    ChevronDownIcon,
-    PhoneIcon,
-    PlayCircleIcon,
-} from "@heroicons/react/20/solid";
+
 import clsx from "clsx";
 import { useUI } from "@/context/use-ui";
 import Auth from "../../../UI/Modal/ModalContent/Auth/Auth";
@@ -46,25 +21,34 @@ export default function ClientHeader() {
         axiosClient.post("/logout").then((res) => {
             setCurrentUser(undefined);
             setUserToken(null);
-            window.location.href = "/";
+            window.location.href = "http://localhost:8000";
         });
     };
-    const fakeMessages = [
-        {
-            "author": "Иванов Иван Иванович",
-            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
-            "message": "Здравствуйте! Напоминаю, что завтра у нас лекция по математике в 10:00."
-        },
-        {
-            "author": "Воронин Константин Николаевич",
-            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
-            "message": "Добрый день! Пожалуйста, не забудьте сдать домашнее задание до конца недели."
-        },
-        {
-            "author": "Александрова Марина Юрьевна",
-            "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
-            "message": "Приветствую всех! Напоминаю о предстоящем тестировании на следующей неделе."
-        }]
+    const [messages, setMessages] = useState([]);
+    useEffect(() => {
+        axios.get('/api/notifications', { params: { group_name: 'ААСбв-11' } })
+            .then(response => {
+                const notifications = response.data;
+                setMessages(notifications);
+            })
+            .catch(error => console.error(error));
+    }, [currentUser.name]);
+    // const fakeMessages = [
+    //     {
+    //         "author": "Иванов Иван Иванович",
+    //         "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
+    //         "message": "Здравствуйте! Напоминаю, что завтра у нас лекция по математике в 10:00."
+    //     },
+    //     {
+    //         "author": "Воронин Константин Николаевич",
+    //         "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
+    //         "message": "Добрый день! Пожалуйста, не забудьте сдать домашнее задание до конца недели."
+    //     },
+    //     {
+    //         "author": "Александрова Марина Юрьевна",
+    //         "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4cEOi6pZDngbkLlh4wbxcgPl8J-XE2pwdw&s",
+    //         "message": "Приветствую всех! Напоминаю о предстоящем тестировании на следующей неделе."
+    //     }]
 
     useEffect(() => {
         axiosClient.get("/user").then(({ data }) => {
@@ -84,7 +68,7 @@ export default function ClientHeader() {
             />
             <div className="relative z-20">
                 <div className="mx-auto flex max-w-7xl items-center justify-between py-5 px-6 sm:py-4 md:justify-start md:space-x-10 lg:px-8">
-                    <div>
+                    {/* <div>
                         <a href="/" className="flex">
                             <span className="sr-only">Your Company</span>
                             <img
@@ -93,7 +77,7 @@ export default function ClientHeader() {
                                 alt=""
                             />
                         </a>
-                    </div>
+                    </div> */}
                     <div className="-my-2 -mr-2 md:hidden">
                         <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                             <span className="sr-only">Open menu</span>
@@ -110,18 +94,6 @@ export default function ClientHeader() {
                                     О сайте
                                 </a>}
 
-                            {/* <a
-                                href="/trainers"
-                                className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
-                            >
-                                Тренеры
-                            </a>
-                            <a
-                                href="/training-for-you"
-                                className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
-                            >
-                                Подбор тренировки
-                            </a> */}
                             {currentUser?.id &&
                                 <> <a
                                     href="/schedule"
@@ -129,27 +101,20 @@ export default function ClientHeader() {
                                 >
                                     Расписание
                                 </a>
-                                    <a
+                                    {/* <a
                                         href="/bot"
                                         className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
                                     >
                                         Аккаунт
-                                    </a></>}
-                            {/* <a
-                                href="/help"
-                                className="text-base font-medium text-white hover:text-gray-100 hover:border-b-2"
-                            >
-                                Связь с поддержкой
-                            </a> */}
-                            {/* <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                Docs
-              </a> */}
+                                    </a> */}
+                                    </>
+                                    }
                         </Popover.Group >
                         {currentUser && currentUser.name ? (
                             <Popover.Group className="flex">
                                 <Popover className="relative text-gray-300 hover:text-gray-100 mt-2 mr-4">
                                     <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100">
-                                        3
+                                        {messages.length}
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
                                         </svg>
@@ -165,11 +130,11 @@ export default function ClientHeader() {
                                     >
                                         <Popover.Panel className="bg-gray-100 absolute transform -translate-x-1/2 left-1/2  z-100 mt-3 w-[400px] overflow-hidden rounded-3xl shadow-lg ring-1 ring-gray-900/5">
                                             <div className="p-4">
-                                                {fakeMessages.map((msg, index) => (
+                                                {messages && messages.map((msg, index) => (
                                                     <div key={index} className="flex items-start mb-4">
-                                                        <img src={msg.avatar} alt="Avatar" className="w-10 h-10 rounded-full mr-3" />
+                                                        {/* <img src={msg.avatar} alt="Avatar" className="w-10 h-10 rounded-full mr-3" /> */}
                                                         <div>
-                                                            <div className="font-semibold text-gray-400">{msg.author}</div>
+                                                            <div className="font-semibold text-gray-400">{msg.sender_name}</div>
                                                             <div className="text-gray-600">{msg.message}</div> {/* Выводим сообщение */}
                                                         </div>
                                                     </div>
@@ -221,12 +186,13 @@ export default function ClientHeader() {
                                                 >
                                                     Аккаунт
                                                 </a>
-                                                <button
+                                                <a
+                                                    href="http://localhost:8000/"
                                                     onClick={logout}
                                                     className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                                                 >
                                                     Выйти
-                                                </button>
+                                                </a>
                                             </div>
                                         </Popover.Panel>
                                     </Transition>

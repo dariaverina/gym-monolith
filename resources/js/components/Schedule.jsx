@@ -10,6 +10,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import EditLessonModal from "./UI/Modal/ModalContent/LessonDetails/EditLessonModal";
 import Header from "./schedule/Header";
 import GroupSelector from "./schedule/GroupSelector";
+import EditNoteModal from "./UI/Modal/ModalContent/LessonDetails/EditNote";
+
 
 const timeSlots = ["1 пара", "2 пара", "3 пара", "4 пара", "5 пара", "6 пара", "7 пара", "8 пара"];
 const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
@@ -50,8 +52,10 @@ export default function Schedule() {
     const [trainings, setTrainings] = useState([]);
     const { openModal, setModalContent } = useUI();
 
+    const [searchType, setSearchType] = useState('groupsSearch');
     const [groups, setGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState(null);
+    console.log('sel', selectedGroup)
     const [dragMode, setDragMode] = useState(false);
 
     const toggleDragMode = () => {
@@ -100,21 +104,42 @@ export default function Schedule() {
             .catch((error) => console.error(error));
     }, []);
 
+    useEffect(() => {
+        if (currentUser?.group_id) {
+            const group = groups.find(group => group.id === currentUser.group_id);
+            if (group) {
+                setSelectedGroup(group); // Устанавливаем найденную группу в selectedGroup
+            }
+        }
+    }, [currentUser, groups]);
     const fetchScheduleData = () => {
-        if (currentUser?.user_type && selectedGroup) {
+        if (searchType == 'mySearch') {
             const params = {
                 week_number: week,
-                group_name: selectedGroup.name,
+                teacher_name: currentUser.name,
             };
             axios
                 .get("http://localhost:8000/api/schedule", { params })
                 .then((res) => setTrainings(res.data))
                 .catch((err) => console.error(err));
         }
+        else {
+            if (currentUser?.user_type && selectedGroup) {
+                const params = {
+                    week_number: week,
+                    group_name: selectedGroup.name,
+                };
+                axios
+                    .get("http://localhost:8000/api/schedule", { params })
+                    .then((res) => setTrainings(res.data))
+                    .catch((err) => console.error(err));
+            }
+        }
+
     };
     useEffect(() => {
         fetchScheduleData();
-    }, [currentUser, selectedGroup, week]);
+    }, [currentUser, selectedGroup, week, searchType]);
 
     const trainingByDayAndLesson = trainings.reduce((acc, curr) => {
         const { day_of_week, lesson_number } = curr;
@@ -167,23 +192,41 @@ export default function Schedule() {
             },
             canDrop: () => dragMode,
         });
-
+// console.log('teacher',training)
         return (
             <td
                 ref={ref}
                 onClick={() => {
-                    setModalContent(
-                        <EditLessonModal
-                            lesson={training}
-                            day={day}
-                            week_number={week}
-                            time={timeSlot}
-                            fetchScheduleData={fetchScheduleData}
-                            onUpdateTraining={handleUpdateTraining}
-                            onDeleteTraining={handleDeleteTraining}
-                        />
-                    );
-                    openModal();
+                    if ((currentUser.user_type === 'm' || currentUser.user_type === 'w') && dragMode) {
+                        setModalContent(
+                            <EditLessonModal
+                                lesson={training}
+                                day={day}
+                                week_number={week}
+                                time={timeSlot}
+                                fetchScheduleData={fetchScheduleData}
+                                onUpdateTraining={handleUpdateTraining}
+                                onDeleteTraining={handleDeleteTraining}
+                            />
+                        );
+                        openModal();
+                    }
+                    else if (currentUser.user_type === 't' && training && training[0].teacher === currentUser.name) {
+                        setModalContent(
+                            <EditNoteModal
+                                lesson={training}
+                                day={day}
+                                week_number={week}
+                                time={timeSlot}
+                                fetchScheduleData={fetchScheduleData}
+                                onUpdateTraining={handleUpdateTraining}
+                                onDeleteTraining={handleDeleteTraining}
+                                onSaveSchedule={saveSchedule}
+                                trainings={trainings}
+                            />
+                        );
+                        openModal();
+                    }
                 }}
                 className={`relative border border-slate-700 w-32 h-24 text-xs text-center ${dragMode ? "bg-gray-600" : "bg-gray-900"
                     }`}
@@ -243,14 +286,13 @@ export default function Schedule() {
 
     let notificationMethods = [
         { id: 'groupsSearch', title: 'Поиск по группам' },
-        { id: 'teachersSearch', title: 'Поиск по учителям' },
         { id: 'logicSearch', title: 'Логический поиск' },
         { id: 'mySearch', title: 'Свое расписание', type: 't' },
     ]
     const filteredNotificationMethods = notificationMethods.filter(method => !method.type || method.type === currentUser.user_type);
-   
-    const [searchType, setSearchType] = useState('groupsSearch');
-    const [query, setQuery] = useState('(ПИбд-11 || ПИбд-12)&& Анкилов');
+
+
+    const [query, setQuery] = useState('(ПИбд-11 || ПИбд-12)');
     const handleChangeLogicQueue = (event) => {
         setQuery(event.target.value);
     };
@@ -284,7 +326,7 @@ export default function Schedule() {
                         />
 
                         <fieldset>
-                            <div className="mt-6 space-y-6 sm:flex sm:items-center sm:justify-evenly sm:space-y-0">
+                            <div className="mt-6 mb-2 space-y-6 sm:flex sm:items-center sm:justify-evenly sm:space-y-0">
                                 {filteredNotificationMethods.map((notificationMethod) => (
                                     <div key={notificationMethod.id} className="flex items-center">
                                         <input
@@ -314,18 +356,18 @@ export default function Schedule() {
                         )}
                         {searchType === 'logicSearch' && (
                             <form onSubmit={handleSubmit} className="flex items-center space-x-4">
-                            <input
-                                type="text"
-                                value={query}
-                                onChange={handleChangeLogicQueue}
-                                placeholder="Введите запрос..."
-                                className="border border-gray-300 px-2 py-1 rounded-md w-full"
-                            />
-                            <button type="submit" className="pt-2 pb-2 pr-4 pl-4 text-white bg-gray-700 rounded">
-                                Искать
-                            </button>
-                        </form>
-                        
+                                <input
+                                    type="text"
+                                    value={query}
+                                    onChange={handleChangeLogicQueue}
+                                    placeholder="Введите запрос..."
+                                    className="border border-gray-300 px-2 py-1 rounded-md w-full"
+                                />
+                                <button type="submit" className="pt-2 pb-2 pr-4 pl-4 text-white bg-gray-700 rounded">
+                                    Искать
+                                </button>
+                            </form>
+
 
                         )}
 

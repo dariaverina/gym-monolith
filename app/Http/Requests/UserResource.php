@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'user_type' => $this->user_type,
             'status' => $this->status,
             'group_id' => $this->group_id,
+            'privilege' => $this->privilege,
             // 'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }

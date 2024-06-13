@@ -9,7 +9,7 @@ const App = () => {
 
     useEffect(() => {
         // Set the last updated date to 20 May at 12:00
-        const lastUpdateDate = new Date(2024, 4, 20, 12, 0); // Months are 0-indexed in JavaScript (4 = May)
+        const lastUpdateDate = new Date(2024, 5, 10, 12, 54); // Months are 0-indexed in JavaScript (4 = May)
         setLastUpdated(lastUpdateDate.toLocaleString('ru-RU', { 
             year: 'numeric', 
             month: 'long', 

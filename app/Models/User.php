@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'user_type',
         'status',
-        'group_id'
+        'group_id',
+        'privilege'
     ];
 
     /**

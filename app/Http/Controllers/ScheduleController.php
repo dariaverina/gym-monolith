@@ -87,14 +87,23 @@ class ScheduleController extends Controller
 
     public function index(Request $request)
     {
-        // Получаем номер недели из запроса
+        // Получаем параметры из запроса
         $weekNumber = $request->input('week_number');
         $groupName = $request->input('group_name');
+        $teacherName = $request->input('teacher_name');
 
-         // Получаем расписание из базы данных по номеру недели и названию группы
-        $schedule = Schedule::where('week_number', $weekNumber-6)
-        ->where('group_name', $groupName)
-        ->get();
+        // Инициализируем запрос к модели Schedule
+        $query = Schedule::where('week_number', $weekNumber - 6);
+
+        // Добавляем условие для группы или учителя в зависимости от наличия параметра
+        if ($teacherName) {
+            $query->where('teacher', $teacherName);
+        } else if ($groupName) {
+            $query->where('group_name', $groupName);
+        }
+
+        // Выполняем запрос и получаем расписание
+        $schedule = $query->get();
 
         // Возвращаем расписание в формате JSON
         return response()->json($schedule);
@@ -196,6 +205,92 @@ class ScheduleController extends Controller
 
         // Возвращаем результаты в формате JSON
         return response()->json($result);
+    }
+
+    public function updateNote(Request $request, $id)
+    {
+        // Validate incoming request
+        $validatedData = $request->validate([
+            'note' => 'nullable|string|max:255', // Allow 'note' to be nullable
+        ]);
+
+        try {
+            // Find the lesson by ID
+            $lesson = Schedule::findOrFail($id);
+
+            // Update the note only if it's provided in the request
+            if (isset($validatedData['note'])) {
+                $lesson->note = $validatedData['note'];
+            } else {
+                $lesson->note = null; // Set to null if 'note' is not provided
+            }
+
+            $lesson->save();
+            $this->sendTelegramNotification($lesson);
+
+            return response()->json(['message' => 'Note updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error updating note', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    private function sendTelegramNotification($lesson)
+    {
+        try {
+            $daysOfWeek = [
+                1 => 'понедельник',
+                2 => 'вторник',
+                3 => 'среда',
+                4 => 'четверг',
+                5 => 'пятница',
+                6 => 'суббота',
+                7 => 'воскресенье',
+            ];
+    
+            // Map lesson time numeric values to their corresponding description
+            $lessonTimes = [
+                1 => '1 пара',
+                2 => '2 пара',
+                // Add more mappings as needed for other lesson times
+            ];
+    
+            // Compose the message
+            $message = '📝 Примечание к уроку обновлено:';
+            $message .= "\nПреподаватель: " . $lesson->teacher;
+            $message .= "\nЗанятие: " . $lesson->lesson_name;
+            
+            // Replace numeric day of the week with word
+            if (isset($daysOfWeek[$lesson->day_of_week])) {
+                $message .= "\nДень недели: " . $daysOfWeek[$lesson->day_of_week];
+            } else {
+                $message .= "\nДень недели: " . $lesson->day_of_week; // Fallback to numeric value
+            }
+            
+            // Replace numeric lesson number with description
+            if (isset($lessonTimes[$lesson->lesson_number])) {
+                $message .= "\nВремя урока: " . $lessonTimes[$lesson->lesson_number];
+            } else {
+                $message .= "\nВремя урока: " . $lesson->lesson_number; // Fallback to numeric value
+            }
+    
+            $message .= "\nПримечание: " . ($lesson->note ?? 'Отсутствует');
+
+            // Fetch users with Telegram ID belonging to the group
+            // $users = User::whereNotNull('telegram_id')->where('group_id', $lesson->group_id)->get();
+
+           (\Illuminate\Support\Facades\Http::post('https://api.telegram.org/bot7078635996:AAFnCY1PV3chqoqpDodNR-qeeuPkao2HX34/sendMessage', 
+                [
+                    'chat_id' => 1114156429,
+                    'text' => '🧑‍🏫 Новое уведомление от преподавателя ' . $lesson->teacher . ":\n" . $message
+                ])->json()
+            );
+
+
+            return true; // Notification sent successfully
+        } catch (\Exception $e) {
+            // Handle exception or log error
+            return false; // Notification failed to send
+        }
     }
 
     

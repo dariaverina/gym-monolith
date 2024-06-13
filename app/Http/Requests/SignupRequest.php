@@ -26,7 +26,8 @@ class SignupRequest extends FormRequest
             'email' => 'required|string',
             'password' => 'required|string',
             'user_type' => 'required|string',
-            'group_id' => 'nullable|int'
+            'group_id' => 'nullable|int',
+            'privilege' => 'nullable|string'
             //
         ];
     }

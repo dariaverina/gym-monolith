@@ -51,42 +51,6 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // if ($user->user_type === 'm') {
-        //     if ($request->has('verification_code')) {
-        //         $code = $request->input('verification_code');
-    
-        //         // Проверка правильности кода
-        //         if ($code === $user->two_factor_code) {
-        //             $user->two_factor_code = '';
-        //             $user->save();
-    
-        //             $token = $user->createToken('main')->plainTextToken;
-        //             return response([
-        //                 'user' => $user,
-        //                 'token' => $token
-        //             ]);
-        //         }
-    
-        //         return response([
-        //             'error' => 'Invalid verification code'
-        //         ], 422);
-        //     }
-        //     else{
-        //         // Генерируйте и сохраните уникальный код
-        //         $code =  mt_rand(10000, 99999);
-        //         $user->two_factor_code = $code;
-        //         $user->save();
-        
-
-        //         // Отправьте сообщение с кодом
-        //         $this->sendAuthCode($name = 'олег олег', $email='dashka400g@gmail.com', $code=$code); // Замените эту функцию на свою реализацию
-        
-        //         return response([
-        //             'requires_2fa' => true,
-        //         ]);
-        //     }
-        // }
-
         $token = $user->createToken('main')->plainTextToken;
         return response([
             'user' => $user,

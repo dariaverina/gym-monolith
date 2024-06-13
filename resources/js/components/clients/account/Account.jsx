@@ -15,11 +15,11 @@ export default function ClientAccount() {
         photo: null,
     });
     const [telegramSettings, setTelegramSettings] = useState({
-        telegramId: "",
+        telegramId: "1114156429",
         notificationFrequency: "",
-        notifyFromTeachers: false,
+        notifyFromTeachers: true,
         blacklist: [],
-        notifyScheduleChanges: false,
+        notifyScheduleChanges: true,
     });
     const [phoneError, setPhoneError] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -267,7 +267,7 @@ export default function ClientAccount() {
                             htmlFor="notificationFrequency"
                             className="block text-sm font-medium leading-6 text-white"
                         >
-                            Частота уведомлений
+                            Время уведомления
                         </label>
                         <div className="mt-2">
                             <select

@@ -7,7 +7,9 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TrainingParticipantController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\NotificationController;
 use App\Models\Club;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use App\Models\Training;
@@ -16,6 +18,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
 use App\Models\Schedule;
+use App\Models\Notification;
 use GuzzleHttp\Client;
 use App\Models\Group;
 use Dompdf\Options;
@@ -166,21 +169,37 @@ Route::post('/telegram/webhook', function (Request $request) {
 });
 
 Route::post('/send-notification', function (Request $request) {
-        $message = $request->input('message');
-        $name = $request->input('name');
-        return
-        (\Illuminate\Support\Facades\Http::post('https://api.telegram.org/bot7078635996:AAFnCY1PV3chqoqpDodNR-qeeuPkao2HX34/sendMessage', 
-            [
-                'chat_id' => 1114156429,
-                'text' => '🧑‍🏫 Новое уведомление от преподавателя ' . $name . ":\n" . $message
-            ])->json()
-    );
-});
+    $message = $request->input('message');
+    $name = $request->input('name');
+    $group_id = $request->input('group_id');
+    $group_name = $request->input('group_name');
 
-// Route::post('/telegram/webhook', function (Request $request) {
-//     $update = $request->all(); // Получите данные от Telegram
-//     // Далее обработайте входящие данные в соответствии с вашей логикой
-// });
+    try {
+        // Сохраняем уведомление в базу данных
+        $notification = new Notification();
+        $notification->message = $message;
+        $notification->sender_name = $name;
+        $notification->group_name = $group_name;
+        $notification->save();
+
+        $users = User::whereNotNull('telegram_id')->where('group_id', $group_id)->get();
+
+        foreach ($users as $user) {
+            // Отправляем уведомление каждому пользователю
+            (\Illuminate\Support\Facades\Http::post('https://api.telegram.org/bot7078635996:AAFnCY1PV3chqoqpDodNR-qeeuPkao2HX34/sendMessage', 
+                [
+                    'chat_id' => $user->telegram_id,
+                    'text' => '🧑‍🏫 Новое уведомление от преподавателя ' . $name . ":\n" . $message
+                ])->json()
+            );
+        }
+
+        return response()->json(['message' => 'Notification sent successfully']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to send notification', 'details' => $e->getMessage()], 500);
+    }
+    return response()->json(['message' => 'Уведомления успешно отправлены пользователям с telegram_id']);
+});
 
 Route::post('/bot/webhook', 'TelegramController@handleCallbackQuery');
 
@@ -269,3 +288,4 @@ Route::get('/token', function (Request $request) {
 
 });
 
+Route::get('/notifications', [NotificationController::class, 'getNotifications']);

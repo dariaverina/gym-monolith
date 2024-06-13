@@ -15,7 +15,10 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\NotificationController;
 
+
+use App\Models\Notification;
 use App\Models\Club;
 use App\Models\User;
 use App\Models\TrainingParticipant;
@@ -91,3 +94,7 @@ Route::post('/schedule/upload', [ScheduleController::class, 'store']);
 Route::get('/schedule', [ScheduleController::class, 'index']);
 Route::put('/schedule/update', [ScheduleController::class, 'updateSchedule']);
 Route::get('/schedule/search', [ScheduleController::class, 'search']);
+
+Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+
+Route::put('/schedule/update-note/{id}', [ScheduleController::class, 'updateNote']);

@@ -5,9 +5,9 @@ export default function Header({ dragMode, toggleDragMode, saveSchedule, fetchSc
     const { currentUser } = userStateContext();
     return (
         <>
-            {(currentUser && (currentUser.user_type === 'm' || currentUser.user_type === 'w' || (currentUser.user_type === 't' && currentUser.privilege === 'y'))) ? (
+            {(currentUser && (currentUser.user_type === 'm' || currentUser.user_type === 'w' || (currentUser.user_type === 't' && currentUser.privilege === 'a'))) ? (
                 <div className="flex justify-between items-center mb-2">
-                    {!dragMode ? (
+                    {(!dragMode  )? (
                         <div className="flex justify-center w-full">
                             <button
                                 onClick={toggleDragMode}

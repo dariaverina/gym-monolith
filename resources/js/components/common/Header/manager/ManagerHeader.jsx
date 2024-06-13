@@ -23,7 +23,7 @@ export default function ManagerHeader() {
       .then(res => {
         setCurrentUser(undefined);
         setUserToken(null);
-        window.location.href = "/";
+        window.location.href = "http://localhost:8000";
       });
   };
 
@@ -44,7 +44,7 @@ export default function ManagerHeader() {
       <div className="pointer-events-none absolute inset-0 z-30" aria-hidden="true" />
       <div className="relative z-20">
         <div className="mx-auto flex max-w-7xl items-center justify-between py-5 px-6 sm:py-4 md:justify-start md:space-x-10 lg:px-8">
-          <div>
+          {/* <div>
             <a href="/" className="flex">
               <span className="sr-only">Your Company</span>
               <img
@@ -53,7 +53,7 @@ export default function ManagerHeader() {
                 alt=""
               />
             </a>
-          </div>
+          </div> */}
           <div className="-my-2 -mr-2 md:hidden">
             <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-white hover:bg-gray-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
               <span className="sr-only">Open menu</span>
@@ -163,12 +163,13 @@ export default function ManagerHeader() {
                       >
                         Аккаунт
                       </a>
-                      <button
+                      <a
                         onClick={logout}
+                        href="http://localhost:8000/"
                         className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                       >
                         Выйти
-                      </button>
+                      </a>
                     </div>
                   </Popover.Panel>
                 </Transition>

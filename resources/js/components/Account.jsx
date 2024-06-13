@@ -8,7 +8,7 @@ import ClientAccount from "./clients/account/Account";
 const UniversityEdit = () => {
     const [universityName, setUniversityName] = useState("УлГТУ");
     const [password, setPassword] = useState("********");
-    const [scheduleLink, setScheduleLink] = useState("https://time.ulstu.ru/api");
+    const [scheduleLink, setScheduleLink] = useState("https://time.ulstu.ru/api/schedule");
     const [externalUsername, setExternalUsername] = useState("d.verina");
     const [externalPassword, setExternalPassword] = useState("********");
 
